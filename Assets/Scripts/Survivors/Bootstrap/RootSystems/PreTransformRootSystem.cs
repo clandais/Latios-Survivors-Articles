@@ -2,7 +2,6 @@
 using Latios.Transforms.Systems;
 using Survivors.Bootstrap.RootSystems.SuperSystems;
 using Survivors.Play.Components;
-using Survivors.Play.Systems.Input;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -18,7 +17,7 @@ namespace Survivors.Bootstrap.RootSystems
             CreateQueries();
             GetOrCreateAndAddManagedSystem<AnimationSuperSystem>();
         }
-        
+
         void CreateQueries()
         {
             m_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
@@ -27,16 +26,6 @@ namespace Survivors.Bootstrap.RootSystems
         public override bool ShouldUpdateSystem()
         {
             return m_pauseQuery.IsEmptyIgnoreFilter;
-        }
-    }
-    
-    
-    [UpdateInGroup(typeof(PreTransformSuperSystem))]
-    public partial class InputRootSystem : RootSuperSystem
-    {
-        protected override void CreateSystems()
-        {
-            GetOrCreateAndAddManagedSystem<EscapeKeySystem>();
         }
     }
 }

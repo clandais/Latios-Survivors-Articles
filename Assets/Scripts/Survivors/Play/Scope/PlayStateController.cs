@@ -10,11 +10,16 @@ namespace Survivors.Play.Scope
 {
     public class PlayStateController : IStartable, IDisposable
     {
-        [Inject] PlayStateMenu m_playStateMenu;
-        [Inject] ICommandSubscribable m_commandSubscribable;
         [Inject] ICommandPublisher m_commandPublisher;
+        [Inject] ICommandSubscribable m_commandSubscribable;
 
         DisposableBag m_disposable;
+        [Inject] PlayStateMenu m_playStateMenu;
+
+        public void Dispose()
+        {
+            m_disposable.Dispose();
+        }
 
         public void Start()
         {
@@ -35,18 +40,15 @@ namespace Survivors.Play.Scope
             m_playStateMenu.Hide();
         }
 
-        public void Dispose()
-        {
-            m_disposable.Dispose();
-        }
 
-
-        void OnPauseStateRequested(RequestPauseStateCommand _, PublishContext ctx)
+        void OnPauseStateRequested(RequestPauseStateCommand _,
+            PublishContext ctx)
         {
             m_playStateMenu.Show();
         }
 
-        void OnResumeStateRequested(RequestResumeStateCommand _, PublishContext ctx)
+        void OnResumeStateRequested(RequestResumeStateCommand _,
+            PublishContext ctx)
         {
             m_playStateMenu.Hide();
         }

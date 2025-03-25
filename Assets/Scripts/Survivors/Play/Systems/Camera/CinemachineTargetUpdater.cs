@@ -1,0 +1,29 @@
+﻿using Latios;
+using Survivors.GameScope.MonoBehaviours;
+using Survivors.Play.Authoring;
+using VContainer;
+
+namespace Survivors.Play.Systems.Camera
+{
+    public partial class CinemachineTargetUpdater : SubSystem
+    {
+        CinemachineBehaviour m_cinemachine;
+
+        [Inject]
+        public void Construct(CinemachineBehaviour cinemachine)
+        {
+            m_cinemachine = cinemachine;
+        }
+
+        protected override void OnCreate()
+        {
+            RequireForUpdate<PlayerTag>();
+        }
+
+        protected override void OnUpdate()
+        {
+            var playerPosition = sceneBlackboardEntity.GetComponentData<PlayerPosition>();
+            m_cinemachine.SetTargetPosition(playerPosition.Position);
+        }
+    }
+}

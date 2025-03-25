@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using Survivors.Bootstrap;
 using Survivors.GameScope.Commands;
+using Survivors.GameScope.MonoBehaviours;
 using Survivors.ScriptableObjects;
 using Unity.Entities;
 using UnityEngine;
@@ -16,16 +17,18 @@ namespace Survivors.GameScope
     public partial class GlobalRouter
     {
         [Inject] GameScenesReferences m_gameScenesReferences;
-
+        [Inject] CurtainBehaviour        m_curtainBehaviour;
 
         async UniTask DisposeScene(SceneReference sceneRef)
         {
             var activeScenes = SceneManager.sceneCount;
+
             for (var i = 0; i < activeScenes; i++)
             {
                 var scene = SceneManager.GetSceneAt(i);
                 if (scene.buildIndex == sceneRef.BuildIndex) await SceneManager.UnloadSceneAsync(scene);
             }
+
 
             await UniTask.CompletedTask;
         }
@@ -33,16 +36,24 @@ namespace Survivors.GameScope
         [Route]
         async UniTask On(MainMenuStateCommand _)
         {
+            
+            await m_curtainBehaviour.FadeAlpha(0f, 1f, .5f);
+            
             await DisposeScene(m_gameScenesReferences.playScene);
 
             World.DefaultGameObjectInjectionWorld?.Dispose();
 
             await SceneManager.LoadSceneAsync(m_gameScenesReferences.mainMenuScene.BuildIndex, LoadSceneMode.Additive);
+            
+            await m_curtainBehaviour.FadeAlpha(1f, 0f, 1f);
         }
 
         [Route]
         async UniTask On(PlayStateCommand _)
         {
+            
+            await m_curtainBehaviour.FadeAlpha(0f, 1f, .5f);
+            
             await DisposeScene(m_gameScenesReferences.mainMenuScene);
 
             if (new LatiosBootstrap().Initialize("Latios Survivors World"))
@@ -52,10 +63,14 @@ namespace Survivors.GameScope
             else
             {
                 Debug.LogException(new Exception("Latios failed to initialize :'("));
+
                 return;
             }
 
+
             await SceneManager.LoadSceneAsync(m_gameScenesReferences.playScene.BuildIndex, LoadSceneMode.Additive);
+            
+            await m_curtainBehaviour.FadeAlpha(1f, 0f, 1f);
         }
     }
 }

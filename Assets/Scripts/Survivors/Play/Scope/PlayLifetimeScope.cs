@@ -1,4 +1,5 @@
 ﻿using Survivors.Play.Scope.MonoBehaviours;
+using Survivors.Play.Systems.Camera;
 using Survivors.Play.Systems.Input;
 using UnityEngine;
 using VContainer;
@@ -30,6 +31,7 @@ namespace Survivors.Play.Scope
 
 
             builder.RegisterSystemFromDefaultWorld<EscapeKeySystem>();
+            builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
 
             builder.RegisterBuildCallback(container =>
             {

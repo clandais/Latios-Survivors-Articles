@@ -1,4 +1,5 @@
 using Latios;
+using Latios.Anna;
 using Latios.Authoring;
 using Latios.Calligraphics;
 using Latios.Kinemation;
@@ -70,6 +71,8 @@ namespace Survivors.Bootstrap
             UnikaBootstrap.InstallUnikaEntitySerialization(world);
             //Latios.LifeFX.LifeFXBootstrap.InstallLifeFX(world);
 
+            AnnaBootstrap.InstallAnna(world);
+
             BootstrapTools.InjectRootSuperSystems(systems, world, world.simulationSystemGroup);
 
             world.initializationSystemGroup.SortSystems();
@@ -77,6 +80,7 @@ namespace Survivors.Bootstrap
             world.presentationSystemGroup.SortSystems();
 
             ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(world);
+
             return true;
         }
     }

@@ -18,7 +18,8 @@ namespace Survivors.Play.Authoring
         {
             SmartBlobberHandle<SkeletonClipSetBlob> m_handle;
 
-            public bool Bake(IdleAnimationAuthoring authoring, IBaker baker)
+            public bool Bake(IdleAnimationAuthoring authoring,
+                IBaker baker)
             {
                 var entity = baker.GetEntity(TransformUsageFlags.Dynamic);
                 baker.AddComponent<IdleClip>(entity);
@@ -31,19 +32,19 @@ namespace Survivors.Play.Authoring
                 };
 
                 m_handle = baker.RequestCreateBlobAsset(baker.GetComponent<Animator>(), clips);
+
                 return true;
             }
 
-            public void PostProcessBlobRequests(EntityManager entityManager, Entity entity)
+            public void PostProcessBlobRequests(EntityManager entityManager,
+                Entity entity)
             {
                 var clipSet = m_handle.Resolve(entityManager);
                 entityManager.SetComponentData(entity, new IdleClip { ClipSet = clipSet });
             }
         }
 
-        class IdleClipBaker : SmartBaker<IdleAnimationAuthoring, AnimationClipSmartBakeItem>
-        {
-        }
+        class IdleClipBaker : SmartBaker<IdleAnimationAuthoring, AnimationClipSmartBakeItem> { }
 
         class IdleAnimationAuthoringBaker : Baker<IdleAnimationAuthoring>
         {
@@ -75,7 +76,7 @@ namespace Survivors.Play.Authoring
     }
 
     /// <summary>
-    ///   The idle clip to be played.
+    ///     The idle clip to be played.
     /// </summary>
     public struct IdleClip : IComponentData
     {
@@ -84,16 +85,16 @@ namespace Survivors.Play.Authoring
 
 
     /// <summary>
-    ///    The state of the idle clip.
+    ///     The state of the idle clip.
     /// </summary>
     public struct IdleClipState : IComponentData
     {
         public ClipState State;
     }
 
-    
+
     /// <summary>
-    ///  The state of a clip.
+    ///     The state of a clip.
     /// </summary>
     public struct ClipState
     {

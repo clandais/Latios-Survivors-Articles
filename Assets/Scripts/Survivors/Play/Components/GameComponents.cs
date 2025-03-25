@@ -2,7 +2,5 @@
 
 namespace Survivors.Play.Components
 {
-    public struct PauseRequestedTag : IComponentData
-    {
-    }
+    public struct PauseRequestedTag : IComponentData { }
 }

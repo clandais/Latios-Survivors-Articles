@@ -10,11 +10,11 @@ namespace Survivors.Play.Scope.MonoBehaviours
         [SerializeField] Button mainMenuButton;
         [SerializeField] Button quitButton;
 
+        CanvasGroup m_canvasGroup;
+
         public Button ResumeButton => resumeButton;
         public Button MainMenuButton => mainMenuButton;
         public Button QuitButton => quitButton;
-
-        CanvasGroup m_canvasGroup;
 
         void Awake()
         {

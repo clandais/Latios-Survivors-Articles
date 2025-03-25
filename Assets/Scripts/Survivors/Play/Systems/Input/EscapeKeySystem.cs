@@ -10,24 +10,27 @@ namespace Survivors.Play.Systems.Input
 {
     public partial class EscapeKeySystem : SubSystem
     {
+        readonly ReactiveProperty<bool> m_isEscapePressed = new();
         ICommandPublisher m_commandPublisher;
         ICommandSubscribable m_commandSubscriber;
-        readonly ReactiveProperty<bool> m_isEscapePressed = new();
         DisposableBag m_disposableBag;
         InputSystem_Actions m_inputSystemActions;
 
         [Inject]
-        public void Construct(ICommandPublisher commandPublisher, ICommandSubscribable commandSubscriber)
+        public void Construct(ICommandPublisher commandPublisher,
+            ICommandSubscribable commandSubscriber)
         {
             m_commandPublisher  = commandPublisher;
             m_commandSubscriber = commandSubscriber;
 
-            m_commandSubscriber.Subscribe<RequestPauseStateCommand>((command, ctx) =>
+            m_commandSubscriber.Subscribe<RequestPauseStateCommand>((command,
+                ctx) =>
             {
                 sceneBlackboardEntity.AddComponent<PauseRequestedTag>();
             }).AddTo(ref m_disposableBag);
 
-            m_commandSubscriber.Subscribe<RequestResumeStateCommand>((command, context) =>
+            m_commandSubscriber.Subscribe<RequestResumeStateCommand>((command,
+                context) =>
             {
                 sceneBlackboardEntity.RemoveComponent<PauseRequestedTag>();
             }).AddTo(ref m_disposableBag);

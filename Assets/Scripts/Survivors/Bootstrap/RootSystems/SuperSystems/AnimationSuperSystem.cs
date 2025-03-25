@@ -1,7 +1,5 @@
 ﻿using Latios;
-using Survivors.Play.Components;
 using Survivors.Play.Systems.Animations;
-using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems.SuperSystems
 {

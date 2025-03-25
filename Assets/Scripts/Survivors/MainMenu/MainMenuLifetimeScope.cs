@@ -1,5 +1,4 @@
-﻿using Survivors.GameScope;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using VitalRouter;
