@@ -177,7 +177,7 @@ MonoBehaviour:
     z: 0
   linearDamping: 0.05
   angularDamping: 0.05
-  solverIterations: 8
+  solverIterations: 4
 --- !u!114 &772120505
 MonoBehaviour:
   m_ObjectHideFlags: 0

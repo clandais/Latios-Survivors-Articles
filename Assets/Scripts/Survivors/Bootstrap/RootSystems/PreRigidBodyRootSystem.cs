@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
 {
-    [UpdateBefore(typeof(AnnaSuperSystem))]
+    [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
     public partial class  PreRigidBodyRootSystem : RootSuperSystem
     {
         
