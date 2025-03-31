@@ -1,5 +1,7 @@
 ﻿using Latios;
 using Survivors.Play.Systems.Animations;
+using Survivors.Play.Systems.Player;
+using Survivors.Play.Systems.Player.Weapons.Initialization;
 
 namespace Survivors.Bootstrap.RootSystems.SuperSystems
 {
@@ -7,7 +9,9 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
     {
         protected override void CreateSystems()
         {
-            GetOrCreateAndAddUnmanagedSystem<PlayerIdleAnimationSystem>();
+            GetOrCreateAndAddUnmanagedSystem<FourDirectionsAnimationSystem>();
+            GetOrCreateAndAddUnmanagedSystem<PlayerActionSystem>();
+            GetOrCreateAndAddUnmanagedSystem<WeaponThrowTriggerSystem>();
         }
     }
 }

@@ -2,11 +2,11 @@
 using Latios.Anna;
 using Latios.Psyshock;
 using Latios.Transforms;
-using Survivors.Play.Authoring;
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
 using Collider = Latios.Psyshock.Collider;
+using Physics = Latios.Psyshock.Physics;
 
 namespace Survivors.Play.Systems.Debug
 {
@@ -32,20 +32,20 @@ namespace Survivors.Play.Systems.Debug
                 .GetCollectionComponent<EnvironmentCollisionLayer>().layer;
             state.Dependency = PhysicsDebug.DrawLayer(layer).ScheduleParallel(state.Dependency);
 
-            foreach (var (collider, transformAspect) in SystemAPI.Query<RefRO<Collider>, TransformAspect>()
-                         .WithAll<PlayerTag>())
+            foreach (var (collider, transformAspect) in 
+                     SystemAPI.Query<RefRO<Collider>, TransformAspect>())
             {
                 var t = transformAspect.worldTransform;
-                PhysicsDebug.DrawCollider(in collider.ValueRO, in t, Color.green);
+               // PhysicsDebug.DrawCollider(in collider.ValueRO, in t, Color.green);
+              PhysicsDebug.DrawAabb( Physics.AabbFrom(collider.ValueRO, transformAspect.worldTransform), Color.green );
             }
-
-
-            foreach (var (collider, transformAspect) in SystemAPI.Query<RefRO<Collider>, TransformAspect>()
-                         .WithAll<EnvironmentCollisionTag>())
-            {
-                var t = transformAspect.worldTransform;
-                PhysicsDebug.DrawCollider(in collider.ValueRO, in t, Color.red);
-            }
+            
+            // foreach (var (collider, transformAspect) in SystemAPI.Query<RefRO<Collider>, TransformAspect>()
+            //              .WithAll<EnvironmentCollisionTag>())
+            // {
+            //     var t = transformAspect.worldTransform;
+            //     PhysicsDebug.DrawCollider(in collider.ValueRO, in t, Color.red);
+            // }
         }
     }
 }

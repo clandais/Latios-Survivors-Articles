@@ -2,6 +2,8 @@
 using R3;
 using Survivors.GameScope.Commands;
 using Survivors.Play.Scope.MonoBehaviours;
+using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 using VitalRouter;
@@ -12,6 +14,7 @@ namespace Survivors.Play.Scope
     {
         [Inject] ICommandPublisher m_commandPublisher;
         [Inject] ICommandSubscribable m_commandSubscribable;
+        [Inject] Image m_crosshair;
 
         DisposableBag m_disposable;
         [Inject] PlayStateMenu m_playStateMenu;
@@ -36,6 +39,8 @@ namespace Survivors.Play.Scope
                 .AddTo(ref m_disposable);
             m_commandSubscribable.Subscribe<RequestResumeStateCommand>(OnResumeStateRequested)
                 .AddTo(ref m_disposable);
+            m_commandSubscribable.Subscribe<MousePositionChangedCommand>(OnMousePositionChanged)
+                .AddTo(ref m_disposable);
 
             m_playStateMenu.Hide();
         }
@@ -51,6 +56,12 @@ namespace Survivors.Play.Scope
             PublishContext ctx)
         {
             m_playStateMenu.Hide();
+        }
+
+        void OnMousePositionChanged(MousePositionChangedCommand cmd,
+            PublishContext ctx)
+        {
+            m_crosshair.rectTransform.position = new Vector3(cmd.Position.x, cmd.Position.y, 0);
         }
 
         void OnResumeClicked(Unit _)

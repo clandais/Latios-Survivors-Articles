@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 10, z: 25}
+    m_Extent: {x: 50, y: 10, z: 50}
   subdivisionsPerAxis:
     x: 1
     y: 1
@@ -177,7 +177,7 @@ MonoBehaviour:
     z: 0
   linearDamping: 0.05
   angularDamping: 0.05
-  solverIterations: 4
+  solverIterations: 8
 --- !u!114 &772120505
 MonoBehaviour:
   m_ObjectHideFlags: 0

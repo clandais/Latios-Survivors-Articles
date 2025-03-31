@@ -20,7 +20,7 @@ ModelImporter:
     resampleCurves: 0
     optimizeGameObjects: 1
     removeConstantScaleCurves: 0
-    motionNodeName: 
+    motionNodeName: <Root Transform>
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -88,7 +88,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Idle
+      name: Barb_Idle
       takeName: Idle
       internalID: -3100369314251171874
       firstFrame: 0
@@ -204,7 +204,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Walking_Backwards
+      name: Barb_Walking_Backwards
       takeName: Walking_Backwards
       internalID: -6411013857362534180
       firstFrame: 0
@@ -215,8 +215,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -233,7 +233,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_A
+      name: Barb_Running_A
       takeName: Running_A
       internalID: 3543698089625107784
       firstFrame: 0
@@ -291,7 +291,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_Strafe_Right
+      name: Barb_Running_Strafe_Right
       takeName: Running_Strafe_Right
       internalID: -6877218540166537120
       firstFrame: 0
@@ -302,8 +302,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -320,7 +320,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_Strafe_Left
+      name: Barb_Running_Strafe_Left
       takeName: Running_Strafe_Left
       internalID: -1640272175068026219
       firstFrame: 0
@@ -331,8 +331,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -668,7 +668,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Throw
+      name: Barb_Throw
       takeName: Throw
       internalID: -6185155371445809522
       firstFrame: 0
@@ -691,7 +691,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.55531335
+        functionName: 
+        data: Throw
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using Survivors.GameScope.Commands;
+using Unity.Mathematics;
 using UnityEditor;
 using VContainer;
 using VitalRouter;
@@ -9,6 +10,11 @@ namespace Survivors.Play.Scope
     public struct ResumeButtonClicked : ICommand { }
     public struct BackToMainMenuClicked : ICommand { }
     public struct ExitGameClicked : ICommand { }
+
+    public struct MousePositionChangedCommand : ICommand
+    {
+        public float2 Position;
+    }
 
     [Routes]
     public partial class PlayStateRouter
@@ -28,6 +34,16 @@ namespace Survivors.Play.Scope
         {
             await ParentPublisher.PublishAsync(new MainMenuStateCommand());
         }
+
+        [Route]
+        async UniTask On(MousePositionCommand cmd)
+        {
+            await commandPublisher.PublishAsync(new MousePositionChangedCommand
+            {
+                Position = cmd.MousePosition
+            });
+        }
+
 
         [Route]
         void On(ExitGameClicked _)

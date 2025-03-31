@@ -18,6 +18,7 @@ namespace Survivors.Bootstrap.RootSystems
                 .Build();
             
             GetOrCreateAndAddManagedSystem<PlayerMotionSuperSystem>();
+            GetOrCreateAndAddManagedSystem<WeaponUpdateSuperSystem>();
         }
 
         public override bool ShouldUpdateSystem()
