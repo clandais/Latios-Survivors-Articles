@@ -19,5 +19,7 @@ namespace Survivors.Play.Authoring
     public struct PlayerInputState : IComponentData
     {
         public float2 Direction;
+        public float3 MousePosition;
+        public bool AttackTriggered;
     }
 }

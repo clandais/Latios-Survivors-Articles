@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.ScriptableObjects;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -7,7 +8,8 @@ namespace Survivors.Play.Authoring
 {
     public class PlayerAuthoring : MonoBehaviour
     {
-        [SerializeField] MovementSettings movementSettings;
+        [SerializeField] public PlayerData playerData;
+        // [SerializeField] MovementSettings movementSettings;
 
         class PlayerAuthoringBaker : Baker<PlayerAuthoring>
         {
@@ -15,8 +17,8 @@ namespace Survivors.Play.Authoring
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<PlayerTag>(entity);
-                AddComponent(entity, authoring.movementSettings);
-
+                AddComponent(entity, authoring.playerData.movementSettings);
+                AddComponent<PreviousVelocity>(entity);
             }
         }
     }
@@ -27,9 +29,12 @@ namespace Survivors.Play.Authoring
     public struct MovementSettings : IComponentData
     {
         public float moveSpeed;
-        public float rotationSpeed;
+        public float maxAngleDelta;
         public float speedChangeRate;
     }
 
-
+    public struct PreviousVelocity : IComponentData
+    {
+        public float3 Value;
+    }
 }

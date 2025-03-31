@@ -34,7 +34,7 @@
       "url": "https://package.openupm.com"
     },
     "com.latios.latiosframework": {
-      "version": "0.12.2",
+      "version": "0.12.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -46,10 +46,11 @@
       "url": "https://package.openupm.com"
     },
     "com.latios.latiosframework.addons": {
-      "version": "file:Latios Framework Add-Ons",
+      "version": "https://github.com/Dreaming381/Latios-Framework-Add-Ons.git",
       "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "f2c1ce13e3a57eb2ca24969722b531e5b4c91ea7"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

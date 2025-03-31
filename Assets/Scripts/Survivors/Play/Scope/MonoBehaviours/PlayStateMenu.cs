@@ -23,6 +23,7 @@ namespace Survivors.Play.Scope.MonoBehaviours
 
         public void Show()
         {
+            Cursor.visible               = true;
             m_canvasGroup.alpha          = 1;
             m_canvasGroup.blocksRaycasts = true;
             m_canvasGroup.interactable   = true;
@@ -30,6 +31,7 @@ namespace Survivors.Play.Scope.MonoBehaviours
 
         public void Hide()
         {
+            Cursor.visible               = false;
             m_canvasGroup.alpha          = 0;
             m_canvasGroup.blocksRaycasts = false;
             m_canvasGroup.interactable   = false;

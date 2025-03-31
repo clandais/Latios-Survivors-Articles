@@ -10,3 +10,5 @@ namespace Survivors.ScriptableObjects
         [SerializeField] public SceneReference playScene;
     }
 }
+
+
