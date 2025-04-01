@@ -1845,7 +1845,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionClipProperty:
     clip: {fileID: -6185155371445809522, guid: 2b606e081db2d2d418faf929c2fd25f0, type: 3}
-    speedMultiplier: 2
+    speedMultiplier: 1.6
 --- !u!114 &7405646922563923210
 MonoBehaviour:
   m_ObjectHideFlags: 0

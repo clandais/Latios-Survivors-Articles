@@ -1,4 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using Latios.Psyshock;
+using Latios.Transforms;
 using Unity.Mathematics;
 
 namespace Survivors.Utilities
@@ -32,4 +34,5 @@ namespace Survivors.Utilities
                 cosa);
         }
     }
+    
 }

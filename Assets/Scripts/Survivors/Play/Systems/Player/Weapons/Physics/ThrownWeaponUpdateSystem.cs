@@ -56,51 +56,36 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         )
         {
             var transformQvs = transform.worldTransform;
+            var stepCount = 4;
 
-            float3 startPosition = transformQvs.position;
-            float3 endPosition = startPosition + thrownWeapon.Direction * thrownWeapon.Speed * DeltaTime;
-            float stepSize = math.length(endPosition - startPosition) / 4; // 4: why not.
+            var steppedSpeed = thrownWeapon.Speed / stepCount;
+            var steppedRotation = thrownWeapon.RotationSpeed / stepCount;
 
-            for (float i = 0; i <= 1; i+= stepSize)
+            for (float i = 0; i < stepCount; i++)
             {
-                float3 currentPosition = math.lerp(startPosition, endPosition, i);
-                
-                if (Latios.Psyshock.Physics.ColliderCast(
-                        in collider,
-                        in transformQvs,
-                        currentPosition,
-                        in EnvironmentLayer,
-                        out var result,
-                        out _))
+                var collision = Latios.Psyshock.Physics.ColliderCast(
+                    in collider,
+                    in transformQvs,
+                    transformQvs.position + thrownWeapon.Direction * thrownWeapon.Speed * DeltaTime,
+                    in EnvironmentLayer,
+                    out _,
+                    out _);
+
+                if (collision)
                 {
-                    switch (collider.type)
-                    {
-                        case ColliderType.Capsule:
-                        {
-                            CapsuleCollider capsuleCollider = collider;
+                    DestroyCommandBuffer.Add(entity, entityIndexInQuery);
 
-                            if (result.distance <= capsuleCollider.radius * 2f)
-                            {
-                                DestroyCommandBuffer.Add(entity, entityIndexInQuery);
-
-                                return;
-                            }
-                            
-                            break;
-                        }
-                        default:
-                            // Don't care
-                            break;
-                    }
+                    return;
                 }
-                
+
+
+                transformQvs.position += thrownWeapon.Direction * steppedSpeed * DeltaTime;
+                transformQvs.rotation = math.mul(transformQvs.rotation, Quat.RotateAroundAxis(
+                    thrownWeapon.RotationAxis, steppedRotation * DeltaTime));
             }
-            transform.worldTransform.position = endPosition;
 
 
-            transform.worldTransform.rotation = math.mul(transformQvs.rotation, Quat.RotateAroundAxis(
-                thrownWeapon.RotationAxis,
-                thrownWeapon.RotationSpeed * DeltaTime));
+            transform.worldTransform = transformQvs;
         }
     }
 }

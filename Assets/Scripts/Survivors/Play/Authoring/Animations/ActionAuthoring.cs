@@ -43,10 +43,9 @@ namespace Survivors.Play.Authoring.Animations
             public void PostProcessBlobRequests(EntityManager entityManager,
                 Entity entity)
             {
-                var clipSet = m_clipSetHandle.Resolve(entityManager);
                 entityManager.SetComponentData(entity, new ActionClipComponent
                 {
-                    ClipSet = clipSet
+                    ClipSet = m_clipSetHandle.Resolve(entityManager),
                 });
             }
         }
