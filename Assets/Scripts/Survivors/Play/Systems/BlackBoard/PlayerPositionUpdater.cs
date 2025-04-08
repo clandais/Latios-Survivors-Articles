@@ -21,16 +21,18 @@ namespace Survivors.Play.Systems.BlackBoard
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var playerPosition = float3.zero;
+            var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
+
 
             foreach (var transformAspect in SystemAPI.Query<TransformAspect>()
                          .WithAll<PlayerTag>())
-                playerPosition = transformAspect.worldTransform.position;
-
-            m_world.sceneBlackboardEntity.SetComponentData(new PlayerPosition
             {
-                Position = playerPosition
-            });
+                playerPosition.LastPosition = playerPosition.Position;
+                playerPosition.Position     = transformAspect.worldPosition;
+            }
+
+
+            m_world.sceneBlackboardEntity.SetComponentData(playerPosition);
         }
     }
 }

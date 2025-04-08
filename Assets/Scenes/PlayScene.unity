@@ -651,6 +651,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549251068}
   m_CullTransparentMesh: 1
+--- !u!1 &626189274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 626189276}
+  - component: {fileID: 626189275}
+  - component: {fileID: 626189277}
+  m_Layer: 0
+  m_Name: MinionsSubScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &626189275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626189274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45a335734b1572644a6a5d09d87adc65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _SceneAsset: {fileID: 102900000, guid: cf2133b8a5abe6345802a725b93a9df0, type: 3}
+  _HierarchyColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  AutoLoadScene: 1
+  _SceneGUID:
+    Value:
+      x: 2335380220
+      y: 1131330138
+      z: 1383735429
+      w: 265921435
+--- !u!4 &626189276
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626189274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &626189277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626189274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f099d0f04fb5c24bbd0896c370587bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadOptions: 1
 --- !u!1 &717237547
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +728,7 @@ GameObject:
   m_Component:
   - component: {fileID: 717237548}
   - component: {fileID: 717237549}
+  - component: {fileID: 717237550}
   m_Layer: 0
   m_Name: Hero Scn
   m_TagString: Untagged
@@ -704,6 +772,19 @@ MonoBehaviour:
       y: 1322852874
       z: 3140609463
       w: 1925653960
+--- !u!114 &717237550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717237547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f099d0f04fb5c24bbd0896c370587bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadOptions: 1
 --- !u!1 &741378732
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,3 +1548,4 @@ SceneRoots:
   - {fileID: 772120504}
   - {fileID: 1905506443}
   - {fileID: 717237548}
+  - {fileID: 626189276}

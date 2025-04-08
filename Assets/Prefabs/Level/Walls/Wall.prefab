@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1154784673298145592}
   - component: {fileID: 2594754027799700906}
+  - component: {fileID: 1645852582862212369}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -52,8 +53,28 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 4, z: 1.0000007}
+  m_Size: {x: 4, y: 4, z: 1}
   m_Center: {x: 2, y: 2, z: 0}
+--- !u!114 &1645852582862212369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856112688002006517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &5644651622796326381
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,6 +86,7 @@ GameObject:
   - component: {fileID: 4500791402928347454}
   - component: {fileID: 3151891720348366934}
   - component: {fileID: 8578446891632246985}
+  - component: {fileID: 8374280256520593016}
   m_Layer: 0
   m_Name: wall
   m_TagString: Untagged
@@ -140,3 +162,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8374280256520593016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644651622796326381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

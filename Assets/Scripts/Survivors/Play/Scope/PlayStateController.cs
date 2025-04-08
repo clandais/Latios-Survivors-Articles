@@ -12,11 +12,11 @@ namespace Survivors.Play.Scope
 {
     public class PlayStateController : IStartable, IDisposable
     {
-        [Inject] ICommandPublisher m_commandPublisher;
+        [Inject] ICommandPublisher    m_commandPublisher;
         [Inject] ICommandSubscribable m_commandSubscribable;
-        [Inject] Image m_crosshair;
+        [Inject] Image                m_crosshair;
 
-        DisposableBag m_disposable;
+        DisposableBag          m_disposable;
         [Inject] PlayStateMenu m_playStateMenu;
 
         public void Dispose()

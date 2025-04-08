@@ -26,8 +26,8 @@ namespace Survivors.Play.Authoring.Anna
     public struct SavedRigidBodyState : IComponentData
     {
         public UnitySim.Velocity Velocity;
-        public float InverseMass;
-        public half CoefficientOfFriction;
-        public half CoefficientOfRestitution;
+        public float             InverseMass;
+        public half              CoefficientOfFriction;
+        public half              CoefficientOfRestitution;
     }
 }

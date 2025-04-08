@@ -45,7 +45,7 @@ namespace Survivors.Play.Authoring.Animations
             {
                 entityManager.SetComponentData(entity, new ActionClipComponent
                 {
-                    ClipSet = m_clipSetHandle.Resolve(entityManager),
+                    ClipSet = m_clipSetHandle.Resolve(entityManager)
                 });
             }
         }

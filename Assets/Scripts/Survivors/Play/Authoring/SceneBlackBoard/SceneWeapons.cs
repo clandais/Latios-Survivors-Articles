@@ -42,8 +42,8 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
         public struct WeaponSpawnData
         {
             public EntityWith<Prefab> WeaponPrefab;
-            public float3 Direction;
-            public float3 Position;
+            public float3             Direction;
+            public float3             Position;
         }
 
         public NativeQueue<WeaponSpawnData> WeaponQueue;

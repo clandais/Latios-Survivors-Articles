@@ -14,8 +14,8 @@ namespace Survivors.Play.Systems.Player
     public partial struct PlayerMovementSystem : ISystem
     {
         LatiosWorldUnmanaged m_world;
-        EntityQuery m_Query;
-        EntityQuery m_jobQuery;
+        EntityQuery          m_Query;
+        EntityQuery          m_jobQuery;
 
 
         [BurstCompile]
@@ -31,6 +31,7 @@ namespace Survivors.Play.Systems.Player
                 .With<RigidBody>()
                 .With<MovementSettings>()
                 .With<PreviousVelocity>()
+                .With<PlayerTag>()
                 .Build();
         }
 
@@ -53,7 +54,7 @@ namespace Survivors.Play.Systems.Player
     [BurstCompile]
     internal partial struct MovementJob : IJobEntity
     {
-        [ReadOnly] public float DeltaTime;
+        [ReadOnly] public float            DeltaTime;
         [ReadOnly] public PlayerInputState PlayerInputState;
 
         void Execute(TransformAspect transformAspect,

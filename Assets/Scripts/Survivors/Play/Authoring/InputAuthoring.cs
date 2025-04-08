@@ -20,6 +20,6 @@ namespace Survivors.Play.Authoring
     {
         public float2 Direction;
         public float3 MousePosition;
-        public bool AttackTriggered;
+        public bool   AttackTriggered;
     }
 }

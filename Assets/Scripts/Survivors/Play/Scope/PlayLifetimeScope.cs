@@ -13,7 +13,7 @@ namespace Survivors.Play.Scope
     public class PlayLifetimeScope : LifetimeScope
     {
         [SerializeField] PlayStateMenu playStateMenu;
-        [SerializeField] Image crosshair;
+        [SerializeField] Image         crosshair;
 
         protected override void Configure(IContainerBuilder builder)
         {

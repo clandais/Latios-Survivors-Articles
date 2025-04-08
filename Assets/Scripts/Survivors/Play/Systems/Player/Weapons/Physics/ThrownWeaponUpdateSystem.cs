@@ -3,6 +3,7 @@ using Latios.Anna;
 using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring.Player.Weapons;
+using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Collections;
@@ -27,6 +28,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
             var dcb = m_latiosWorldUnmanaged.syncPoint.CreateDestroyCommandBuffer();
             var collisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnvironmentCollisionLayer>().layer;
+
+
             state.Dependency = new ThrownWeaponUpdateJob
             {
                 DeltaTime            = SystemAPI.Time.DeltaTime,
@@ -43,11 +46,12 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
     [BurstCompile]
     internal partial struct ThrownWeaponUpdateJob : IJobEntity
     {
-        public DestroyCommandBuffer.ParallelWriter DestroyCommandBuffer;
-        [ReadOnly] public CollisionLayer EnvironmentLayer;
+        public            DestroyCommandBuffer.ParallelWriter DestroyCommandBuffer;
+        [ReadOnly] public CollisionLayer                      EnvironmentLayer;
+
         [ReadOnly] public float DeltaTime;
 
-        public void Execute(
+        void Execute(
             Entity entity,
             [EntityIndexInQuery] int entityIndexInQuery,
             ref WorldTransform transform,

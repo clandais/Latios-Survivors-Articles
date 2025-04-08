@@ -12,6 +12,7 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
             GetOrCreateAndAddUnmanagedSystem<FourDirectionsAnimationSystem>();
             GetOrCreateAndAddUnmanagedSystem<PlayerActionSystem>();
             GetOrCreateAndAddUnmanagedSystem<WeaponThrowTriggerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<SkeletonDeathSystem>();
         }
     }
 }

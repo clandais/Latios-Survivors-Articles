@@ -11,9 +11,9 @@ namespace Survivors.Play.Authoring.Animations
 {
     public class FourDirectionsAnimationsAuthoring : MonoBehaviour
     {
-        public FourDirAnimations animations;
-        [SerializeField] float intertialBlendDuration = 0.15f;
-        [SerializeField] float velocityChangeThreshold = 0.1f;
+        public           FourDirAnimations animations;
+        [SerializeField] float             intertialBlendDuration  = 0.15f;
+        [SerializeField] float             velocityChangeThreshold = 0.1f;
 
         [TemporaryBakingType]
         struct AnimationClipsSmartBakeItem : ISmartBakeItem<FourDirectionsAnimationsAuthoring>
@@ -117,10 +117,7 @@ namespace Survivors.Play.Authoring.Animations
         public AnimationClipProperty left;
         public AnimationClipProperty right;
 
-        public bool IsMissingAnimations()
-        {
-            return center.clip == null || down.clip == null || up.clip == null || left.clip == null || right.clip == null;
-        }
+        public bool IsMissingAnimations() => center.clip == null || down.clip == null || up.clip == null || left.clip == null || right.clip == null;
     }
 
     #endregion
