@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0.75
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.33453965, g: 0.39115793, b: 0.5345911, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 38a7c23350f9b9a42951b38b97e590e9, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -180,7 +180,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 45
+  field of view: 33
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -206,8 +206,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalRotation: {x: 0.5257311, y: 0, z: 0, w: 0.85065085}
+  m_LocalPosition: {x: 0, y: 30, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -625,8 +625,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157505434}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalRotation: {x: 0.5257311, y: 0, z: 0, w: 0.85065085}
+  m_LocalPosition: {x: 0, y: 30, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -690,7 +690,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 45
+    FieldOfView: 33
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -845,20 +845,20 @@ MonoBehaviour:
     - Position:
         x: 0
         y: 30
-        z: 0
+        z: -15
       TangentIn:
         x: -0
         y: -0
-        z: -2.9154758
+        z: -1.8027756
       TangentOut:
         x: 0
         y: 0
-        z: 2.9154758
+        z: 1.8027756
       Rotation:
         value:
           x: 0
-          y: 0.96371484
-          z: 0.2669336
+          y: 0.8816746
+          z: 0.47185796
           w: 0
     - Position:
         x: 0
@@ -867,16 +867,16 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -2.9154758
+        z: -1.8027756
       TangentOut:
         x: 0
         y: 0
-        z: 2.9154758
+        z: 1.8027756
       Rotation:
         value:
           x: 0
-          y: 0.96371484
-          z: 0.2669336
+          y: 0.8816746
+          z: 0.47185796
           w: 0
     m_MetaData:
     - Mode: 0

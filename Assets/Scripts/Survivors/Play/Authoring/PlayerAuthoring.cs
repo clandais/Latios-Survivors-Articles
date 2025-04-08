@@ -3,12 +3,14 @@ using Survivors.ScriptableObjects;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Survivors.Play.Authoring
 {
     public class PlayerAuthoring : MonoBehaviour
     {
-        [SerializeField] public PlayerData playerData;
+        [FormerlySerializedAs("playerData")] [SerializeField]
+        public MovementSettingsData movementSettingsData;
         // [SerializeField] MovementSettings movementSettings;
 
         class PlayerAuthoringBaker : Baker<PlayerAuthoring>
@@ -17,7 +19,7 @@ namespace Survivors.Play.Authoring
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<PlayerTag>(entity);
-                AddComponent(entity, authoring.playerData.movementSettings);
+                AddComponent(entity, authoring.movementSettingsData.movementSettings);
                 AddComponent<PreviousVelocity>(entity);
             }
         }

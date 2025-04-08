@@ -14,7 +14,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
     public partial struct WeaponThrowTriggerSystem : ISystem
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
-        EntityQuery _rightHandQuery;
+        EntityQuery          _rightHandQuery;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)

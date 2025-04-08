@@ -24,6 +24,9 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
         public void OnUpdate(ref SystemState state)
         {
             var spawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<WeaponSpawnQueue>().WeaponQueue;
+
+            if (spawnQueue.IsEmpty()) return;
+
             var icb = m_worldUnmanaged.syncPoint
                 .CreateInstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>();
 
@@ -43,9 +46,9 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
     [BurstCompile]
     internal struct WeaponSpawnJob : IJob
     {
-        public NativeQueue<WeaponSpawnQueue.WeaponSpawnData> SpawnQueue;
-        [ReadOnly] public ComponentLookup<ThrownWeaponConfigComponent> WeaponComponentLookup;
-        public InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>.ParallelWriter SpawnQueueWriter;
+        public            NativeQueue<WeaponSpawnQueue.WeaponSpawnData>                                  SpawnQueue;
+        [ReadOnly] public ComponentLookup<ThrownWeaponConfigComponent>                                   WeaponComponentLookup;
+        public            InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>.ParallelWriter SpawnQueueWriter;
 
         public void Execute()
         {

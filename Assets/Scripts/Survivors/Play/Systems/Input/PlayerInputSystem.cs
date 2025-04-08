@@ -16,10 +16,10 @@ namespace Survivors.Play.Systems.Input
     {
         bool _attackTriggered;
 
-        ICommandPublisher m_commandPublisher;
+        ICommandPublisher   m_commandPublisher;
         InputSystem_Actions m_inputActions;
-        UnityEngine.Camera m_mainCamera;
-        EntityQuery m_Query;
+        UnityEngine.Camera  m_mainCamera;
+        EntityQuery         m_Query;
 
         [Inject]
         public void Construct(ICommandPublisher commandPublisher)

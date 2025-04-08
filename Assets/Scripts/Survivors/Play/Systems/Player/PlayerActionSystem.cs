@@ -14,7 +14,7 @@ namespace Survivors.Play.Systems.Player
     public partial struct PlayerActionSystem : ISystem
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
-        EntityQuery m_Query;
+        EntityQuery          m_Query;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -27,6 +27,7 @@ namespace Survivors.Play.Systems.Player
                 .With<ActionClipComponent>()
                 .With<ActionClipState>()
                 .With<AvatarMasks>()
+                .With<PlayerTag>()
                 .Build();
         }
 
@@ -52,9 +53,9 @@ namespace Survivors.Play.Systems.Player
         [BurstCompile]
         partial struct AnimationJob : IJobEntity
         {
-            [ReadOnly] public float DeltaTime;
-            [ReadOnly] public PlayerInputState InputState;
-            public EntityCommandBuffer.ParallelWriter ECB;
+            [ReadOnly] public float                              DeltaTime;
+            [ReadOnly] public PlayerInputState                   InputState;
+            public            EntityCommandBuffer.ParallelWriter ECB;
 
             void Execute(
                 Entity entity,

@@ -1,5 +1,6 @@
 ﻿using Latios;
 using Latios.Systems;
+using Survivors.Play.Systems.Enemies;
 using Survivors.Play.Systems.Player.Weapons.Initialization;
 using Survivors.Play.Systems.Player.Weapons.Spawn;
 using Unity.Entities;
@@ -12,6 +13,7 @@ namespace Survivors.Bootstrap.RootSystems
         protected override void CreateSystems()
         {
             GetOrCreateAndAddUnmanagedSystem<WeaponSpawnQueueSystem>();
+            GetOrCreateAndAddUnmanagedSystem<DisableDeadCollidersSystem>();
         }
     }
 }

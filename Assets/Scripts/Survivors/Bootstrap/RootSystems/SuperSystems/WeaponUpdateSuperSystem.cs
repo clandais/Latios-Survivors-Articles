@@ -7,6 +7,7 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
     {
         protected override void CreateSystems()
         {
+            GetOrCreateAndAddUnmanagedSystem<ThrownWeaponVsEnemyLayer>();
             GetOrCreateAndAddUnmanagedSystem<ThrownWeaponUpdateSystem>();
         }
     }

@@ -12,13 +12,26 @@ namespace Survivors.Play.Components
     public struct AnimationClipProperty
     {
         public AnimationClip clip;
-        public float speedMultiplier;
+        public float         speedMultiplier;
     }
 
 
     public struct Clips : IComponentData
     {
         public BlobAssetReference<SkeletonClipSetBlob> ClipSet;
+    }
+
+    public struct DeathClips : IComponentData
+    {
+        public BlobAssetReference<SkeletonClipSetBlob> ClipSet;
+    }
+
+    public struct DeathClipsStates : IComponentData
+    {
+        public ClipState StateA;
+        public ClipState StateB;
+        public ClipState StateC;
+        public int       ChosenState;
     }
 
     public struct FourDirectionClipStates : IComponentData
@@ -50,8 +63,8 @@ namespace Survivors.Play.Components
     {
         public readonly float Duration;
         public readonly float VelocityChangeThreshold;
-        public float TimeInCurrentState;
-        public float PreviousDeltaTime;
+        public          float TimeInCurrentState;
+        public          float PreviousDeltaTime;
 
         public InertialBlendState(float duration,
             float velocityChangeThreshold)
@@ -71,7 +84,7 @@ namespace Survivors.Play.Components
         public float PreviousTime;
         public float Time;
         public float SpeedMultiplier;
-        public int EventHash;
+        public int   EventHash;
 
         public void Update(float deltaTime)
         {

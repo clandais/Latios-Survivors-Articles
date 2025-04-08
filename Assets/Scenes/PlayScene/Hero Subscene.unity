@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 50
-  coefficientOfFriction: 0.3
+  coefficientOfFriction: 0
   coefficientOfRestitution: 0.1
   lockPositionAxes:
     x: 0
@@ -327,7 +327,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
-  supportExternalForces: 0
+  supportExternalForces: 1
 --- !u!4 &476245130154016560
 Transform:
   m_ObjectHideFlags: 0
@@ -986,7 +986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18703a3a47b42439ab779a2f4a55da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 098e84139e54f1943a8ba927d1b243e5, type: 2}
+  movementSettingsData: {fileID: 11400000, guid: 098e84139e54f1943a8ba927d1b243e5, type: 2}
 --- !u!1 &3500264909022881465
 GameObject:
   m_ObjectHideFlags: 0

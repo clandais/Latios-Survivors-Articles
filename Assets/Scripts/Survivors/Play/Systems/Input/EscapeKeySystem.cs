@@ -10,11 +10,11 @@ namespace Survivors.Play.Systems.Input
 {
     public partial class EscapeKeySystem : SubSystem
     {
-        readonly ReactiveProperty<bool> m_isEscapePressed = new();
-        ICommandPublisher m_commandPublisher;
-        ICommandSubscribable m_commandSubscriber;
-        DisposableBag m_disposableBag;
-        InputSystem_Actions m_inputSystemActions;
+        readonly ReactiveProperty<bool> m_isEscapePressed = new ReactiveProperty<bool>();
+        ICommandPublisher               m_commandPublisher;
+        ICommandSubscribable            m_commandSubscriber;
+        DisposableBag                   m_disposableBag;
+        InputSystem_Actions             m_inputSystemActions;
 
         [Inject]
         public void Construct(ICommandPublisher commandPublisher,

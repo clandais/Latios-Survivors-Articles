@@ -18,6 +18,7 @@ namespace Survivors.Play.Authoring
 
     public struct PlayerPosition : IComponentData
     {
+        public float3 LastPosition;
         public float3 Position;
     }
 }
