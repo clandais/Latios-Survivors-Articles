@@ -1,6 +1,7 @@
 ﻿using Survivors.Play.Components;
 using Survivors.ScriptableObjects;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Survivors.Play.Authoring.Enemies
@@ -16,7 +17,10 @@ namespace Survivors.Play.Authoring.Enemies
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<EnemyTag>(entity);
                 AddComponent(entity, authoring.movementSettings.movementSettings);
-                AddComponent<PreviousVelocity>(entity);
+                AddComponent(entity, new PreviousVelocity
+                {
+                    Value = float3.zero
+                });
             }
         }
     }

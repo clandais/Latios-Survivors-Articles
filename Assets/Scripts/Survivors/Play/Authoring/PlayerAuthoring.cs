@@ -20,7 +20,10 @@ namespace Survivors.Play.Authoring
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<PlayerTag>(entity);
                 AddComponent(entity, authoring.movementSettingsData.movementSettings);
-                AddComponent<PreviousVelocity>(entity);
+                AddComponent(entity, new PreviousVelocity
+                {
+                    Value = float3.zero
+                });
             }
         }
     }

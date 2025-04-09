@@ -34,7 +34,7 @@
       "url": "https://package.openupm.com"
     },
     "com.latios.latiosframework": {
-      "version": "0.12.3",
+      "version": "0.12.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -50,7 +50,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f2c1ce13e3a57eb2ca24969722b531e5b4c91ea7"
+      "hash": "7e9a793b32b5ba50bbfa4830d21973f0cafbaef4"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

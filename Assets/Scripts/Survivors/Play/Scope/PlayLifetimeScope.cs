@@ -1,5 +1,6 @@
 ﻿using Survivors.Play.Scope.MonoBehaviours;
 using Survivors.Play.Systems.Camera;
+using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,11 +15,13 @@ namespace Survivors.Play.Scope
     {
         [SerializeField] PlayStateMenu playStateMenu;
         [SerializeField] Image         crosshair;
-
+        [SerializeField] DebugCanvas  debugCanvas;
+        
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(playStateMenu);
             builder.RegisterInstance(crosshair);
+            builder.RegisterInstance(debugCanvas);
 
             builder.UseEntryPoints(cfg =>
             {
@@ -30,12 +33,14 @@ namespace Survivors.Play.Scope
             {
                 routing.Isolated = true;
                 routing.Map<PlayStateRouter>();
+                routing.Map<DebugRouter>();
             });
 
 
             builder.RegisterSystemFromDefaultWorld<EscapeKeySystem>();
             builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
             builder.RegisterSystemFromDefaultWorld<PlayerInputSystem>();
+            builder.RegisterSystemFromDefaultWorld<EnemyCounterSystem>();
 
             builder.RegisterBuildCallback(container =>
             {
