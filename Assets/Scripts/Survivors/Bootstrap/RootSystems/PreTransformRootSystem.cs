@@ -7,8 +7,7 @@ using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
 {
-    [UpdateInGroup(typeof(SimulationSystemGroup))]
-    [UpdateBefore(typeof(AnnaSuperSystem))]
+    [UpdateInGroup(typeof(PreTransformSuperSystem))]
     public partial class PreTransformRootSystem : RootSuperSystem
     {
         EntityQuery m_pauseQuery;
