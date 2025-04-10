@@ -12,6 +12,7 @@ using Unity.Mathematics;
 namespace Survivors.Play.Systems.Animations
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct FourDirectionsAnimationSystem : ISystem
     {
         EntityQuery m_query;

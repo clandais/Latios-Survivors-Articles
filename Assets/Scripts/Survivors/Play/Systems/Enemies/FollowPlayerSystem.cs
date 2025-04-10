@@ -12,6 +12,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Enemies
 {
+    [BurstCompile]
     public partial struct FollowPlayerSystem : ISystem
     {
         LatiosWorldUnmanaged m_world;

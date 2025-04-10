@@ -7,6 +7,7 @@ using Unity.Entities;
 
 namespace Survivors.Play.Systems.Enemies
 {
+    [BurstCompile]
     public partial struct EnemySpawnerSystem : ISystem
     {
         

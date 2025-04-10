@@ -241,7 +241,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
-  supportExternalForces: 1
+  supportExternalForces: 0
 --- !u!114 &7138813900227101716
 MonoBehaviour:
   m_ObjectHideFlags: 0

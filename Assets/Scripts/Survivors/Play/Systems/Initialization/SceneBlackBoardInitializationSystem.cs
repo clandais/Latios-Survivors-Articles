@@ -6,6 +6,7 @@ using Unity.Entities;
 
 namespace Survivors.Play.Systems.Initialization
 {
+    [BurstCompile]
     public partial struct SceneBlackBoardInitializationSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_worldUnmanaged;

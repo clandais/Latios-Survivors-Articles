@@ -13,8 +13,8 @@ namespace Survivors.Play.Authoring
                 AddComponent<LevelTag>(entity);
             }
         }
-
-
-        public struct LevelTag : IComponentData { }
+        
     }
+    
+    public struct LevelTag : IComponentData { }
 }

@@ -13,6 +13,7 @@ namespace Survivors.Bootstrap.RootSystems
     {
         protected override void CreateSystems()
         {
+            GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<FlowGridSystem>();
             GetOrCreateAndAddUnmanagedSystem<FlowFieldSystem>();

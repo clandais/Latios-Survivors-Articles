@@ -7,6 +7,7 @@ using Unity.Entities;
 namespace Survivors.Play.Systems.Enemies
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct DisableDeadCollidersSystem : ISystem
     {
         EntityQuery          _query;

@@ -7,6 +7,7 @@ using Unity.Entities;
 
 namespace Survivors.Play.Systems.PreAnna
 {
+    [BurstCompile]
     public partial struct PreAnnaPauseSystem : ISystem, ISystemStartStop
     {
         EntityQuery m_shouldUpdateQuery;

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1716443529816902078}
   - component: {fileID: 6120413538471187964}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Col B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,8 +62,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1652734649185747486}
-  - component: {fileID: 8919068160979829413}
-  m_Layer: 0
+  - component: {fileID: 3136780620129623002}
+  m_Layer: 6
   m_Name: Wall Crossing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ Transform:
   - {fileID: 1716443529816902078}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8919068160979829413
+--- !u!114 &3136780620129623002
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6909325939843558263}
   - component: {fileID: 8444549965297039439}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Col A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,6 +212,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d009b40cf4011a745bf04e0eb494d7ed, type: 3}
       propertyPath: m_Name
       value: wall_crossing
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d009b40cf4011a745bf04e0eb494d7ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

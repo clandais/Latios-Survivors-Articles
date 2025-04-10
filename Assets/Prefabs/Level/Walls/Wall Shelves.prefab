@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6567684681235483827}
   - component: {fileID: 4011222897391599984}
-  m_Layer: 0
+  - component: {fileID: 20993243990575069}
+  m_Layer: 6
   m_Name: Wall Shelves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,6 +55,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 4, z: 1}
   m_Center: {x: 2, y: 2, z: 0}
+--- !u!114 &20993243990575069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3199739336353479350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &4803750806786321282
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105,6 +126,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2497b02958f570e4cb76c88136c84bfb, type: 3}
       propertyPath: m_Name
       value: wall_shelves
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2497b02958f570e4cb76c88136c84bfb, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

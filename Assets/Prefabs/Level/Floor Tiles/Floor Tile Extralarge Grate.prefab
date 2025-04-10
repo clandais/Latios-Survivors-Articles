@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3743557122630637004}
-  m_Layer: 0
+  - component: {fileID: 800050472760809322}
+  - component: {fileID: 7220036571015828817}
+  m_Layer: 6
   m_Name: Floor Tile Extralarge Grate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +34,47 @@ Transform:
   - {fileID: 3375865977604189878}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &800050472760809322
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059941363913328532}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8, y: 1, z: 8}
+  m_Center: {x: 4, y: -0.5, z: 4}
+--- !u!114 &7220036571015828817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059941363913328532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &2977940678946965853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,6 +126,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 47c0ad0fa5951a34d861b29e059a84b7, type: 3}
       propertyPath: m_Name
       value: floor_tile_extralarge_grates
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 47c0ad0fa5951a34d861b29e059a84b7, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -166,11 +166,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 200, y: 10, z: 200}
+    m_Extent: {x: 200, y: 25, z: 200}
   subdivisionsPerAxis:
     x: 1
     y: 1
-    z: 8
+    z: 4
   gravity:
     x: 0
     y: -9.81

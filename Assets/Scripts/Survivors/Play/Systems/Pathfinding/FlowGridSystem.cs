@@ -2,6 +2,7 @@
 using Latios.Anna;
 using Latios.Psyshock;
 using Survivors.Play.Authoring;
+using Survivors.Play.Authoring.SceneBlackBoard;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -11,6 +12,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Pathfinding
 {
+    [BurstCompile]
     public partial struct FlowGridSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
@@ -19,18 +21,18 @@ namespace Survivors.Play.Systems.Pathfinding
         public void OnCreate(ref SystemState state)
         {
             m_worldUnmanaged = state.GetLatiosWorldUnmanaged();
-            state.RequireForUpdate<LevelTagAuthoring.LevelTag>();
+            state.RequireForUpdate<LevelTag>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var collisionLayerComponent = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>();
+            var collisionLayerComponent = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<GridCollisionLayer>();
 
             if (m_worldUnmanaged.sceneBlackboardEntity.HasComponent<FloorGridConstructedTag>())
             {
                 state.Enabled = false;
-
+            
                 return;
             }
 
@@ -69,7 +71,7 @@ namespace Survivors.Play.Systems.Pathfinding
             state.Dependency = new CheckWalkabilityJob
             {
                 Grid           = grid,
-                CollisionLayer = collisionLayerComponent.layer
+                CollisionLayer = collisionLayerComponent.Layer
             }.ScheduleParallel(grid.CellCount, 128, state.Dependency);
 
             m_worldUnmanaged.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(grid);
