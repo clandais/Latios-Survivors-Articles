@@ -82,6 +82,8 @@ namespace Survivors.Play.Systems.Enemies
                 // If it does, we just follow the vector field
                 if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _)) vecDelta += deltaToPlayer.xz;
 
+                
+                
                 vecDelta = math.normalizesafe(vecDelta);
 
 

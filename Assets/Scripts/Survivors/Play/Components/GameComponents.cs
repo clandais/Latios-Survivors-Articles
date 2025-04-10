@@ -100,16 +100,16 @@ namespace Survivors.Play.Components
                 Debug.DrawLine(cellCenter + new float3(-halfSize, 0, halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
 
                 // Draw Vector Field (Blue Arrows)
-                if (grid.Walkable[i] && grid.IntegrationField[i] != UnreachableIntegrationCost) // Only draw vectors for reachable cells
-                {
+                // if (grid.Walkable[i] && grid.IntegrationField[i] != UnreachableIntegrationCost) // Only draw vectors for reachable cells
+                // {
                     var vector = grid.VectorField[i];
                     // Scale vector for visibility, but not excessively
                     var vectorScale = math.min(grid.CellSize * 0.4f, 1.0f);
                     Debug.DrawLine(
                         cellCenter,
                         cellCenter + new float3(vector.x, 0, vector.y) * vectorScale,
-                        Color.blue);
-                }
+                        grid.Walkable[i] ? Color.blue : Color.magenta);
+                // }
             }
         }
 

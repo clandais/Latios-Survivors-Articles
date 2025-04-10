@@ -38,6 +38,6 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
     {
         public CollisionLayer Layer;
         
-        public JobHandle TryDispose(JobHandle inputDeps) => Layer.IsCreated ? Layer.Dispose(inputDeps) : inputDeps;
+        public JobHandle TryDispose(JobHandle inputDeps) => inputDeps;  // Uses WorldUpdateAllocator
     }
 }
