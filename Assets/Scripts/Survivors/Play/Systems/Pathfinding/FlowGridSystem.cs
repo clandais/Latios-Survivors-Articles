@@ -117,17 +117,20 @@ namespace Survivors.Play.Systems.Pathfinding
                 var worldPos = Grid.CellToWorld(cellCoords);
 
                 var cellLeft = new float3(worldPos.x, 0, worldPos.y);
+                var cellCenter = new float3(worldPos.x + Grid.CellSize *.5f, 0, worldPos.y + Grid.CellSize *.5f);
                 var cellRight = new float3(worldPos.x + Grid.CellSize, 0, worldPos.y + Grid.CellSize);
 
 
                 var rayStartLeft = cellLeft + new float3(0, RaycastVerticalOffset, 0);
+                var rayStartCenter = cellCenter + new float3(0, RaycastVerticalOffset, 0);
                 var rayStartRight = cellRight + new float3(0, RaycastVerticalOffset, 0);
 
                 var rayDir = math.down();
 
                 //  Cast at two points to check for "walkability"
                 if (Latios.Psyshock.Physics.Raycast(rayStartLeft, rayStartLeft + rayDir * RaycastDistance, in CollisionLayer, out _, out _)
-                    && Latios.Psyshock.Physics.Raycast(rayStartRight, rayStartRight + rayDir * RaycastDistance, in CollisionLayer, out _, out _))
+                    && Latios.Psyshock.Physics.Raycast(rayStartRight, rayStartRight + rayDir * RaycastDistance, in CollisionLayer, out _, out _)
+                    && Latios.Psyshock.Physics.Raycast(rayStartCenter, rayStartCenter + rayDir * RaycastDistance, in CollisionLayer, out _, out _))
                     Grid.Walkable[index] = true;
             }
         }

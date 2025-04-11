@@ -65,26 +65,31 @@ namespace Survivors.Play.Systems.Enemies
                 ref RigidBody rigidBody,
                 ref PreviousVelocity previousVelocity)
             {
-                var cellPos = Grid.WorldToCell(transformAspect.worldPosition.xz);
-                var cellIdx = Grid.CellToIndex(cellPos);
 
                 var targetDelta = float3.zero;
-                var vecDelta = float2.zero;
-
-                if (cellIdx >= 0 & cellIdx < Grid.CellCount) vecDelta = Grid.VectorField[cellIdx];
-
+                
+                var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
                 var deltaToPlayer = math.normalizesafe(PlayerPosition.Position - transformAspect.worldPosition);
 
                 var rayStart = transformAspect.worldPosition;
                 var rayEnd = transformAspect.worldPosition + deltaToPlayer * 25f;
 
-                // Check if the raycast hits the environment
+                // Check if the raycast to the player hits the environment
                 // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _)) vecDelta += deltaToPlayer.xz;
+                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _)) 
+                    vecDelta += deltaToPlayer.xz;
 
-                
-                
+
                 vecDelta = math.normalizesafe(vecDelta);
+
+
+                var nan = math.isnan(vecDelta);
+
+                if (nan.x || nan.y)
+                {
+                    vecDelta = float2.zero;
+                    UnityEngine.Debug.Log($"Nan detected in vecDelta: {vecDelta}");
+                }
 
 
                 targetDelta.xz = vecDelta;
@@ -92,7 +97,16 @@ namespace Survivors.Play.Systems.Enemies
 
 
                 var currentVelocity = rigidBody.velocity.linear;
-                var desiredVelocity = math.normalize(targetDelta) * movementSettings.moveSpeed;
+                var desiredVelocity = math.normalizesafe(targetDelta) * movementSettings.moveSpeed;
+
+                var isDesiredVelocityNan = math.isnan(desiredVelocity);
+
+                if (isDesiredVelocityNan.x || isDesiredVelocityNan.y)
+                {
+                    desiredVelocity = float3.zero;
+                    UnityEngine.Debug.Log($"Nan detected in desiredVelocity: {desiredVelocity}");
+                }
+
 
                 desiredVelocity.y      = currentVelocity.y;
                 previousVelocity.Value = currentVelocity;
@@ -105,6 +119,7 @@ namespace Survivors.Play.Systems.Enemies
                 var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
                 transformAspect.worldRotation = transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
             }
+            
         }
     }
 }

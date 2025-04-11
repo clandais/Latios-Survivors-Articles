@@ -168,9 +168,9 @@ MonoBehaviour:
     m_Center: {x: 0, y: 3, z: -40}
     m_Extent: {x: 80, y: 8, z: 80}
   subdivisionsPerAxis:
-    x: 1
-    y: 1
-    z: 8
+    x: 2
+    y: 2
+    z: 5
   gravity:
     x: 0
     y: -9.81

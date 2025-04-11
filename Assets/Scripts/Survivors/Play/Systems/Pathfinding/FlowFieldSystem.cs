@@ -156,12 +156,11 @@ namespace Survivors.Play.Systems.Pathfinding
 
             public void Execute(int index)
             {
-                // if (!Grid.Walkable[index] || Grid.IntegrationField[index] == FloorGrid.UnreachableIntegrationCost)
-                // {
-                //     Grid.VectorField[index] = float2.zero;
-                //
-                //     return;
-                // }
+                if (!Grid.Walkable[index] || Grid.IntegrationField[index] == FloorGrid.UnreachableIntegrationCost)
+                {
+                    Grid.VectorField[index] = float2.zero;
+                    return;
+                }
 
 
                 var currentCell = Grid.IndexToCell(index);

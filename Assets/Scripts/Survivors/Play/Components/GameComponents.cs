@@ -73,6 +73,61 @@ namespace Survivors.Play.Components
         #endregion
 
 
+        #region Methods
+
+        
+        /// <summary>
+        ///       Interpolates the vector field at a given world position.
+        /// </summary>
+        /// <param name="worldPos">
+        ///      The world position to interpolate the vector field at.
+        /// </param>
+        /// <returns>
+        ///      The interpolated vector at the given world position.
+        /// </returns>
+        public float2 InterpolatedVectorAt(float2 worldPos)
+        {
+            float relX = worldPos.x - MinX;
+            float relY = worldPos.y - MinY;
+            
+            float fx = relX / CellSize;
+            float fy = relY / CellSize;
+            
+            int ix = (int)math.floor(fx);
+            int iy = (int)math.floor(fy);
+            
+            float fracX = fx - ix;
+            float fracY = fy - iy;
+            
+            int2 cell00 = new int2(ix, iy);
+            int2 cell10 = new int2(ix + 1, iy);
+            int2 cell01 = new int2(ix, iy + 1);
+            int2 cell11 = new int2(ix + 1, iy + 1);
+            
+            float2 v00 = GetVectorSafe(cell00);
+            float2 v10 = GetVectorSafe(cell10);
+            float2 v01 = GetVectorSafe(cell01);
+            float2 v11 = GetVectorSafe(cell11);
+            
+            float2 interpX1 = math.lerp(v00, v10, fracX);
+            float2 interpX2 = math.lerp(v01, v11, fracX);
+            float2 finalVec = math.lerp(interpX1, interpX2, fracY);
+            return math.normalizesafe(finalVec);
+        }
+        
+        public float2 GetVectorSafe(int2 cellPos)
+        {
+            if (cellPos.x < 0 || cellPos.x >= Width || cellPos.y < 0 || cellPos.y >= Height)
+            {
+                return float2.zero;
+            }
+            int index = IndexFromCell(cellPos);
+            return VectorField[index];
+        }
+        
+
+        #endregion
+        
         #region Debugging
 
         /// <summary>
@@ -116,6 +171,8 @@ namespace Survivors.Play.Components
         #endregion
 
 
+        #region Interface Implementation
+
         /// <summary>
         ///     Interface implementation for collection component.
         /// </summary>
@@ -137,5 +194,7 @@ namespace Survivors.Play.Components
 
             return combinedDeps;
         }
+
+        #endregion
     }
 }
