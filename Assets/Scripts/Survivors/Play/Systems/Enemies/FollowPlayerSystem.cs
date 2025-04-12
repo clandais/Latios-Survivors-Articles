@@ -30,8 +30,7 @@ namespace Survivors.Play.Systems.Enemies
                 .With<EnemyTag>()
                 .Without<DeadTag>()
                 .Build();
-
-            // state.RequireForUpdate<PlayerPosition>();
+            
             state.RequireForUpdate<FloorGridConstructedTag>();
         }
 
@@ -40,7 +39,7 @@ namespace Survivors.Play.Systems.Enemies
         {
             var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true).layer;
             var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            var grid = m_world.sceneBlackboardEntity.GetCollectionComponent<FloorGrid>();
+            var grid = m_world.GetCollectionAspect<VectorFieldAspect>( m_world.sceneBlackboardEntity);
 
             state.Dependency = new FollowPlayerJob
             {
@@ -55,17 +54,16 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         partial struct FollowPlayerJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer EnvironmentLayer;
-            [ReadOnly] public FloorGrid      Grid;
-            [ReadOnly] public float          DeltaTime;
-            [ReadOnly] public PlayerPosition PlayerPosition;
+            [ReadOnly] public CollisionLayer    EnvironmentLayer;
+            [ReadOnly] public VectorFieldAspect Grid;
+            [ReadOnly] public float             DeltaTime;
+            [ReadOnly] public PlayerPosition    PlayerPosition;
 
             void Execute(TransformAspect transformAspect,
                 in MovementSettings movementSettings,
                 ref RigidBody rigidBody,
                 ref PreviousVelocity previousVelocity)
             {
-
                 var targetDelta = float3.zero;
                 
                 var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
@@ -76,7 +74,7 @@ namespace Survivors.Play.Systems.Enemies
 
                 // Check if the raycast to the player hits the environment
                 // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _)) 
+                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _))
                     vecDelta += deltaToPlayer.xz;
 
 
@@ -119,7 +117,6 @@ namespace Survivors.Play.Systems.Enemies
                 var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
                 transformAspect.worldRotation = transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
             }
-            
         }
     }
 }

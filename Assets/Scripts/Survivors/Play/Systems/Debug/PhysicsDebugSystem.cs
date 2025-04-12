@@ -45,8 +45,8 @@ namespace Survivors.Play.Systems.Debug
             
             if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
             {
-                var grid = m_world.sceneBlackboardEntity.GetCollectionComponent<FloorGrid>();
-                FloorGrid.Draw(grid);
+                var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
+                grid.Draw();
             }
             
             

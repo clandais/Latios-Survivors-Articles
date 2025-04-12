@@ -73,104 +73,6 @@ namespace Survivors.Play.Components
         #endregion
 
 
-        #region Methods
-
-        
-        /// <summary>
-        ///       Interpolates the vector field at a given world position.
-        /// </summary>
-        /// <param name="worldPos">
-        ///      The world position to interpolate the vector field at.
-        /// </param>
-        /// <returns>
-        ///      The interpolated vector at the given world position.
-        /// </returns>
-        public float2 InterpolatedVectorAt(float2 worldPos)
-        {
-            float relX = worldPos.x - MinX;
-            float relY = worldPos.y - MinY;
-            
-            float fx = relX / CellSize;
-            float fy = relY / CellSize;
-            
-            int ix = (int)math.floor(fx);
-            int iy = (int)math.floor(fy);
-            
-            float fracX = fx - ix;
-            float fracY = fy - iy;
-            
-            int2 cell00 = new int2(ix, iy);
-            int2 cell10 = new int2(ix + 1, iy);
-            int2 cell01 = new int2(ix, iy + 1);
-            int2 cell11 = new int2(ix + 1, iy + 1);
-            
-            float2 v00 = GetVectorSafe(cell00);
-            float2 v10 = GetVectorSafe(cell10);
-            float2 v01 = GetVectorSafe(cell01);
-            float2 v11 = GetVectorSafe(cell11);
-            
-            float2 interpX1 = math.lerp(v00, v10, fracX);
-            float2 interpX2 = math.lerp(v01, v11, fracX);
-            float2 finalVec = math.lerp(interpX1, interpX2, fracY);
-            return math.normalizesafe(finalVec);
-        }
-        
-        public float2 GetVectorSafe(int2 cellPos)
-        {
-            if (cellPos.x < 0 || cellPos.x >= Width || cellPos.y < 0 || cellPos.y >= Height)
-            {
-                return float2.zero;
-            }
-            int index = IndexFromCell(cellPos);
-            return VectorField[index];
-        }
-        
-
-        #endregion
-        
-        #region Debugging
-
-        /// <summary>
-        ///     Draw the grid in the editor
-        /// </summary>
-        /// <param name="grid">
-        ///     The grid to draw
-        /// </param>
-        public static void Draw(FloorGrid grid)
-        {
-            if (!grid.Walkable.IsCreated || !grid.VectorField.IsCreated || !grid.IntegrationField.IsCreated)
-                return; // Grid not ready
-
-            for (var i = 0; i < grid.CellCount; i++)
-            {
-                var cellWorldPos = grid.IndexToWorld(i);
-                var cellCenter = new float3(cellWorldPos.x + grid.CellSize / 2f, 0.1f, cellWorldPos.y + grid.CellSize / 2f);
-
-                // Draw Cell Borders (Walkable = Green, Non-Walkable = Red)
-                var borderColor = grid.Walkable[i] ? Color.green : Color.red;
-                var halfSize = grid.CellSize / 2f;
-                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize), cellCenter + new float3(-halfSize, 0, halfSize), borderColor);
-                Debug.DrawLine(cellCenter + new float3(halfSize, 0, -halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
-                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize), cellCenter + new float3(halfSize, 0, -halfSize), borderColor);
-                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
-
-                // Draw Vector Field (Blue Arrows)
-                // if (grid.Walkable[i] && grid.IntegrationField[i] != UnreachableIntegrationCost) // Only draw vectors for reachable cells
-                // {
-                    var vector = grid.VectorField[i];
-                    // Scale vector for visibility, but not excessively
-                    var vectorScale = math.min(grid.CellSize * 0.4f, 1.0f);
-                    Debug.DrawLine(
-                        cellCenter,
-                        cellCenter + new float3(vector.x, 0, vector.y) * vectorScale,
-                        grid.Walkable[i] ? Color.blue : Color.magenta);
-                // }
-            }
-        }
-
-        #endregion
-
-
         #region Interface Implementation
 
         /// <summary>
@@ -193,6 +95,114 @@ namespace Survivors.Play.Components
                 combinedDeps = JobHandle.CombineDependencies(combinedDeps, VectorField.Dispose(combinedDeps));
 
             return combinedDeps;
+        }
+
+        #endregion
+    }
+
+
+    public struct VectorFieldAspect : ICollectionAspect<VectorFieldAspect>
+    {
+        [ReadOnly] public FloorGrid Grid;
+
+        public VectorFieldAspect CreateCollectionAspect(LatiosWorldUnmanaged latiosWorld,
+            EntityManager entityManager,
+            Entity entity)
+        {
+            var grid = latiosWorld.sceneBlackboardEntity.GetCollectionComponent<FloorGrid>();
+            return new VectorFieldAspect
+            {
+                Grid = grid
+            };
+        }
+
+        public FluentQuery AppendToQuery(FluentQuery query) => query.With<FloorGrid.ExistComponent>(true);
+
+        #region Methods
+
+        /// <summary>
+        ///     Interpolates the vector field at a given world position.
+        /// </summary>
+        /// <param name="worldPos">
+        ///     The world position to interpolate the vector field at.
+        /// </param>
+        /// <returns>
+        ///     The interpolated vector at the given world position.
+        /// </returns>
+        public float2 InterpolatedVectorAt(float2 worldPos)
+        {
+            var relX = worldPos.x - Grid.MinX;
+            var relY = worldPos.y - Grid.MinY;
+
+            var fx = relX / Grid.CellSize;
+            var fy = relY / Grid.CellSize;
+
+            var ix = (int)math.floor(fx);
+            var iy = (int)math.floor(fy);
+
+            var fracX = fx - ix;
+            var fracY = fy - iy;
+
+            var cell00 = new int2(ix, iy);
+            var cell10 = new int2(ix + 1, iy);
+            var cell01 = new int2(ix, iy + 1);
+            var cell11 = new int2(ix + 1, iy + 1);
+
+            var v00 = GetVectorSafe(cell00);
+            var v10 = GetVectorSafe(cell10);
+            var v01 = GetVectorSafe(cell01);
+            var v11 = GetVectorSafe(cell11);
+
+            var interpX1 = math.lerp(v00, v10, fracX);
+            var interpX2 = math.lerp(v01, v11, fracX);
+            var finalVec = math.lerp(interpX1, interpX2, fracY);
+            return math.normalizesafe(finalVec);
+        }
+
+        public float2 GetVectorSafe(int2 cellPos)
+        {
+            if (cellPos.x < 0 || cellPos.x >= Grid.Width || cellPos.y < 0 || cellPos.y >= Grid.Height) return float2.zero;
+            var index = Grid.IndexFromCell(cellPos);
+            return Grid.VectorField[index];
+        }
+
+        #endregion
+
+        #region Debugging
+
+        /// <summary>
+        ///     Draw the grid in the editor
+        /// </summary>
+        public void Draw()
+        {
+            if (!Grid.Walkable.IsCreated || !Grid.VectorField.IsCreated || !Grid.IntegrationField.IsCreated)
+                return; // Grid not ready
+
+            for (var i = 0; i < Grid.CellCount; i++)
+            {
+                var cellWorldPos = Grid.IndexToWorld(i);
+                var cellCenter = new float3(cellWorldPos.x + Grid.CellSize / 2f, 0.1f, cellWorldPos.y + Grid.CellSize / 2f);
+
+                // Draw Cell Borders (Walkable = Green, Non-Walkable = Red)
+                var borderColor = Grid.Walkable[i] ? Color.green : Color.red;
+                var halfSize = Grid.CellSize / 2f;
+                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize), cellCenter + new float3(-halfSize, 0, halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(halfSize, 0, -halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize), cellCenter + new float3(halfSize, 0, -halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
+
+                // Draw Vector Field (Blue Arrows)
+                // if (grid.Walkable[i] && grid.IntegrationField[i] != UnreachableIntegrationCost) // Only draw vectors for reachable cells
+                // {
+                var vector = Grid.VectorField[i];
+                // Scale vector for visibility, but not excessively
+                var vectorScale = math.min(Grid.CellSize * 0.4f, 1.0f);
+                Debug.DrawLine(
+                    cellCenter,
+                    cellCenter + new float3(vector.x, 0, vector.y) * vectorScale,
+                    Grid.Walkable[i] ? Color.blue : Color.magenta);
+                // }
+            }
         }
 
         #endregion
