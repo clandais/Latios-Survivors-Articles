@@ -38,6 +38,7 @@ namespace Survivors.GameScope
             builder.RegisterInstance(curtainBehaviour);
 
             builder.RegisterVitalRouter(routingBuilder => { routingBuilder.Map<GlobalRouter>(); });
+            
 
             builder.RegisterBuildCallback(container =>
             {

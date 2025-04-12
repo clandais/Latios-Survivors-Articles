@@ -5,6 +5,7 @@ using Survivors.Play.Components;
 using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Pathfinding;
 using Survivors.Play.Systems.Physics;
+using Survivors.Play.Systems.Player.Weapons.Physics;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -16,6 +17,7 @@ namespace Survivors.Bootstrap.RootSystems
         {
             GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<BuildWeaponCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<FlowGridSystem>();
             GetOrCreateAndAddUnmanagedSystem<FlowFieldSystem>();
         }

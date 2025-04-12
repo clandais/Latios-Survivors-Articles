@@ -206,8 +206,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5257311, y: 0, z: 0, w: 0.85065085}
-  m_LocalPosition: {x: 0, y: 40, z: -51.46}
+  m_LocalRotation: {x: 0.4068386, y: 0, z: 0, w: 0.9135001}
+  m_LocalPosition: {x: 0, y: 20, z: -49.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -625,8 +625,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157505434}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5257311, y: 0, z: 0, w: 0.85065085}
-  m_LocalPosition: {x: 0, y: 40, z: -51.46}
+  m_LocalRotation: {x: 0.4068386, y: 0, z: 0, w: 0.9135001}
+  m_LocalPosition: {x: 0, y: 20, z: -49.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -736,6 +736,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1695960970}
   dolly: {fileID: 1157505436}
+  scrollSensitivity: 0.1
+  maxZoomDistanceDelta: 0.75
+  defaultZoomDistance: 0.5
 --- !u!1 &1695960969
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,39 +847,39 @@ MonoBehaviour:
     m_Knots:
     - Position:
         x: 0
-        y: 40
-        z: -20
+        y: 20
+        z: -18
       TangentIn:
         x: -0
         y: -0
-        z: -0.70710677
+        z: -5.6824293
       TangentOut:
         x: 0
         y: 0
-        z: 0.70710677
+        z: 5.6824293
       Rotation:
         value:
           x: 0
-          y: 0.92387956
-          z: 0.38268346
+          y: 0.8588216
+          z: 0.5122749
           w: 0
     - Position:
         x: 0
-        y: 45
-        z: -25
+        y: 70
+        z: -45
       TangentIn:
         x: -0
         y: -0
-        z: -0.70710677
+        z: -5.6824293
       TangentOut:
         x: 0
         y: 0
-        z: 0.70710677
+        z: 5.6824293
       Rotation:
         value:
           x: 0
-          y: 0.92387956
-          z: 0.38268346
+          y: 0.8588216
+          z: 0.5122749
           w: 0
     m_MetaData:
     - Mode: 0

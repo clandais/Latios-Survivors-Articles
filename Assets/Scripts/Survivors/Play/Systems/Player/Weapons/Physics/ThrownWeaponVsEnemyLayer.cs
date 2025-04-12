@@ -26,13 +26,15 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         {
             var enemyCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnemyCollisionLayer>().Layer;
+            
+            var weaponCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
+                .GetCollectionComponent<WeaponCollisionLayer>().Layer;
 
             var addComponentsCommandBuffer =
                 m_latiosWorldUnmanaged.syncPoint.CreateAddComponentsCommandBuffer<HitInfos>(AddComponentsDestroyedEntityResolution.DropData);
 
             addComponentsCommandBuffer.AddComponentTag<DeadTag>();
-
-
+            
             state.Dependency = new ThrownWeaponCollisionJob
             {
                 AddComponentsCommandBuffer = addComponentsCommandBuffer.AsParallelWriter(),
@@ -40,6 +42,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                 DeltaTime                  = SystemAPI.Time.DeltaTime
             }.ScheduleParallel(state.Dependency);
         }
+
+        
 
         [BurstCompile]
         partial struct ThrownWeaponCollisionJob : IJobEntity

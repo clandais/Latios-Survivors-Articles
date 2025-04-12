@@ -182,6 +182,15 @@ namespace Survivors.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""dc3f3848-4a3d-4a00-ad4b-370817f79512"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -580,6 +589,39 @@ namespace Survivors.Input
                     ""action"": ""Mouse Position"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""b1615662-1924-4f2d-91b0-6e6efd562690"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""a8a3ffb7-6710-422e-b302-d334e7c6005d"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""df97a610-dc40-4554-bd89-0a70c1cacb3f"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1195,6 +1237,7 @@ namespace Survivors.Input
             m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_MousePosition = m_Player.FindAction("Mouse Position", throwIfNotFound: true);
+            m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1299,6 +1342,7 @@ namespace Survivors.Input
         private readonly InputAction m_Player_Next;
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_MousePosition;
+        private readonly InputAction m_Player_Scroll;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1350,6 +1394,10 @@ namespace Survivors.Input
             /// Provides access to the underlying input action "Player/MousePosition".
             /// </summary>
             public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Scroll".
+            /// </summary>
+            public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1406,6 +1454,9 @@ namespace Survivors.Input
                 @MousePosition.started += instance.OnMousePosition;
                 @MousePosition.performed += instance.OnMousePosition;
                 @MousePosition.canceled += instance.OnMousePosition;
+                @Scroll.started += instance.OnScroll;
+                @Scroll.performed += instance.OnScroll;
+                @Scroll.canceled += instance.OnScroll;
             }
 
             /// <summary>
@@ -1447,6 +1498,9 @@ namespace Survivors.Input
                 @MousePosition.started -= instance.OnMousePosition;
                 @MousePosition.performed -= instance.OnMousePosition;
                 @MousePosition.canceled -= instance.OnMousePosition;
+                @Scroll.started -= instance.OnScroll;
+                @Scroll.performed -= instance.OnScroll;
+                @Scroll.canceled -= instance.OnScroll;
             }
 
             /// <summary>
@@ -1828,6 +1882,13 @@ namespace Survivors.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnMousePosition(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Scroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnScroll(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

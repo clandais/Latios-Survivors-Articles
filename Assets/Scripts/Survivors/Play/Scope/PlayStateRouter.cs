@@ -15,6 +15,11 @@ namespace Survivors.Play.Scope
     {
         public float2 Position;
     }
+    
+    public struct MouseScrollChangedCommand : ICommand
+    {
+        public float ScrollDelta;
+    }
 
     [Routes]
     public partial class PlayStateRouter
@@ -41,6 +46,15 @@ namespace Survivors.Play.Scope
             await commandPublisher.PublishAsync(new MousePositionChangedCommand
             {
                 Position = cmd.MousePosition
+            });
+        }
+        
+        [Route]
+        async UniTask On(MouseScrollCommand cmd)
+        {
+            await commandPublisher.PublishAsync(new MouseScrollChangedCommand
+            {
+                ScrollDelta = cmd.ScrollDelta
             });
         }
 

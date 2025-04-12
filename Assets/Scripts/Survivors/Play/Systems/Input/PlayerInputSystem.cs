@@ -71,12 +71,20 @@ namespace Survivors.Play.Systems.Input
             inputState.Direction = move;
 
             float2 mousePosition = m_inputActions.Player.MousePosition.ReadValue<Vector2>();
+            
+            float mouseScroll = m_inputActions.Player.Scroll.ReadValue<float>();
 
+           
+            
             m_commandPublisher.PublishAsync(new MousePositionCommand
             {
                 MousePosition = mousePosition
             });
 
+            m_commandPublisher.PublishAsync(new MouseScrollCommand
+            {
+                ScrollDelta = mouseScroll
+            });
 
             var ray = m_mainCamera.ScreenPointToRay(new float3(mousePosition.x, mousePosition.y, 0f));
             var plane = new Plane(Vector3.up, Vector3.zero);

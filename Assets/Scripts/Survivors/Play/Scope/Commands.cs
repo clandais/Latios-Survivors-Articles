@@ -7,4 +7,9 @@ namespace Survivors.Play.Scope
     {
         public float2 MousePosition;
     }
+    
+    public struct MouseScrollCommand : ICommand
+    {
+        public float ScrollDelta;
+    }
 }
