@@ -1,4 +1,5 @@
 ﻿using Latios;
+using Latios.Anna.Systems;
 using Latios.Transforms.Systems;
 using Survivors.Bootstrap.RootSystems.SuperSystems;
 using Survivors.Play.Components;
@@ -6,7 +7,6 @@ using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
 {
-    [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateBefore(typeof(TransformSuperSystem))]
     public partial class PreTransformRootSystem : RootSuperSystem
     {

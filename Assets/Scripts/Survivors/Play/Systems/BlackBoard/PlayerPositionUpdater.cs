@@ -7,6 +7,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.BlackBoard
 {
+    [BurstCompile]
     public partial struct PlayerPositionUpdater : ISystem
     {
         LatiosWorldUnmanaged m_world;

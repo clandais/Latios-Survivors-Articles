@@ -1,6 +1,7 @@
 ﻿using Latios;
 using Survivors.Play.Systems.BlackBoard;
 using Survivors.Play.Systems.Camera;
+using Survivors.Play.Systems.Debug;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -12,6 +13,7 @@ namespace Survivors.Bootstrap.RootSystems
         {
             GetOrCreateAndAddUnmanagedSystem<PlayerPositionUpdater>();
             GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
+            GetOrCreateAndAddManagedSystem<EnemyCounterSystem>();
         }
     }
 }

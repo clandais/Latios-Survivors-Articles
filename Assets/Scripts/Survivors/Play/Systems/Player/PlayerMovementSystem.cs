@@ -11,6 +11,7 @@ using Unity.Mathematics;
 namespace Survivors.Play.Systems.Player
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct PlayerMovementSystem : ISystem
     {
         LatiosWorldUnmanaged m_world;

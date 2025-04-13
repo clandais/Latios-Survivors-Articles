@@ -1,7 +1,9 @@
 ﻿using System;
 using R3;
 using Survivors.GameScope.Commands;
+using Survivors.GameScope.MonoBehaviours;
 using Survivors.Play.Scope.MonoBehaviours;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -18,6 +20,7 @@ namespace Survivors.Play.Scope
 
         DisposableBag          m_disposable;
         [Inject] PlayStateMenu m_playStateMenu;
+        [Inject] CinemachineBehaviour    m_cinemachineCamera;
 
         public void Dispose()
         {
@@ -41,9 +44,14 @@ namespace Survivors.Play.Scope
                 .AddTo(ref m_disposable);
             m_commandSubscribable.Subscribe<MousePositionChangedCommand>(OnMousePositionChanged)
                 .AddTo(ref m_disposable);
+            
+            m_commandSubscribable.Subscribe<MouseScrollChangedCommand>(OnMouseScrollChanged)
+                .AddTo(ref m_disposable);
 
             m_playStateMenu.Hide();
         }
+
+
 
 
         void OnPauseStateRequested(RequestPauseStateCommand _,
@@ -62,6 +70,12 @@ namespace Survivors.Play.Scope
             PublishContext ctx)
         {
             m_crosshair.rectTransform.position = new Vector3(cmd.Position.x, cmd.Position.y, 0);
+        }
+        
+        void OnMouseScrollChanged(MouseScrollChangedCommand cmd,
+            PublishContext arg2)
+        {
+            m_cinemachineCamera.Zoom(cmd.ScrollDelta);
         }
 
         void OnResumeClicked(Unit _)

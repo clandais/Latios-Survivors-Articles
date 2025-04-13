@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Scroll",
+                    "type": "Value",
+                    "id": "dc3f3848-4a3d-4a00-ad4b-370817f79512",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -492,6 +501,39 @@
                     "action": "Mouse Position",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "b1615662-1924-4f2d-91b0-6e6efd562690",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "a8a3ffb7-6710-422e-b302-d334e7c6005d",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "df97a610-dc40-4554-bd89-0a70c1cacb3f",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

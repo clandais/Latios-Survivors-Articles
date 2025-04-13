@@ -1,15 +1,13 @@
 ﻿using Latios;
 using Latios.Anna;
 using Latios.Psyshock;
-using Latios.Transforms;
 using Survivors.Play.Components;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Physics
 {
+    [BurstCompile]
     public partial struct BuildEnemyCollisionLayerSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged           m_latiosWorldUnmanaged;
@@ -30,34 +28,18 @@ namespace Survivors.Play.Systems.Physics
             m_typeHandles.Update(ref state);
 
 
-            var entities = m_query.ToEntityArray(state.WorldUpdateAllocator);
+            var physicsSettings = m_latiosWorldUnmanaged.GetPhysicsSettings();
 
-            var min = float3.zero;
-            var max = float3.zero;
-
-            foreach (var entity in entities)
-            {
-                var collider = SystemAPI.GetComponent<Collider>(entity);
-                var transform = SystemAPI.GetComponent<WorldTransform>(entity);
-                var aabb = Latios.Psyshock.Physics.AabbFrom(collider, transform.worldTransform);
-                min = math.min(aabb.min, min);
-                max = math.max(aabb.max, max);
-            }
-
-
-            // add a small padding to the AABB
-            min -= new float3(5f);
-            max += new float3(5f);
 
             var settings = new CollisionLayerSettings
             {
-                worldAabb                = new Aabb(min, max),
-                worldSubdivisionsPerAxis = new int3(1, 1, 8)
+                worldAabb                = physicsSettings.collisionLayerSettings.worldAabb,
+                worldSubdivisionsPerAxis = physicsSettings.collisionLayerSettings.worldSubdivisionsPerAxis
             };
 
             state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query,
                     in m_typeHandles).WithSettings(settings)
-                .ScheduleParallel(out var enemyCollisionLayer, Allocator.TempJob, state.Dependency);
+                .ScheduleParallel(out var enemyCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
 
 
             m_latiosWorldUnmanaged.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(new EnemyCollisionLayer

@@ -11,6 +11,7 @@ using Unity.Entities;
 namespace Survivors.Play.Systems.Player
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct PlayerActionSystem : ISystem
     {
         LatiosWorldUnmanaged m_worldUnmanaged;

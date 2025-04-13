@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Survivors.Play.Components;
+using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ namespace Survivors.Play.Authoring.Player.Weapons
                     authoring.rotationSpeed,
                     authoring.rotationAxis
                 ));
+                
+                AddComponent<WeaponTag>(entity);
             }
         }
     }

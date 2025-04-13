@@ -12,21 +12,33 @@ using Unity.Mathematics;
 namespace Survivors.Play.Systems.Pathfinding
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct FlowFieldSystem : ISystem
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
         EntityQuery          m_query;
 
+        private const int k_RefreshRate = 15;
+        private int m_frameCount;
+        
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             m_worldUnmanaged = state.GetLatiosWorldUnmanaged();
-            m_query          = state.Fluent().With<LevelTagAuthoring.LevelTag>().Build();
+            m_query          = state.Fluent().With<LevelTag>().Build();
+            m_frameCount     = 0;
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            
+            if (m_frameCount++ % k_RefreshRate != 0)
+            {
+                return;
+            }
+            
+            
             var grid = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<FloorGrid>();
 
 
@@ -89,8 +101,6 @@ namespace Survivors.Play.Systems.Pathfinding
 
                 if (TargetIndex < 0 || TargetIndex >= Grid.CellCount || !Grid.Walkable[TargetIndex])
                 {
-                    UnityEngine.Debug.LogWarning($"IntegrationFieldJob: Invalid target index {TargetIndex}");
-
                     return;
                 }
 
@@ -149,7 +159,6 @@ namespace Survivors.Play.Systems.Pathfinding
                 if (!Grid.Walkable[index] || Grid.IntegrationField[index] == FloorGrid.UnreachableIntegrationCost)
                 {
                     Grid.VectorField[index] = float2.zero;
-
                     return;
                 }
 

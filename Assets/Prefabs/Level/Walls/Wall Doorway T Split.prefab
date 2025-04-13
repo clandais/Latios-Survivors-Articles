@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5816617926182134045}
   - component: {fileID: 5693588922994453424}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Col (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5855485889795425612}
   - component: {fileID: 7057495801960149244}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Col
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 821703453174580313}
   - component: {fileID: 5186645899147354928}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Col (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7000095223088015904}
   - component: {fileID: 4986235472333489277}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall Doorway T Split
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4691718091087242002}
   - component: {fileID: 2870411113463273111}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Col (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,6 +320,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c77ffe29059f80f4d9cd8cb73249b226, type: 3}
       propertyPath: m_Name
       value: wall_doorway_Tsplit
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c77ffe29059f80f4d9cd8cb73249b226, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

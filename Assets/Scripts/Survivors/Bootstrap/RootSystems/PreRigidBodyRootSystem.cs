@@ -2,8 +2,10 @@
 using Latios.Anna.Systems;
 using Survivors.Bootstrap.RootSystems.SuperSystems;
 using Survivors.Play.Components;
+using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Pathfinding;
 using Survivors.Play.Systems.Physics;
+using Survivors.Play.Systems.Player.Weapons.Physics;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -13,7 +15,9 @@ namespace Survivors.Bootstrap.RootSystems
     {
         protected override void CreateSystems()
         {
+            GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<BuildWeaponCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<FlowGridSystem>();
             GetOrCreateAndAddUnmanagedSystem<FlowFieldSystem>();
         }
@@ -37,7 +41,8 @@ namespace Survivors.Bootstrap.RootSystems
             GetOrCreateAndAddManagedSystem<PlayerMotionSuperSystem>();
             GetOrCreateAndAddManagedSystem<EnemiesMotionSuperSystem>();
             GetOrCreateAndAddManagedSystem<WeaponUpdateSuperSystem>();
-            
+
+            GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
         }
 
         public override bool ShouldUpdateSystem()

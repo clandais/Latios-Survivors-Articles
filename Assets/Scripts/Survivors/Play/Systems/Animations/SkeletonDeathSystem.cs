@@ -8,6 +8,7 @@ using Unity.Entities;
 
 namespace Survivors.Play.Systems.Animations
 {
+    [BurstCompile]
     public partial struct SkeletonDeathSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_latiosWorldUnmanaged;

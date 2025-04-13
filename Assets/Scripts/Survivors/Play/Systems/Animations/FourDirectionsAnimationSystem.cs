@@ -12,6 +12,7 @@ using Unity.Mathematics;
 namespace Survivors.Play.Systems.Animations
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct FourDirectionsAnimationSystem : ISystem
     {
         EntityQuery m_query;
@@ -100,18 +101,18 @@ namespace Survivors.Play.Systems.Animations
 
                 // Detect significant direction/movement change (for starting new blend)
                 var significantChange = math.abs(
-                    math.length(velocity) - math.length(previousVelocity.Value.xz)) > inertialBlendState.VelocityChangeThreshold;
+                    math.length(velocity.xz) - math.length(previousVelocity.Value.xz)) > inertialBlendState.VelocityChangeThreshold;
 
                 // Start new inertial blend when movement changes significantly
-                if (significantChange)
+                if (significantChange && inertialBlendState.PreviousDeltaTime > 0f)
                 {
                     skeleton.StartNewInertialBlend(inertialBlendState.PreviousDeltaTime, inertialBlendState.Duration);
                     inertialBlendState.TimeInCurrentState = 0f;
                 }
-
-
+                
+                
                 // Apply inertial blend with current time since blend started
-                if (inertialBlendState.TimeInCurrentState <= inertialBlendState.Duration)
+                if (!skeleton.IsFinishedWithInertialBlend(inertialBlendState.TimeInCurrentState))
                 {
                     inertialBlendState.TimeInCurrentState += DeltaTime;
                     skeleton.InertialBlend(inertialBlendState.TimeInCurrentState);

@@ -72,7 +72,7 @@ namespace Survivors.Play.Components
             Duration                = duration;
             VelocityChangeThreshold = velocityChangeThreshold;
             TimeInCurrentState      = 0f;
-            PreviousDeltaTime       = 0f;
+            PreviousDeltaTime       = -1f;
         }
     }
 

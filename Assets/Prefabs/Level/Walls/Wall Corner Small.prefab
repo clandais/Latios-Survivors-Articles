@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1539795399144801727}
-  - component: {fileID: 2765276944001618580}
-  m_Layer: 0
+  - component: {fileID: 9023179713239321250}
+  m_Layer: 6
   m_Name: Wall Corner Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 4179031202000566265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &2765276944001618580
+--- !u!114 &9023179713239321250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4179031202000566265}
   - component: {fileID: 9109761838843209700}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ColB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 135727106706710348}
   - component: {fileID: 8118834613156233635}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ColA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,6 +212,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 46f18eb56d76f6547861f4a425488647, type: 3}
       propertyPath: m_Name
       value: wall_corner_small
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 46f18eb56d76f6547861f4a425488647, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

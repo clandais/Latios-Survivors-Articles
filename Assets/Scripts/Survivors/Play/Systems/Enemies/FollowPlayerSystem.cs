@@ -12,6 +12,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Enemies
 {
+    [BurstCompile]
     public partial struct FollowPlayerSystem : ISystem
     {
         LatiosWorldUnmanaged m_world;
@@ -29,8 +30,7 @@ namespace Survivors.Play.Systems.Enemies
                 .With<EnemyTag>()
                 .Without<DeadTag>()
                 .Build();
-
-            // state.RequireForUpdate<PlayerPosition>();
+            
             state.RequireForUpdate<FloorGridConstructedTag>();
         }
 
@@ -39,7 +39,7 @@ namespace Survivors.Play.Systems.Enemies
         {
             var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true).layer;
             var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            var grid = m_world.sceneBlackboardEntity.GetCollectionComponent<FloorGrid>();
+            var grid = m_world.GetCollectionAspect<VectorFieldAspect>( m_world.sceneBlackboardEntity);
 
             state.Dependency = new FollowPlayerJob
             {
@@ -54,34 +54,40 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         partial struct FollowPlayerJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer EnvironmentLayer;
-            [ReadOnly] public FloorGrid      Grid;
-            [ReadOnly] public float          DeltaTime;
-            [ReadOnly] public PlayerPosition PlayerPosition;
+            [ReadOnly] public CollisionLayer    EnvironmentLayer;
+            [ReadOnly] public VectorFieldAspect Grid;
+            [ReadOnly] public float             DeltaTime;
+            [ReadOnly] public PlayerPosition    PlayerPosition;
 
             void Execute(TransformAspect transformAspect,
                 in MovementSettings movementSettings,
                 ref RigidBody rigidBody,
                 ref PreviousVelocity previousVelocity)
             {
-                var cellPos = Grid.WorldToCell(transformAspect.worldPosition.xz);
-                var cellIdx = Grid.CellToIndex(cellPos);
-
                 var targetDelta = float3.zero;
-                var vecDelta = float2.zero;
-
-                if (cellIdx >= 0 & cellIdx < Grid.CellCount) vecDelta = Grid.VectorField[cellIdx];
-
+                
+                var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
                 var deltaToPlayer = math.normalizesafe(PlayerPosition.Position - transformAspect.worldPosition);
 
-                var rayStart = transformAspect.worldPosition;
-                var rayEnd = transformAspect.worldPosition + deltaToPlayer * 25f;
+                var rayStart = transformAspect.worldPosition + math.up();
+                var rayEnd = transformAspect.worldPosition + math.up() + deltaToPlayer * 25f;
 
-                // Check if the raycast hits the environment
+                // Check if the raycast to the player hits the environment
                 // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _)) vecDelta += deltaToPlayer.xz;
+                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out RaycastResult result, out _))
+                    vecDelta += deltaToPlayer.xz;
+
 
                 vecDelta = math.normalizesafe(vecDelta);
+
+
+                var nan = math.isnan(vecDelta);
+
+                if (nan.x || nan.y)
+                {
+                    vecDelta = float2.zero;
+                    UnityEngine.Debug.Log($"Nan detected in vecDelta: {vecDelta}");
+                }
 
 
                 targetDelta.xz = vecDelta;
@@ -89,7 +95,16 @@ namespace Survivors.Play.Systems.Enemies
 
 
                 var currentVelocity = rigidBody.velocity.linear;
-                var desiredVelocity = math.normalize(targetDelta) * movementSettings.moveSpeed;
+                var desiredVelocity = math.normalizesafe(targetDelta) * movementSettings.moveSpeed;
+
+                var isDesiredVelocityNan = math.isnan(desiredVelocity);
+
+                if (isDesiredVelocityNan.x || isDesiredVelocityNan.y)
+                {
+                    desiredVelocity = float3.zero;
+                    UnityEngine.Debug.Log($"Nan detected in desiredVelocity: {desiredVelocity}");
+                }
+                
 
                 desiredVelocity.y      = currentVelocity.y;
                 previousVelocity.Value = currentVelocity;
