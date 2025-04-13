@@ -43,11 +43,11 @@ namespace Survivors.Play.Systems.Debug
             state.Dependency = PhysicsDebug.DrawLayer(envLayer).ScheduleParallel(state.Dependency);
 
             
-            if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
-            {
-                var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
-                grid.Draw();
-            }
+            // if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
+            // {
+            //     var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
+            //     grid.Draw();
+            // }
             
             
             
