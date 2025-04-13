@@ -69,12 +69,12 @@ namespace Survivors.Play.Systems.Enemies
                 var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
                 var deltaToPlayer = math.normalizesafe(PlayerPosition.Position - transformAspect.worldPosition);
 
-                var rayStart = transformAspect.worldPosition;
-                var rayEnd = transformAspect.worldPosition + deltaToPlayer * 25f;
+                var rayStart = transformAspect.worldPosition + math.up();
+                var rayEnd = transformAspect.worldPosition + math.up() + deltaToPlayer * 25f;
 
                 // Check if the raycast to the player hits the environment
                 // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out _, out _))
+                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out RaycastResult result, out _))
                     vecDelta += deltaToPlayer.xz;
 
 
@@ -104,7 +104,7 @@ namespace Survivors.Play.Systems.Enemies
                     desiredVelocity = float3.zero;
                     UnityEngine.Debug.Log($"Nan detected in desiredVelocity: {desiredVelocity}");
                 }
-
+                
 
                 desiredVelocity.y      = currentVelocity.y;
                 previousVelocity.Value = currentVelocity;
