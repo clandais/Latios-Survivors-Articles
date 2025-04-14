@@ -34,8 +34,6 @@ namespace Survivors.GameScope.MonoBehaviours
         {
             targetZoom += rawDelta * scrollSensitivity;
             targetZoom = math.clamp(targetZoom, 0f, 1f);
-            
-            Debug.Log(targetZoom);
         }
 
 

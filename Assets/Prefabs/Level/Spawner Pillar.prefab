@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cb96e55d84a95aa46ae99add1a543a09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cb96e55d84a95aa46ae99add1a543a09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.8830898e-14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cb96e55d84a95aa46ae99add1a543a09, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2
+      value: -2.0000024
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cb96e55d84a95aa46ae99add1a543a09, type: 3}
       propertyPath: m_LocalRotation.w
@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1324252f0d3d47da8629781d2e0ef586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7477852364697638813, guid: 4b173e03f184b0f41868f49f80efb2d0, type: 3}
-  spawnInterval: 1
+  enemyPrefab: {fileID: 9002225140991851173, guid: 7ea0d037573e6fb4b8a270cf53b96f16, type: 3}
+  spawnInterval: 0.2
   spawnPosition: {x: 0, y: 0.05, z: -4}
 --- !u!136 &714288866851982177
 CapsuleCollider:
