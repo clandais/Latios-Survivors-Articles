@@ -7,8 +7,13 @@ using UnityEngine;
 
 namespace Survivors.Play.Components
 {
-    public struct PauseRequestedTag : IComponentData { }
-    public struct DeadTag : IComponentData { }
+    public struct PauseRequestedTag : IComponentData
+    {
+    }
+
+    public struct DeadTag : IComponentData
+    {
+    }
 
 
     public struct HitInfos : IComponentData
@@ -17,7 +22,31 @@ namespace Survivors.Play.Components
         public float3 Normal;
     }
 
-    public struct FloorGridConstructedTag : IComponentData { }
+    public partial struct SfxSpawnQueue : ICollectionComponent
+    {
+        public struct SfxSpawnData
+        {
+            public int EventHash;
+            public EntityWith<Prefab> SfxPrefab;
+            public float3 Position;
+        }
+
+        public NativeQueue<SfxSpawnData> SfxQueue;
+
+        public JobHandle TryDispose(JobHandle inputDeps)
+        {
+            if (!SfxQueue.IsCreated)
+                return inputDeps;
+
+            return SfxQueue.Dispose(inputDeps);
+        }
+    }
+
+    #region Navigation
+
+    public struct FloorGridConstructedTag : IComponentData
+    {
+    }
 
     /// <summary>
     ///     Settings for the flow field system.
@@ -33,8 +62,8 @@ namespace Survivors.Play.Components
     /// </summary>
     public partial struct FloorGrid : ICollectionComponent
     {
-        public NativeArray<bool>   Walkable;
-        public NativeArray<int>    IntegrationField;
+        public NativeArray<bool> Walkable;
+        public NativeArray<int> IntegrationField;
         public NativeArray<float2> VectorField;
 
         public int Width;
@@ -52,23 +81,46 @@ namespace Survivors.Play.Components
 
         public static readonly int2[] AllDirections =
         {
-            new int2(-1, 0), new int2(1, 0), new int2(0, -1), new int2(0, 1), // Cardinal
-            new int2(-1, -1), new int2(1, -1), new int2(-1, 1), new int2(1, 1) // Diagonal
+            new(-1, 0), new(1, 0), new(0, -1), new(0, 1), // Cardinal
+            new(-1, -1), new(1, -1), new(-1, 1), new(1, 1) // Diagonal
         };
 
         #region Coordinate Conversion
 
-        public int2 WorldToCell(float2 worldPos) => new int2((int)(worldPos.x - MinX) / CellSize, (int)(worldPos.y - MinY) / CellSize);
+        public int2 WorldToCell(float2 worldPos)
+        {
+            return new int2((int)(worldPos.x - MinX) / CellSize, (int)(worldPos.y - MinY) / CellSize);
+        }
 
-        public float2 CellToWorld(int2 cellPos) => new float2(cellPos.x * CellSize + MinX, cellPos.y * CellSize + MinY);
+        public float2 CellToWorld(int2 cellPos)
+        {
+            return new float2(cellPos.x * CellSize + MinX, cellPos.y * CellSize + MinY);
+        }
 
-        public int2 IndexToCell(int index) => new int2(index % Width, index / Width);
+        public int2 IndexToCell(int index)
+        {
+            return new int2(index % Width, index / Width);
+        }
 
-        public int IndexFromCell(int2 cellPos) => cellPos.y * Width + cellPos.x;
+        public int IndexFromCell(int2 cellPos)
+        {
+            return cellPos.y * Width + cellPos.x;
+        }
 
-        public float2 IndexToWorld(int index) => CellToWorld(IndexToCell(index));
-        public int IndexFromWorld(float2 worldPos) => IndexFromCell(WorldToCell(worldPos));
-        public int CellToIndex(int2 cellPos) => cellPos.x + cellPos.y * Width;
+        public float2 IndexToWorld(int index)
+        {
+            return CellToWorld(IndexToCell(index));
+        }
+
+        public int IndexFromWorld(float2 worldPos)
+        {
+            return IndexFromCell(WorldToCell(worldPos));
+        }
+
+        public int CellToIndex(int2 cellPos)
+        {
+            return cellPos.x + cellPos.y * Width;
+        }
 
         #endregion
 
@@ -116,7 +168,10 @@ namespace Survivors.Play.Components
             };
         }
 
-        public FluentQuery AppendToQuery(FluentQuery query) => query.With<FloorGrid.ExistComponent>(true);
+        public FluentQuery AppendToQuery(FluentQuery query)
+        {
+            return query.With<FloorGrid.ExistComponent>(true);
+        }
 
         #region Methods
 
@@ -161,7 +216,8 @@ namespace Survivors.Play.Components
 
         public float2 GetVectorSafe(int2 cellPos)
         {
-            if (cellPos.x < 0 || cellPos.x >= Grid.Width || cellPos.y < 0 || cellPos.y >= Grid.Height) return float2.zero;
+            if (cellPos.x < 0 || cellPos.x >= Grid.Width || cellPos.y < 0 || cellPos.y >= Grid.Height)
+                return float2.zero;
             var index = Grid.IndexFromCell(cellPos);
             return Grid.VectorField[index];
         }
@@ -181,15 +237,20 @@ namespace Survivors.Play.Components
             for (var i = 0; i < Grid.CellCount; i++)
             {
                 var cellWorldPos = Grid.IndexToWorld(i);
-                var cellCenter = new float3(cellWorldPos.x + Grid.CellSize / 2f, 0.1f, cellWorldPos.y + Grid.CellSize / 2f);
+                var cellCenter = new float3(cellWorldPos.x + Grid.CellSize / 2f, 0.1f,
+                    cellWorldPos.y + Grid.CellSize / 2f);
 
                 // Draw Cell Borders (Walkable = Green, Non-Walkable = Red)
                 var borderColor = Grid.Walkable[i] ? Color.green : Color.red;
                 var halfSize = Grid.CellSize / 2f;
-                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize), cellCenter + new float3(-halfSize, 0, halfSize), borderColor);
-                Debug.DrawLine(cellCenter + new float3(halfSize, 0, -halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
-                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize), cellCenter + new float3(halfSize, 0, -halfSize), borderColor);
-                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, halfSize), cellCenter + new float3(halfSize, 0, halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize),
+                    cellCenter + new float3(-halfSize, 0, halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(halfSize, 0, -halfSize),
+                    cellCenter + new float3(halfSize, 0, halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize),
+                    cellCenter + new float3(halfSize, 0, -halfSize), borderColor);
+                Debug.DrawLine(cellCenter + new float3(-halfSize, 0, halfSize),
+                    cellCenter + new float3(halfSize, 0, halfSize), borderColor);
 
                 // Draw Vector Field (Blue Arrows)
                 // if (grid.Walkable[i] && grid.IntegrationField[i] != UnreachableIntegrationCost) // Only draw vectors for reachable cells
@@ -207,4 +268,6 @@ namespace Survivors.Play.Components
 
         #endregion
     }
+
+    #endregion
 }

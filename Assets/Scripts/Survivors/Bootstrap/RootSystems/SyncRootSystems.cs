@@ -5,6 +5,7 @@ using Survivors.Play.Components;
 using Survivors.Play.Systems.Enemies;
 using Survivors.Play.Systems.Player.Weapons.Initialization;
 using Survivors.Play.Systems.Player.Weapons.Spawn;
+using Survivors.Play.Systems.SFX;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -16,6 +17,7 @@ namespace Survivors.Bootstrap.RootSystems
         {
 
             GetOrCreateAndAddUnmanagedSystem<WeaponSpawnQueueSystem>();
+            GetOrCreateAndAddUnmanagedSystem<SfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<DisableDeadCollidersSystem>();
         }
     }

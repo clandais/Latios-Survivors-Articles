@@ -11,9 +11,9 @@ namespace Survivors.Play.Authoring.Animations
 {
     public class FourDirectionsAnimationsAuthoring : MonoBehaviour
     {
-        public           FourDirAnimations animations;
-        [SerializeField] float             intertialBlendDuration  = 0.15f;
-        [SerializeField] float             velocityChangeThreshold = 0.1f;
+        public FourDirAnimations animations;
+        [SerializeField] float intertialBlendDuration = 0.15f;
+        [SerializeField] float velocityChangeThreshold = 0.1f;
 
         [TemporaryBakingType]
         struct AnimationClipsSmartBakeItem : ISmartBakeItem<FourDirectionsAnimationsAuthoring>
@@ -28,46 +28,35 @@ namespace Survivors.Play.Authoring.Animations
                 var entity = baker.GetEntity(TransformUsageFlags.Dynamic);
                 baker.AddComponent<Clips>(entity);
 
-                var clips = new NativeArray<SkeletonClipConfig>(5, Allocator.Temp);
+                var clipsForKinemation = new NativeArray<SkeletonClipConfig>(5, Allocator.Temp);
+
+                var authoringClips = new AnimationClip[5];
+
+                authoringClips[(int)EDirections.Center] = authoring.animations.center.clip;
+                authoringClips[(int)EDirections.Down]   = authoring.animations.down.clip;
+                authoringClips[(int)EDirections.Up]     = authoring.animations.up.clip;
+                authoringClips[(int)EDirections.Left]   = authoring.animations.left.clip;
+                authoringClips[(int)EDirections.Right]  = authoring.animations.right.clip;
+
 
                 for (var i = 0; i < 5; i++)
                 {
-                    AnimationClip clip = null;
-
-                    switch (i)
-                    {
-                        case (int)EDirections.Center:
-                            clip = authoring.animations.center.clip;
-
-                            break;
-                        case (int)EDirections.Down:
-                            clip = authoring.animations.down.clip;
-
-                            break;
-                        case (int)EDirections.Up:
-                            clip = authoring.animations.up.clip;
-
-                            break;
-                        case (int)EDirections.Left:
-                            clip = authoring.animations.left.clip;
-
-                            break;
-                        case (int)EDirections.Right:
-                            clip = authoring.animations.right.clip;
-
-                            break;
-                    }
+                    var clip = authoringClips[i];
+                    if (clip == null) continue;
 
 
-                    clips[i] = new SkeletonClipConfig
+                    clipsForKinemation[i] = new SkeletonClipConfig
                     {
                         clip     = clip,
-                        settings = SkeletonClipCompressionSettings.kDefaultSettings
+                        settings = SkeletonClipCompressionSettings.kDefaultSettings,
+                        events   = clip.ExtractKinemationClipEvents(Allocator.Temp)
                     };
                 }
 
 
-                m_clipSetHandle = baker.RequestCreateBlobAsset(baker.GetComponent<Animator>(), clips);
+                m_clipSetHandle = baker.RequestCreateBlobAsset(baker.GetComponent<Animator>(), clipsForKinemation);
+
+                clipsForKinemation.Dispose();
 
                 return true;
             }
@@ -80,7 +69,9 @@ namespace Survivors.Play.Authoring.Animations
         }
 
 
-        class ClipBaker : SmartBaker<FourDirectionsAnimationsAuthoring, AnimationClipsSmartBakeItem> { }
+        class ClipBaker : SmartBaker<FourDirectionsAnimationsAuthoring, AnimationClipsSmartBakeItem>
+        {
+        }
 
         class FourDirectionsAnimationsAuthoringBaker : Baker<FourDirectionsAnimationsAuthoring>
         {
@@ -117,7 +108,11 @@ namespace Survivors.Play.Authoring.Animations
         public AnimationClipProperty left;
         public AnimationClipProperty right;
 
-        public bool IsMissingAnimations() => center.clip == null || down.clip == null || up.clip == null || left.clip == null || right.clip == null;
+        public bool IsMissingAnimations()
+        {
+            return center.clip == null || down.clip == null || up.clip == null || left.clip == null ||
+                   right.clip == null;
+        }
     }
 
     #endregion

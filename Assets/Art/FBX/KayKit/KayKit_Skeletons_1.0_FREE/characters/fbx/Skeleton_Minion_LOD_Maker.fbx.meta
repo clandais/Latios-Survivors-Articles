@@ -49,13 +49,11 @@ ModelImporter:
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l
-    - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/handslot.l_end
     - Rig/root/hips/spine/chest/upperarm.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/handslot.r_end
     - Rig/root/hips/upperleg.l
     - Rig/root/hips/upperleg.l/lowerleg.l
@@ -2827,12 +2825,12 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages:
-    - 0.25
-    - 0.125
-    - 0.0625
-    - 0.03125
-    - 0.015625
-    - 0.01
+    - 0.49882728
+    - 0.30178112
+    - 0.19974057
+    - 0.14461957
+    - 0.07236987
+    - 0.0065743453
     globalScale: 1
     meshCompression: 0
     addColliders: 0

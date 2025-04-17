@@ -3,7 +3,6 @@ using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.BlackBoard
 {
@@ -28,8 +27,9 @@ namespace Survivors.Play.Systems.BlackBoard
             foreach (var transformAspect in SystemAPI.Query<TransformAspect>()
                          .WithAll<PlayerTag>())
             {
-                playerPosition.LastPosition = playerPosition.Position;
-                playerPosition.Position     = transformAspect.worldPosition;
+                playerPosition.LastPosition     = playerPosition.Position;
+                playerPosition.Position         = transformAspect.worldPosition;
+                playerPosition.ForwardDirection = transformAspect.forwardDirection;
             }
 
 

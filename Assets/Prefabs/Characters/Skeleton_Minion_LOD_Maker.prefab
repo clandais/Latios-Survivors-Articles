@@ -61,6 +61,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
+      propertyPath: m_AnimateCrossFading
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LocalReferencePoint.x
       value: -0.007434219
       objectReference: {fileID: 0}
@@ -70,27 +74,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
-      value: 0.49665853
+      value: 0.49882728
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LODs.Array.data[1].screenRelativeHeight
-      value: 0.24826415
+      value: 0.30178112
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LODs.Array.data[2].screenRelativeHeight
-      value: 0.117766015
+      value: 0.19974057
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LODs.Array.data[3].screenRelativeHeight
-      value: 0.04460331
+      value: 0.14461957
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LODs.Array.data[4].screenRelativeHeight
-      value: 0.012664436
+      value: 0.07236987
       objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LODs.Array.data[5].screenRelativeHeight
-      value: 0
+      value: 0.0065743453
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

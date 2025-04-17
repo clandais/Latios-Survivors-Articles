@@ -23,8 +23,9 @@ namespace Survivors.MainMenu
 
         void OnStartClicked()
         {
-            m_commandPublisher.PublishAsync(new StartButtonClickedCommand())
-                .AsUniTask().Forget();
+            m_commandPublisher.PublishAsync(new StartButtonClickedCommand());
+            
+            m_menuBehavior.StartButton.interactable = false;
         }
     }
 }

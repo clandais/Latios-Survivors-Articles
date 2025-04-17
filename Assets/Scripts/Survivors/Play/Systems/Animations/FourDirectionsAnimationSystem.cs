@@ -45,8 +45,7 @@ namespace Survivors.Play.Systems.Animations
         [BurstCompile]
         internal partial struct AnimationJob : IJobEntity
         {
-            [ReadOnly] public float DeltaTime;
-
+            [ReadOnly] public float                                   DeltaTime;
             public void Execute(
                 OptimizedSkeletonAspect skeleton,
                 in WorldTransform worldTransform,
@@ -125,11 +124,12 @@ namespace Survivors.Play.Systems.Animations
                 inertialBlendState.PreviousDeltaTime = DeltaTime;
             }
 
-            static void UpdateClipState(ref ClipState state,
+            void UpdateClipState(ref ClipState state,
                 ref SkeletonClip clip,
                 float deltaTime,
                 float weight)
             {
+                state.CurrentWeight = weight;
                 if (weight > math.EPSILON)
                 {
                     state.Update(deltaTime * state.SpeedMultiplier);
@@ -137,7 +137,7 @@ namespace Survivors.Play.Systems.Animations
                 }
             }
 
-            static void SampleAnimation(ref OptimizedSkeletonAspect skeleton,
+            void SampleAnimation(ref OptimizedSkeletonAspect skeleton,
                 ref SkeletonClip clip,
                 ClipState state,
                 float weight)
@@ -145,5 +145,7 @@ namespace Survivors.Play.Systems.Animations
                 if (weight > math.EPSILON) clip.SamplePose(ref skeleton, state.Time, weight);
             }
         }
+        
     }
+    
 }

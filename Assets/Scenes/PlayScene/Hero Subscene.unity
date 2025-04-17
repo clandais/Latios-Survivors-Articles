@@ -119,6 +119,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &924539907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 924539908}
+  - component: {fileID: 924539910}
+  - component: {fileID: 924539909}
+  m_Layer: 0
+  m_Name: Audio Listener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &924539908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924539907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 476245130154016560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &924539909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924539907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd89e842ebc68e40a9cdd2462156c7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: 1
+  interauralTimeDifferenceResolution: 2
+  listenerResponseProfile: {fileID: 0}
+--- !u!114 &924539910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924539907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d660dc5ca384634ab4851fed8d897ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneIndex: 0
 --- !u!1 &1901047641
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e89c6f96484226b85b63f76c0c42e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerGameObject: {fileID: 476245130154016560}
 --- !u!114 &1901047646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +439,7 @@ Transform:
   - {fileID: 343608740827524639}
   - {fileID: 2220100812153365298}
   - {fileID: 8618089760373654020}
+  - {fileID: 924539908}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &487530391752175442
@@ -801,6 +864,7 @@ GameObject:
   - component: {fileID: 7405646922563923209}
   - component: {fileID: 7405646922563923210}
   - component: {fileID: 7405646922563923211}
+  - component: {fileID: 7405646922563923213}
   m_Layer: 0
   m_Name: Barbarian
   m_TagString: Untagged
@@ -1596,13 +1660,13 @@ MonoBehaviour:
       speedMultiplier: 1.5
     up:
       clip: {fileID: 3543698089625107784, guid: 2b606e081db2d2d418faf929c2fd25f0, type: 3}
-      speedMultiplier: 1.2
+      speedMultiplier: 1
     left:
       clip: {fileID: -1640272175068026219, guid: 2b606e081db2d2d418faf929c2fd25f0, type: 3}
-      speedMultiplier: 1.2
+      speedMultiplier: 1
     right:
       clip: {fileID: -6877218540166537120, guid: 2b606e081db2d2d418faf929c2fd25f0, type: 3}
-      speedMultiplier: 1.2
+      speedMultiplier: 1
   intertialBlendDuration: 0.2
   velocityChangeThreshold: 0.1
 --- !u!137 &6480550737888677999
@@ -1873,6 +1937,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rightHandSlot: {fileID: 5646878762136548281}
+--- !u!114 &7405646922563923213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018466967895440255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f64f8b8b77d4b62821922f7fb9f774e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepPrefabs:
+  - {fileID: 3401434405479552170, guid: 6923e90d3a48ad64bab2efdd0838b013, type: 3}
+  - {fileID: 7026501800868151610, guid: 9db6d7d15281a9b44a2b0cd933a79365, type: 3}
+  - {fileID: 4459403299144825788, guid: 6429a66bdeeae944a957e9af1fef08e3, type: 3}
+  - {fileID: 3038294342826086401, guid: 091fc80783679a94aade5fe02d4a1596, type: 3}
+  - {fileID: 4647626412192062409, guid: 12d6fdd34ba47b7418bb5e9a7f186422, type: 3}
+  - {fileID: 6610285491919449320, guid: 8b2d4db0f50c4d346a700d2daeeb6130, type: 3}
+  eventType: 1
 --- !u!1 &7459184937849505493
 GameObject:
   m_ObjectHideFlags: 0
