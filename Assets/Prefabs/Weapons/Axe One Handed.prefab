@@ -52,6 +52,11 @@ MonoBehaviour:
     x: 0
     y: 1
     z: 0
+  sfxPrefabs:
+  - {fileID: 3401434405479552170, guid: 6c5b6f071e370b64ca0e2d305e6c6be4, type: 3}
+  - {fileID: 3401434405479552170, guid: f27354b357869e9448395e1a57c5517f, type: 3}
+  - {fileID: 3401434405479552170, guid: f55957b7cb6a48a4995d2da08918f7b9, type: 3}
+  - {fileID: 3401434405479552170, guid: 0bf903027e9dfeb49b113ba859fb64d1, type: 3}
 --- !u!136 &4681654922069636882
 CapsuleCollider:
   m_ObjectHideFlags: 0

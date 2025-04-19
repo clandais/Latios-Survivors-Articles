@@ -31,6 +31,7 @@ namespace Survivors.Play.Authoring.Player.SFX
     }
 
 
+    [InternalBufferCapacity(8)]
     public struct FootstepBufferElement : IBufferElementData
     {
         public EntityWith<Prefab> FootstepPrefab;
