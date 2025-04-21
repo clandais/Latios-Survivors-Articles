@@ -238,8 +238,8 @@ MonoBehaviour:
     x: 0
     y: -9.81
     z: 0
-  linearDamping: 0.05
-  angularDamping: 0.05
+  linearDamping: 0
+  angularDamping: 0
   solverIterations: 4
 --- !u!114 &772120505
 MonoBehaviour:
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae4a5a685ca4f85a1ad952a26091b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 2
+  cellSize: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

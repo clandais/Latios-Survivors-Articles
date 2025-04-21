@@ -26,24 +26,25 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         {
             var enemyCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnemyCollisionLayer>().Layer;
-            
-            var weaponCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
-                .GetCollectionComponent<WeaponCollisionLayer>().Layer;
+
 
             var addComponentsCommandBuffer =
-                m_latiosWorldUnmanaged.syncPoint.CreateAddComponentsCommandBuffer<HitInfos>(AddComponentsDestroyedEntityResolution.DropData);
+                m_latiosWorldUnmanaged.syncPoint.CreateAddComponentsCommandBuffer<HitInfos>(
+                    AddComponentsDestroyedEntityResolution.DropData);
 
             addComponentsCommandBuffer.AddComponentTag<DeadTag>();
-            
+
+            var ecb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer();
+
             state.Dependency = new ThrownWeaponCollisionJob
             {
                 AddComponentsCommandBuffer = addComponentsCommandBuffer.AsParallelWriter(),
+                Ecb                        = ecb.AsParallelWriter(),
                 EnemyCollisionLayer        = enemyCollisionLayer,
                 DeltaTime                  = SystemAPI.Time.DeltaTime
             }.ScheduleParallel(state.Dependency);
         }
 
-        
 
         [BurstCompile]
         partial struct ThrownWeaponCollisionJob : IJobEntity
@@ -51,6 +52,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
             [ReadOnly] public CollisionLayer                                      EnemyCollisionLayer;
             [ReadOnly] public float                                               DeltaTime;
             public            AddComponentsCommandBuffer<HitInfos>.ParallelWriter AddComponentsCommandBuffer;
+            public            EntityCommandBuffer.ParallelWriter                  Ecb;
 
             void Execute(
                 ref WorldTransform transform,
@@ -71,11 +73,15 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                             in EnemyCollisionLayer,
                             out var hitInfos,
                             out var bodyInfos))
+                    {
                         AddComponentsCommandBuffer.Add(bodyInfos.entity, new HitInfos
                         {
                             Position = hitInfos.hitpoint,
                             Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed
                         }, bodyInfos.bodyIndex);
+
+                        Ecb.SetComponentEnabled<SfxTriggeredTag>(bodyInfos.bodyIndex, bodyInfos.entity, true);
+                    }
 
 
                     transformQvs.position += thrownWeapon.Direction * steppedSpeed * DeltaTime;

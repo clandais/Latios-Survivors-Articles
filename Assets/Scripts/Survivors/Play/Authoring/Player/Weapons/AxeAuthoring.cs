@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Latios;
-using Survivors.Play.Components;
+﻿using Survivors.Play.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -12,10 +10,10 @@ namespace Survivors.Play.Authoring.Player.Weapons
         [Header("Axe Config")] [SerializeField]
         float speed;
 
-        [SerializeField] float rotationSpeed;
+        [SerializeField] float  rotationSpeed;
         [SerializeField] float3 rotationAxis;
 
-        [SerializeField] List<GameObject> sfxPrefabs;
+        [SerializeField] SfxListRef sfxListRef;
 
         class AxeAuthoringBaker : Baker<AxeAuthoring>
         {
@@ -32,33 +30,30 @@ namespace Survivors.Play.Authoring.Player.Weapons
 
                 AddComponent<WeaponTag>(entity);
 
-
-                var buffer = AddBuffer<SfxWhooshBufferElement>(entity);
-
-                foreach (var prefab in authoring.sfxPrefabs)
+                AddComponent(entity, new OneShotSfxSpawnerRef
                 {
-                    var sfxPrefab = GetEntity(prefab, TransformUsageFlags.Dynamic);
-                    buffer.Add(new SfxWhooshBufferElement
-                    {
-                        Prefab = sfxPrefab
-                    });
-                }
+                    SfxPrefab = GetEntity(authoring.sfxListRef.oneShotSfxPrefabs, TransformUsageFlags.None),
+                    EventType = authoring.sfxListRef.eventType
+                });
+
+                AddComponent<SfxTriggeredTag>(entity);
+                SetComponentEnabled<SfxTriggeredTag>(entity, true);
             }
         }
     }
 
     public struct ThrownWeaponComponent : IComponentData
     {
-        public float Speed;
-        public float RotationSpeed;
+        public float  Speed;
+        public float  RotationSpeed;
         public float3 RotationAxis;
         public float3 Direction;
     }
 
     public struct ThrownWeaponConfigComponent : IComponentData
     {
-        public readonly float Speed;
-        public readonly float RotationSpeed;
+        public readonly float  Speed;
+        public readonly float  RotationSpeed;
         public readonly float3 RotationAxis;
 
         public ThrownWeaponConfigComponent(float speed,
@@ -69,11 +64,5 @@ namespace Survivors.Play.Authoring.Player.Weapons
             RotationSpeed = rotationSpeed;
             RotationAxis  = rotationAxis;
         }
-    }
-
-    [InternalBufferCapacity(8)]
-    public struct SfxWhooshBufferElement : IBufferElementData
-    {
-        public EntityWith<Prefab> Prefab;
     }
 }

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5844482534711157990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8049736261155538011}
+  - component: {fileID: 7132040383070312861}
+  m_Layer: 0
+  m_Name: Hero Footsteps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8049736261155538011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5844482534711157990}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.400325, y: -6.6613154, z: -50.733894}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7132040383070312861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5844482534711157990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919c6e2f32b3411e8d2ddc170917efcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oneShotSfxPrefabs:
+  - {fileID: 3401434405479552170, guid: 6923e90d3a48ad64bab2efdd0838b013, type: 3}
+  - {fileID: 7026501800868151610, guid: 9db6d7d15281a9b44a2b0cd933a79365, type: 3}
+  - {fileID: 4459403299144825788, guid: 6429a66bdeeae944a957e9af1fef08e3, type: 3}
+  - {fileID: 3038294342826086401, guid: 091fc80783679a94aade5fe02d4a1596, type: 3}
+  - {fileID: 4647626412192062409, guid: 12d6fdd34ba47b7418bb5e9a7f186422, type: 3}
+  - {fileID: 6610285491919449320, guid: 8b2d4db0f50c4d346a700d2daeeb6130, type: 3}

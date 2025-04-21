@@ -30,16 +30,17 @@ namespace Survivors.Play.Systems.Enemies
                 .With<EnemyTag>()
                 .Without<DeadTag>()
                 .Build();
-            
+
             state.RequireForUpdate<FloorGridConstructedTag>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true).layer;
+            var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true)
+                .layer;
             var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            var grid = m_world.GetCollectionAspect<VectorFieldAspect>( m_world.sceneBlackboardEntity);
+            var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
 
             state.Dependency = new FollowPlayerJob
             {
@@ -65,8 +66,11 @@ namespace Survivors.Play.Systems.Enemies
                 ref PreviousVelocity previousVelocity)
             {
                 var targetDelta = float3.zero;
-                
+
                 var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
+
+                if (math.length(vecDelta) < math.EPSILON) vecDelta = math.normalizesafe(rigidBody.velocity.linear.xz);
+
                 var deltaToPlayer = math.normalizesafe(PlayerPosition.Position - transformAspect.worldPosition);
 
                 var rayStart = transformAspect.worldPosition + math.up();
@@ -74,7 +78,7 @@ namespace Survivors.Play.Systems.Enemies
 
                 // Check if the raycast to the player hits the environment
                 // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out RaycastResult result, out _))
+                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out var result, out _))
                     vecDelta += deltaToPlayer.xz;
 
 
@@ -104,18 +108,22 @@ namespace Survivors.Play.Systems.Enemies
                     desiredVelocity = float3.zero;
                     UnityEngine.Debug.Log($"Nan detected in desiredVelocity: {desiredVelocity}");
                 }
-                
+
 
                 desiredVelocity.y      = currentVelocity.y;
                 previousVelocity.Value = currentVelocity;
 
-                currentVelocity           = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
+                currentVelocity = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
                 rigidBody.velocity.linear = currentVelocity;
 
 
-                var lookDirection = math.length(currentVelocity) > math.EPSILON ? math.normalize(currentVelocity) : math.normalize(desiredVelocity);
+                var lookDirection = math.length(currentVelocity) > math.EPSILON
+                    ? math.normalize(currentVelocity)
+                    : math.normalize(desiredVelocity);
                 var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
-                transformAspect.worldRotation = transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
+                transformAspect.worldRotation =
+                    transformAspect.worldRotation.RotateTowards(lookRotation,
+                        movementSettings.maxAngleDelta * DeltaTime);
             }
         }
     }

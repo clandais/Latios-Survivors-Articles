@@ -11,7 +11,6 @@ namespace Survivors.Play.Authoring
     {
         [FormerlySerializedAs("playerData")] [SerializeField]
         public MovementSettingsData movementSettingsData;
-        // [SerializeField] MovementSettings movementSettings;
 
         class PlayerAuthoringBaker : Baker<PlayerAuthoring>
         {
@@ -28,7 +27,9 @@ namespace Survivors.Play.Authoring
         }
     }
 
-    public struct PlayerTag : IComponentData { }
+    public struct PlayerTag : IComponentData
+    {
+    }
 
     [Serializable]
     public struct MovementSettings : IComponentData

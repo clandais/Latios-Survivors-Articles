@@ -180,6 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boneIndex: 0
+  useReversePath: 0
+  reversePathStartsWith: 
 --- !u!1 &1901047641
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +386,7 @@ MonoBehaviour:
     x: 1
     y: 1
     z: 1
-  forceLockAxesExists: 0
+  forceLockAxesExists: 1
   initialVelocity:
     x: 0
     y: 0
@@ -1949,14 +1951,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f64f8b8b77d4b62821922f7fb9f774e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepPrefabs:
-  - {fileID: 3401434405479552170, guid: 6923e90d3a48ad64bab2efdd0838b013, type: 3}
-  - {fileID: 7026501800868151610, guid: 9db6d7d15281a9b44a2b0cd933a79365, type: 3}
-  - {fileID: 4459403299144825788, guid: 6429a66bdeeae944a957e9af1fef08e3, type: 3}
-  - {fileID: 3038294342826086401, guid: 091fc80783679a94aade5fe02d4a1596, type: 3}
-  - {fileID: 4647626412192062409, guid: 12d6fdd34ba47b7418bb5e9a7f186422, type: 3}
-  - {fileID: 6610285491919449320, guid: 8b2d4db0f50c4d346a700d2daeeb6130, type: 3}
-  eventType: 1
+  footStepListRef:
+    oneShotSfxPrefabs: {fileID: 7132040383070312861, guid: ee3951643a9bcbf43a5723daacdad776, type: 3}
+    eventType: 0
 --- !u!1 &7459184937849505493
 GameObject:
   m_ObjectHideFlags: 0

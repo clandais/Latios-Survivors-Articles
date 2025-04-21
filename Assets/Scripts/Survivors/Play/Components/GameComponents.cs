@@ -7,13 +7,9 @@ using UnityEngine;
 
 namespace Survivors.Play.Components
 {
-    public struct PauseRequestedTag : IComponentData
-    {
-    }
+    public struct PauseRequestedTag : IComponentData { }
 
-    public struct DeadTag : IComponentData
-    {
-    }
+    public struct DeadTag : IComponentData { }
 
 
     public struct HitInfos : IComponentData
@@ -26,9 +22,9 @@ namespace Survivors.Play.Components
     {
         public struct SfxSpawnData
         {
-            public int EventHash;
+            public ESfxEventType      eventType;
             public EntityWith<Prefab> SfxPrefab;
-            public float3 Position;
+            public float3             Position;
         }
 
         public NativeQueue<SfxSpawnData> SfxQueue;
@@ -44,9 +40,7 @@ namespace Survivors.Play.Components
 
     #region Navigation
 
-    public struct FloorGridConstructedTag : IComponentData
-    {
-    }
+    public struct FloorGridConstructedTag : IComponentData { }
 
     /// <summary>
     ///     Settings for the flow field system.
@@ -62,8 +56,8 @@ namespace Survivors.Play.Components
     /// </summary>
     public partial struct FloorGrid : ICollectionComponent
     {
-        public NativeArray<bool> Walkable;
-        public NativeArray<int> IntegrationField;
+        public NativeArray<bool>   Walkable;
+        public NativeArray<int>    IntegrationField;
         public NativeArray<float2> VectorField;
 
         public int Width;

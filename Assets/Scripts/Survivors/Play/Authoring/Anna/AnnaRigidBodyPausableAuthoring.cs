@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Survivors.Play.Authoring.Anna
 {
-    [AddComponentMenu("Survivors/Anna/AnnaRigidBodyExtension")]
+    [AddComponentMenu("Survivors/Anna/RigidBodyPausable")]
     [RequireComponent(typeof(AnnaRigidBodyAuthoring))]
-    public class AnnaRigidBodyExtensionAuthoring : MonoBehaviour
+    public class AnnaRigidBodyPausableAuthoring : MonoBehaviour
     {
-        class AnnaRigidBodyExtensionBaker : Baker<AnnaRigidBodyExtensionAuthoring>
+        class AnnaRigidBodyPausableBaker : Baker<AnnaRigidBodyPausableAuthoring>
         {
-            public override void Bake(AnnaRigidBodyExtensionAuthoring authoring)
+            public override void Bake(AnnaRigidBodyPausableAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<SavedRigidBodyState>(entity);
@@ -26,8 +26,8 @@ namespace Survivors.Play.Authoring.Anna
     public struct SavedRigidBodyState : IComponentData
     {
         public UnitySim.Velocity Velocity;
-        public float             InverseMass;
-        public half              CoefficientOfFriction;
-        public half              CoefficientOfRestitution;
+        public float InverseMass;
+        public half CoefficientOfFriction;
+        public half CoefficientOfRestitution;
     }
 }

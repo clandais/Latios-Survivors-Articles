@@ -2,7 +2,6 @@
 using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Player.Actions;
-using Survivors.Play.Authoring.Player.Weapons;
 using Survivors.Play.Authoring.SceneBlackBoard;
 using Survivors.Play.Components;
 using Unity.Burst;
@@ -17,7 +16,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
     public partial struct WeaponThrowTriggerSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
-        EntityQuery _rightHandQuery;
+        EntityQuery          _rightHandQuery;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -45,9 +44,6 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
             var spawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<WeaponSpawnQueue>()
                 .WeaponQueue;
 
-            var sfxQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<SfxSpawnQueue>()
-                .SfxQueue;
-
             var prefab =
                 m_worldUnmanaged.sceneBlackboardEntity.GetBuffer<PrefabBufferElement>()[(int)EWeaponType.ThrowableAxe]
                     .Prefab;
@@ -61,26 +57,21 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
                 MousePosition = mousePosition,
                 Prefab        = prefab,
                 SpawnQueue    = spawnQueue,
-                SfxQueue      = sfxQueue,
                 CommandBuffer = ecb.AsParallelWriter(),
-                Rng           = state.GetJobRng(),
-                SfxLookup     = SystemAPI.GetBufferLookup<SfxWhooshBufferElement>(true)
+                Rng           = state.GetJobRng()
             }.ScheduleParallel(state.Dependency);
         }
 
         [BurstCompile]
         partial struct WeaponThrowTriggerJob : IJobEntity, IJobEntityChunkBeginEnd
         {
-            [ReadOnly] public ComponentLookup<WorldTransform> Transforms;
-            [ReadOnly] public float3 MousePosition;
-            [ReadOnly] public Entity Prefab;
+            [ReadOnly]                            public ComponentLookup<WorldTransform>               Transforms;
+            [ReadOnly]                            public float3                                        MousePosition;
+            [ReadOnly]                            public Entity                                        Prefab;
             [NativeDisableParallelForRestriction] public NativeQueue<WeaponSpawnQueue.WeaponSpawnData> SpawnQueue;
-            [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
 
             public EntityCommandBuffer.ParallelWriter CommandBuffer;
-
-            [ReadOnly] public BufferLookup<SfxWhooshBufferElement> SfxLookup;
-            public SystemRng Rng;
+            public SystemRng                          Rng;
 
 
             void Execute(Entity entity, [EntityIndexInQuery] int index, in RightHandSlot slot)
@@ -98,14 +89,6 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
                 });
 
 
-                var sfxBuffer = SfxLookup[Prefab];
-                var sfxWhoosh = sfxBuffer[Rng.NextInt(0, sfxBuffer.Length)].Prefab;
-                SfxQueue.Enqueue(new SfxSpawnQueue.SfxSpawnData
-                {
-                    SfxPrefab = sfxWhoosh,
-                    Position  = rHandSlotTransform.position
-                });
-
                 CommandBuffer.SetComponentEnabled<RightHandSlotThrowTag>(index, entity, false);
             }
 
@@ -118,9 +101,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
 
             public void OnChunkEnd(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
                 in v128 chunkEnabledMask,
-                bool chunkWasExecuted)
-            {
-            }
+                bool chunkWasExecuted) { }
         }
     }
 }
