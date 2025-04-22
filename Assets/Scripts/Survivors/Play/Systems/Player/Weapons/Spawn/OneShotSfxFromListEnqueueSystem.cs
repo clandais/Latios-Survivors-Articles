@@ -73,7 +73,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
                 {
                     SfxPrefab = sfxPrefab,
                     Position  = worldTransform.position,
-                    eventType = sfxSpawnerRef.EventType
+                    EventType = sfxSpawnerRef.EventType
                 });
 
                 CommandBuffer.SetComponentEnabled<SfxTriggeredTag>(index, entity, false);

@@ -40,6 +40,7 @@ namespace Survivors.Play.Scope
             builder.RegisterSystemFromDefaultWorld<EscapeKeySystem>();
             builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
             builder.RegisterSystemFromDefaultWorld<PlayerInputSystem>();
+            builder.RegisterSystemFromDefaultWorld<MainAudioListenerUpdateSystem>();
             builder.RegisterSystemFromDefaultWorld<EnemyCounterSystem>();
 
             builder.RegisterBuildCallback(container =>

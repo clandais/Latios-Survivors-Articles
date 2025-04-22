@@ -47,9 +47,9 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: 3860a10999f765c47b653f96be9945ac, type: 3}
   looping: 0
   autoDestroyOnFinish: 1
-  volume: 0.5
-  innerRange: 5
-  outerRange: 100
+  volume: 1
+  innerRange: 50
+  outerRange: 500
   rangeFadeMargin: 1
   playFromBeginningAtSpawn: 0
   voices: 0

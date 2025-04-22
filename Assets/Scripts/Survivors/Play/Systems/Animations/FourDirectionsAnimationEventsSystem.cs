@@ -101,7 +101,7 @@ namespace Survivors.Play.Systems.Animations
 
                     SfxQueue.Enqueue(new SfxSpawnQueue.SfxSpawnData
                     {
-                        eventType = ESfxEventType.Footstep,
+                        EventType = ESfxEventType.Footstep,
                         Position  = worldTransform.position,
                         SfxPrefab = sfxPrefab
                     });

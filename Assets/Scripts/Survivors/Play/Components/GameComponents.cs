@@ -22,7 +22,7 @@ namespace Survivors.Play.Components
     {
         public struct SfxSpawnData
         {
-            public ESfxEventType      eventType;
+            public ESfxEventType      EventType;
             public EntityWith<Prefab> SfxPrefab;
             public float3             Position;
         }

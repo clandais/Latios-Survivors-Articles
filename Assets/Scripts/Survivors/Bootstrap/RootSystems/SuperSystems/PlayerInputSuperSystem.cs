@@ -17,6 +17,7 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
 
 
             GetOrCreateAndAddManagedSystem<PlayerInputSystem>();
+            GetOrCreateAndAddManagedSystem<MainAudioListenerUpdateSystem>();
         }
 
         public override bool ShouldUpdateSystem()
