@@ -45,9 +45,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
         }
 
         [BurstCompile]
-        public void OnDestroy(ref SystemState state)
-        {
-        }
+        public void OnDestroy(ref SystemState state) { }
     }
 
 

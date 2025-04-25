@@ -39,7 +39,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
             state.Dependency = new ThrownWeaponCollisionJob
             {
                 AddComponentsCommandBuffer = addComponentsCommandBuffer.AsParallelWriter(),
-                Ecb                        = ecb.AsParallelWriter(),
+                SfxTriggeredTags           = SystemAPI.GetComponentLookup<SfxTriggeredTag>(),
                 EnemyCollisionLayer        = enemyCollisionLayer,
                 DeltaTime                  = SystemAPI.Time.DeltaTime
             }.ScheduleParallel(state.Dependency);
@@ -49,10 +49,10 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         [BurstCompile]
         partial struct ThrownWeaponCollisionJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer                                      EnemyCollisionLayer;
-            [ReadOnly] public float                                               DeltaTime;
-            public            AddComponentsCommandBuffer<HitInfos>.ParallelWriter AddComponentsCommandBuffer;
-            public            EntityCommandBuffer.ParallelWriter                  Ecb;
+            [ReadOnly] public CollisionLayer EnemyCollisionLayer;
+            [ReadOnly] public float DeltaTime;
+            public AddComponentsCommandBuffer<HitInfos>.ParallelWriter AddComponentsCommandBuffer;
+            [NativeDisableParallelForRestriction] public ComponentLookup<SfxTriggeredTag> SfxTriggeredTags;
 
             void Execute(
                 ref WorldTransform transform,
@@ -80,7 +80,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                             Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed
                         }, bodyInfos.bodyIndex);
 
-                        Ecb.SetComponentEnabled<SfxTriggeredTag>(bodyInfos.bodyIndex, bodyInfos.entity, true);
+
+                        SfxTriggeredTags.SetComponentEnabled(bodyInfos.entity, true);
                     }
 
 

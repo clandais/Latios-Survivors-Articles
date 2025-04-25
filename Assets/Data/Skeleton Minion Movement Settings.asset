@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Skeleton Minion Movement Settings
   m_EditorClassIdentifier: 
   movementSettings:
-    moveSpeed: 4
+    moveSpeed: 2
     maxAngleDelta: 180
-    speedChangeRate: 0.05
+    speedChangeRate: 0.075

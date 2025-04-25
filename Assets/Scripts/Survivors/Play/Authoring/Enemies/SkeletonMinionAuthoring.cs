@@ -9,7 +9,6 @@ namespace Survivors.Play.Authoring.Enemies
     public class SkeletonMinionAuthoring : MonoBehaviour
     {
         [SerializeField] MovementSettingsData movementSettings;
-        [SerializeField] SfxListRef           sfxListRef;
 
         class SkeletonMinionAuthoringBaker : Baker<SkeletonMinionAuthoring>
         {
@@ -22,15 +21,6 @@ namespace Survivors.Play.Authoring.Enemies
                 {
                     Value = float3.zero
                 });
-
-                AddComponent(entity, new OneShotSfxSpawnerRef
-                {
-                    SfxPrefab = GetEntity(authoring.sfxListRef.oneShotSfxPrefabs, TransformUsageFlags.None),
-                    EventType = authoring.sfxListRef.eventType
-                });
-
-                AddComponent<SfxTriggeredTag>(entity);
-                SetComponentEnabled<SfxTriggeredTag>(entity, false);
             }
         }
     }

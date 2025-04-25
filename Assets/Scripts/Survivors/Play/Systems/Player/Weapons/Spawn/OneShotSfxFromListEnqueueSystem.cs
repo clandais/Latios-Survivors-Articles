@@ -33,26 +33,25 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            state.Dependency = new WeaponSfxSpawnJob
+            state.Dependency = new SfxEnqueueJob
             {
-                SfxQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<SfxSpawnQueue>().SfxQueue,
-                CommandBuffer = m_worldUnmanaged.syncPoint.CreateEntityCommandBuffer().AsParallelWriter(),
-                SpawnerLookup = SystemAPI.GetComponentLookup<OneShotSfxSpawner>(true),
+                SfxQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<SfxSpawnQueue>().SfxQueue
+                    .AsParallelWriter(),
+                CommandBuffer    = m_worldUnmanaged.syncPoint.CreateEntityCommandBuffer().AsParallelWriter(),
+                SpawnerLookup    = SystemAPI.GetComponentLookup<OneShotSfxSpawner>(true),
                 SfxPrefabsLookup = SystemAPI.GetBufferLookup<OneShotSfxElement>(true),
-                Rng = state.GetJobRng()
+                Rng              = state.GetJobRng()
             }.ScheduleParallel(m_entityQuery, state.Dependency);
 
             state.Dependency.Complete();
         }
 
-        [BurstCompile]
-        public void OnDestroy(ref SystemState state) { }
-
 
         [BurstCompile]
-        partial struct WeaponSfxSpawnJob : IJobEntity, IJobEntityChunkBeginEnd
+        partial struct SfxEnqueueJob : IJobEntity, IJobEntityChunkBeginEnd
         {
-            [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
+            [NativeDisableParallelForRestriction]
+            public NativeQueue<SfxSpawnQueue.SfxSpawnData>.ParallelWriter SfxQueue;
 
             [ReadOnly] public ComponentLookup<OneShotSfxSpawner> SpawnerLookup;
             [ReadOnly] public BufferLookup<OneShotSfxElement>    SfxPrefabsLookup;

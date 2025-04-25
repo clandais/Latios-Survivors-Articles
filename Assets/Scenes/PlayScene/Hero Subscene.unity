@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &580325457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 580325459}
+  - component: {fileID: 580325458}
+  m_Layer: 0
+  m_Name: FootSteps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &580325458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580325457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f64f8b8b77d4b62821922f7fb9f774e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxListRef:
+    oneShotSfxPrefabs: {fileID: 7132040383070312861, guid: ee3951643a9bcbf43a5723daacdad776, type: 3}
+    eventType: 1
+--- !u!4 &580325459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580325457}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 476245130154016560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &864031119
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,69 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f88e9163aab4d77b7876fdd2d474ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &924539907
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 924539908}
-  - component: {fileID: 924539910}
-  - component: {fileID: 924539909}
-  m_Layer: 0
-  m_Name: Audio Listener
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &924539908
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924539907}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 476245130154016560}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &924539909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924539907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecd89e842ebc68e40a9cdd2462156c7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volume: 1
-  interauralTimeDifferenceResolution: 2
-  listenerResponseProfile: {fileID: 0}
---- !u!114 &924539910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924539907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d660dc5ca384634ab4851fed8d897ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boneIndex: 0
-  useReversePath: 0
-  reversePathStartsWith: 
 --- !u!1 &1901047641
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,7 +485,7 @@ Transform:
   - {fileID: 343608740827524639}
   - {fileID: 2220100812153365298}
   - {fileID: 8618089760373654020}
-  - {fileID: 924539908}
+  - {fileID: 580325459}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &487530391752175442
@@ -926,7 +910,7 @@ GameObject:
   - component: {fileID: 7405646922563923209}
   - component: {fileID: 7405646922563923210}
   - component: {fileID: 7405646922563923211}
-  - component: {fileID: 7405646922563923213}
+  - component: {fileID: 7405646922563923212}
   m_Layer: 0
   m_Name: Barbarian
   m_TagString: Untagged
@@ -1999,7 +1983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rightHandSlot: {fileID: 5646878762136548281}
---- !u!114 &7405646922563923213
+--- !u!114 &7405646922563923212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2008,12 +1992,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2018466967895440255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f64f8b8b77d4b62821922f7fb9f774e, type: 3}
+  m_Script: {fileID: 11500000, guid: 41ab6d4170f643169fb8ce0ef8d1c1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footStepListRef:
-    oneShotSfxPrefabs: {fileID: 7132040383070312861, guid: ee3951643a9bcbf43a5723daacdad776, type: 3}
-    eventType: 0
+  footStepListRef: {fileID: 580325458}
 --- !u!1 &7459184937849505493
 GameObject:
   m_ObjectHideFlags: 0

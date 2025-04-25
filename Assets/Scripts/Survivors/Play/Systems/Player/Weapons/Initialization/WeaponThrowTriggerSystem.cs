@@ -2,6 +2,7 @@
 using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Player.Actions;
+using Survivors.Play.Authoring.Player.Weapons;
 using Survivors.Play.Authoring.SceneBlackBoard;
 using Survivors.Play.Components;
 using Unity.Burst;
@@ -58,7 +59,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
                 Prefab        = prefab,
                 SpawnQueue    = spawnQueue,
                 CommandBuffer = ecb.AsParallelWriter(),
-                Rng           = state.GetJobRng()
+                Rng           = state.GetJobRng(),
+                AxeSfxRefs    = SystemAPI.GetComponentLookup<AxeSfxRefs>(true)
             }.ScheduleParallel(state.Dependency);
         }
 
@@ -72,6 +74,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
 
             public EntityCommandBuffer.ParallelWriter CommandBuffer;
             public SystemRng                          Rng;
+
+            [ReadOnly] public ComponentLookup<AxeSfxRefs> AxeSfxRefs;
 
 
             void Execute(Entity entity, [EntityIndexInQuery] int index, in RightHandSlot slot)
@@ -88,6 +92,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
                     Direction    = direction
                 });
 
+                var axeSfxRefs = AxeSfxRefs[Prefab];
+                CommandBuffer.SetComponentEnabled<SfxTriggeredTag>(index, axeSfxRefs.SwooshSpawnerEntity, true);
 
                 CommandBuffer.SetComponentEnabled<RightHandSlotThrowTag>(index, entity, false);
             }

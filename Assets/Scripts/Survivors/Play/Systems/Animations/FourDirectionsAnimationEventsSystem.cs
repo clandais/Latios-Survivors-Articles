@@ -1,6 +1,8 @@
 ﻿using Latios;
 using Latios.Transforms;
+using Survivors.Play.Authoring.Player.SFX;
 using Survivors.Play.Components;
+using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
@@ -23,7 +25,7 @@ namespace Survivors.Play.Systems.Animations
                 .With<Clips>()
                 .With<WorldTransform>()
                 .With<FourDirectionClipStates>()
-                .With<OneShotSfxSpawnerRef>()
+                .With<PlayerSfxRefs>()
                 .Build();
         }
 
@@ -45,6 +47,7 @@ namespace Survivors.Play.Systems.Animations
             {
                 SfxQueue               = sfxQueue,
                 Rng                    = state.GetJobRng(),
+                SpawnerRefLookup       = SystemAPI.GetComponentLookup<OneShotSfxSpawnerRef>(true),
                 SpawnerLookup          = SystemAPI.GetComponentLookup<OneShotSfxSpawner>(true),
                 FootstepsPrefabsLookup = SystemAPI.GetBufferLookup<OneShotSfxElement>(true)
             }.ScheduleParallel(m_query, state.Dependency);
@@ -56,14 +59,16 @@ namespace Survivors.Play.Systems.Animations
             [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
             public                                       SystemRng                               Rng;
 
-            [ReadOnly] public ComponentLookup<OneShotSfxSpawner> SpawnerLookup;
-            [ReadOnly] public BufferLookup<OneShotSfxElement>    FootstepsPrefabsLookup;
+            [ReadOnly] public ComponentLookup<OneShotSfxSpawnerRef> SpawnerRefLookup;
+            [ReadOnly] public ComponentLookup<OneShotSfxSpawner>    SpawnerLookup;
+            [ReadOnly] public BufferLookup<OneShotSfxElement>       FootstepsPrefabsLookup;
+
 
             void Execute(
                 in FourDirectionClipStates clipStates,
                 in Clips clips,
                 in WorldTransform worldTransform,
-                in OneShotSfxSpawnerRef oneShotSfxSpawner)
+                in PlayerSfxRefs playerSfxRefs)
             {
                 var clipStatesArray = new NativeArray<ClipState>(5, Allocator.Temp);
                 clipStatesArray[(int)EDirections.Center] = clipStates.Center;
@@ -96,7 +101,10 @@ namespace Survivors.Play.Systems.Animations
                     var evt = clip.events.parameters[j];
                     if (evt != (int)ESfxEventType.Footstep) continue;
 
-                    var sfxPrefab = GetSfx(oneShotSfxSpawner);
+                    var spawnerRef = SpawnerRefLookup[playerSfxRefs.FootStepSpawnerEntity];
+                    var sfxPrefab = SfxUtilities.GetSfx(in spawnerRef, in SpawnerLookup, in FootstepsPrefabsLookup,
+                        ref Rng);
+
                     if (sfxPrefab == Entity.Null) continue;
 
                     SfxQueue.Enqueue(new SfxSpawnQueue.SfxSpawnData
@@ -107,17 +115,6 @@ namespace Survivors.Play.Systems.Animations
                     });
                 }
             }
-
-            Entity GetSfx(in OneShotSfxSpawnerRef oneShotSfxSpawner)
-            {
-                var spawner = SpawnerLookup[oneShotSfxSpawner.SfxPrefab];
-                var buffer = FootstepsPrefabsLookup[oneShotSfxSpawner.SfxPrefab];
-                if (buffer.Length == 0) return Entity.Null;
-
-                var prefabIndex = Rng.NextInt(0, spawner.SfxCount);
-                return buffer[prefabIndex].Prefab;
-            }
-
 
             public bool OnChunkBegin(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
                 in v128 chunkEnabledMask)

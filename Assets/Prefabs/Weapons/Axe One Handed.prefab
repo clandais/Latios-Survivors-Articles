@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7795027148151215856}
   - component: {fileID: 6372085146977786535}
   - component: {fileID: 4681654922069636882}
+  - component: {fileID: 2490713405260550440}
   m_Layer: 0
   m_Name: Axe One Handed
   m_TagString: Untagged
@@ -32,6 +33,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3409826277336018689}
+  - {fileID: 1118893238066211686}
+  - {fileID: 6427426369618357671}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6372085146977786535
@@ -52,9 +55,6 @@ MonoBehaviour:
     x: 0
     y: 1
     z: 0
-  sfxListRef:
-    oneShotSfxPrefabs: {fileID: 2307612254785990157, guid: 9df53fa3318c2964f8f794f40125220d, type: 3}
-    eventType: 1
 --- !u!136 &4681654922069636882
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -78,6 +78,114 @@ CapsuleCollider:
   m_Height: 2.5
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0.4}
+--- !u!114 &2490713405260550440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048361051549915923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df3f97170d97428d92aea4f3a8c213f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxListRef: {fileID: 5734239261913090940}
+  hitSfxListRef: {fileID: 2974473757911622553}
+--- !u!1 &4974571551637322067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6427426369618357671}
+  - component: {fileID: 2974473757911622553}
+  m_Layer: 0
+  m_Name: Hit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6427426369618357671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974571551637322067}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7795027148151215856}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2974473757911622553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974571551637322067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f64f8b8b77d4b62821922f7fb9f774e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxListRef:
+    oneShotSfxPrefabs: {fileID: 2307612254785990157, guid: 43691a868a73fae48bdf67a103594eb6, type: 3}
+    eventType: 0
+--- !u!1 &7507267228911117420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1118893238066211686}
+  - component: {fileID: 5734239261913090940}
+  m_Layer: 0
+  m_Name: Swoosh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1118893238066211686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7507267228911117420}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7795027148151215856}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5734239261913090940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7507267228911117420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f64f8b8b77d4b62821922f7fb9f774e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxListRef:
+    oneShotSfxPrefabs: {fileID: 2307612254785990157, guid: 9df53fa3318c2964f8f794f40125220d, type: 3}
+    eventType: 2
 --- !u!1001 &2943273414713575658
 PrefabInstance:
   m_ObjectHideFlags: 0

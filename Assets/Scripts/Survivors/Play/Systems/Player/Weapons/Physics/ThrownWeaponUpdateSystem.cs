@@ -6,13 +6,14 @@ using Survivors.Play.Authoring.Player.Weapons;
 using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
+using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Player.Weapons.Physics
 {
-    public partial struct ThrownWeaponUpdateSystem : ISystem
+    public partial struct ThrownWeaponUpdateSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_latiosWorldUnmanaged;
 
@@ -29,34 +30,49 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
             var collisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnvironmentCollisionLayer>().layer;
 
-
             state.Dependency = new ThrownWeaponUpdateJob
             {
                 DeltaTime            = SystemAPI.Time.DeltaTime,
                 EnvironmentLayer     = collisionLayer,
-                DestroyCommandBuffer = dcb.AsParallelWriter()
+                DestroyCommandBuffer = dcb.AsParallelWriter(),
+                Rng                  = state.GetJobRng(),
+                SfxQueue =
+                    m_latiosWorldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<SfxSpawnQueue>().SfxQueue,
+                SpawnerLookup    = SystemAPI.GetComponentLookup<OneShotSfxSpawner>(true),
+                SfxPrefabsLookup = SystemAPI.GetBufferLookup<OneShotSfxElement>(true),
+                SpawnerRefLookup = SystemAPI.GetComponentLookup<OneShotSfxSpawnerRef>()
             }.ScheduleParallel(state.Dependency);
         }
 
-        [BurstCompile]
-        public void OnDestroy(ref SystemState state) { }
+
+        public void OnNewScene(ref SystemState state)
+        {
+            state.InitSystemRng("ThrownWeaponUpdateSystem");
+        }
     }
 
 
     [BurstCompile]
-    internal partial struct ThrownWeaponUpdateJob : IJobEntity
+    internal partial struct ThrownWeaponUpdateJob : IJobEntity, IJobEntityChunkBeginEnd
     {
         public            DestroyCommandBuffer.ParallelWriter DestroyCommandBuffer;
         [ReadOnly] public CollisionLayer                      EnvironmentLayer;
+        [ReadOnly] public float                               DeltaTime;
 
-        [ReadOnly] public float DeltaTime;
+
+        [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
+        public                                       SystemRng                               Rng;
+        [ReadOnly] public                            ComponentLookup<OneShotSfxSpawnerRef>   SpawnerRefLookup;
+        [ReadOnly] public                            ComponentLookup<OneShotSfxSpawner>      SpawnerLookup;
+        [ReadOnly] public                            BufferLookup<OneShotSfxElement>         SfxPrefabsLookup;
 
         void Execute(
             Entity entity,
             [EntityIndexInQuery] int entityIndexInQuery,
             ref WorldTransform transform,
             in ThrownWeaponComponent thrownWeapon,
-            in Collider collider
+            in Collider collider,
+            in AxeSfxRefs axeSfxRefs
         )
         {
             var transformQvs = transform.worldTransform;
@@ -77,6 +93,20 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
 
                 if (collision)
                 {
+                    var spawnerRef = SpawnerRefLookup[axeSfxRefs.HitSpawnerEntity];
+                    var sfxPrefab = SfxUtilities.GetSfx(in spawnerRef, in SpawnerLookup, in SfxPrefabsLookup, ref Rng);
+
+                    if (sfxPrefab != Entity.Null)
+                        SfxQueue.Enqueue(new SfxSpawnQueue.SfxSpawnData
+                        {
+                            EventType = ESfxEventType.AxeSwoosh,
+                            Position  = transformQvs.position,
+                            SfxPrefab = sfxPrefab
+                        });
+
+                    //  if (SfxTriggeredTag.HasComponent(axeSfxRefs.HitSpawnerEntity))
+                    //  SfxTriggeredTag.SetComponentEnabled(axeSfxRefs.HitSpawnerEntity, true);
+
                     DestroyCommandBuffer.Add(entity, entityIndexInQuery);
 
                     return;
@@ -91,5 +121,16 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
 
             transform.worldTransform = transformQvs;
         }
+
+        public bool OnChunkBegin(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
+            in v128 chunkEnabledMask)
+        {
+            Rng.BeginChunk(unfilteredChunkIndex);
+            return true;
+        }
+
+        public void OnChunkEnd(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
+            in v128 chunkEnabledMask,
+            bool chunkWasExecuted) { }
     }
 }

@@ -301,6 +301,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7336047686123578931}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7022413994134903135}
   m_SourcePrefab: {fileID: 100100000, guid: a9ea84ade677e3347974486f2d311681, type: 3}
 --- !u!1 &2499177986544258898 stripped
 GameObject:
@@ -377,16 +380,16 @@ MonoBehaviour:
       speedMultiplier: 1
     down:
       clip: {fileID: -6411013857362534180, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
-      speedMultiplier: 1.5
+      speedMultiplier: 1
     up:
       clip: {fileID: -7800337380646078255, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
-      speedMultiplier: 1.2
+      speedMultiplier: 1
     left:
       clip: {fileID: -1640272175068026219, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
-      speedMultiplier: 1.2
+      speedMultiplier: 1
     right:
       clip: {fileID: -6877218540166537120, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
-      speedMultiplier: 1.2
+      speedMultiplier: 1
   intertialBlendDuration: 0.2
   velocityChangeThreshold: 0.25
 --- !u!114 &5388037726479501523
@@ -402,9 +405,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSettings: {fileID: 11400000, guid: 90bebdf1b97e8a94fbf8f877870f251c, type: 2}
-  sfxListRef:
-    oneShotSfxPrefabs: {fileID: 3024403136691253045, guid: 0f67c820df4a57b46a82f4127f837cb8, type: 3}
-    eventType: 2
 --- !u!114 &4322368749244979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,6 +439,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e6b5160430481dbf8632d1a1ad279a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7022413994134903135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499177986544258898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f75537048ba4f7884b88aedce0bf80c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxListRef:
+    oneShotSfxPrefabs: {fileID: 3024403136691253045, guid: 0f67c820df4a57b46a82f4127f837cb8, type: 3}
+    eventType: 3
 --- !u!4 &4925404587108664439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7653086443560924788, guid: a9ea84ade677e3347974486f2d311681, type: 3}

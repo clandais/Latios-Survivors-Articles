@@ -13,7 +13,6 @@ namespace Survivors.Play.Authoring.Player.Weapons
         [SerializeField] float  rotationSpeed;
         [SerializeField] float3 rotationAxis;
 
-        [SerializeField] SfxListRef sfxListRef;
 
         class AxeAuthoringBaker : Baker<AxeAuthoring>
         {
@@ -29,15 +28,6 @@ namespace Survivors.Play.Authoring.Player.Weapons
                 ));
 
                 AddComponent<WeaponTag>(entity);
-
-                AddComponent(entity, new OneShotSfxSpawnerRef
-                {
-                    SfxPrefab = GetEntity(authoring.sfxListRef.oneShotSfxPrefabs, TransformUsageFlags.None),
-                    EventType = authoring.sfxListRef.eventType
-                });
-
-                AddComponent<SfxTriggeredTag>(entity);
-                SetComponentEnabled<SfxTriggeredTag>(entity, true);
             }
         }
     }
