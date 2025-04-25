@@ -28,37 +28,41 @@ namespace Survivors.Play.Systems.SFX
 
             var icb = m_worldUnmanaged.syncPoint.CreateInstantiateCommandBuffer<WorldTransform>();
 
-            state.Dependency = new SfxSpawnJob
+
+            var qToArray = sfxQueue.ToArray(Allocator.TempJob);
+            state.Dependency = new SfxSpawnJobParallelFor
             {
-                SfxQueue         = sfxQueue,
+                SfxQueue         = qToArray,
                 SpawnQueueWriter = icb.AsParallelWriter()
-            }.Schedule(state.Dependency);
+            }.Schedule(sfxQueue.Count, 128, state.Dependency);
+
+            qToArray.Dispose(state.Dependency);
+            sfxQueue.Clear();
         }
 
 
         [BurstCompile]
-        struct SfxSpawnJob : IJob
+        struct SfxSpawnJobParallelFor : IJobParallelFor
         {
-            public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
+            [NativeDisableParallelForRestriction] public NativeArray<SfxSpawnQueue.SfxSpawnData> SfxQueue;
             public InstantiateCommandBuffer<WorldTransform>.ParallelWriter SpawnQueueWriter;
 
-            public void Execute()
+            public void Execute(int index)
             {
-                var sortKey = 0;
+                if (index < SfxQueue.Length)
+                {
+                    var data = SfxQueue[index];
 
-                while (!SfxQueue.IsEmpty())
-                    if (SfxQueue.TryDequeue(out var data))
+                    var transform = new WorldTransform
                     {
-                        var transform = new WorldTransform
-                        {
-                            worldTransform = TransformQvvs.identity
-                        };
+                        worldTransform = TransformQvvs.identity
+                    };
 
-                        transform.worldTransform.position = data.Position;
+                    transform.worldTransform.position = data.Position;
 
-                        SpawnQueueWriter.Add(
-                            data.SfxPrefab, transform, ++sortKey);
-                    }
+                    SpawnQueueWriter.Add(
+                        data.SfxPrefab, transform, index);
+                }
             }
         }
     }

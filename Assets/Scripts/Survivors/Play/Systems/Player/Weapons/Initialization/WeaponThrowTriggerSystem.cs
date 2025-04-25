@@ -17,7 +17,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
     public partial struct WeaponThrowTriggerSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
-        EntityQuery _rightHandQuery;
+        EntityQuery          _rightHandQuery;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -64,23 +64,23 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
                 SfxQueue      = sfxQueue,
                 CommandBuffer = ecb.AsParallelWriter(),
                 Rng           = state.GetJobRng(),
-                SfxLookup     = SystemAPI.GetBufferLookup<SfxWhooshBufferElement>(true)
+                SfxLookup     = SystemAPI.GetBufferLookup<AxeSwooshBufferElement>(true)
             }.ScheduleParallel(state.Dependency);
         }
 
         [BurstCompile]
         partial struct WeaponThrowTriggerJob : IJobEntity, IJobEntityChunkBeginEnd
         {
-            [ReadOnly] public ComponentLookup<WorldTransform> Transforms;
-            [ReadOnly] public float3 MousePosition;
-            [ReadOnly] public Entity Prefab;
+            [ReadOnly]                            public ComponentLookup<WorldTransform>               Transforms;
+            [ReadOnly]                            public float3                                        MousePosition;
+            [ReadOnly]                            public Entity                                        Prefab;
             [NativeDisableParallelForRestriction] public NativeQueue<WeaponSpawnQueue.WeaponSpawnData> SpawnQueue;
-            [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
+            [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData>       SfxQueue;
 
             public EntityCommandBuffer.ParallelWriter CommandBuffer;
 
-            [ReadOnly] public BufferLookup<SfxWhooshBufferElement> SfxLookup;
-            public SystemRng Rng;
+            [ReadOnly] public BufferLookup<AxeSwooshBufferElement> SfxLookup;
+            public            SystemRng                            Rng;
 
 
             void Execute(Entity entity, [EntityIndexInQuery] int index, in RightHandSlot slot)
@@ -99,7 +99,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
 
 
                 var sfxBuffer = SfxLookup[Prefab];
-                var sfxWhoosh = sfxBuffer[Rng.NextInt(0, sfxBuffer.Length)].Prefab;
+                var sfxWhoosh = sfxBuffer[Rng.NextInt(0, sfxBuffer.Length)].SwooshPrefab;
                 SfxQueue.Enqueue(new SfxSpawnQueue.SfxSpawnData
                 {
                     SfxPrefab = sfxWhoosh,
@@ -118,9 +118,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Initialization
 
             public void OnChunkEnd(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
                 in v128 chunkEnabledMask,
-                bool chunkWasExecuted)
-            {
-            }
+                bool chunkWasExecuted) { }
         }
     }
 }

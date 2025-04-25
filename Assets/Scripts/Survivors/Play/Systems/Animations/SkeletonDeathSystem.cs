@@ -18,7 +18,13 @@ namespace Survivors.Play.Systems.Animations
         public void OnCreate(ref SystemState state)
         {
             m_latiosWorldUnmanaged = state.GetLatiosWorldUnmanaged();
-            m_query = state.Fluent().With<EnemyTag>().With<DeadTag>().WithAspect<OptimizedSkeletonAspect>().With<DeathClips>().With<DeathClipsStates>().Build();
+            m_query = state.Fluent()
+                .With<EnemyTag>()
+                .With<DeadTag>()
+                .WithAspect<OptimizedSkeletonAspect>()
+                .With<DeathClips>()
+                .With<DeathClipsStates>()
+                .Build();
         }
 
         [BurstCompile]

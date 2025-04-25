@@ -8,7 +8,7 @@ namespace Survivors.Play.Systems.Enemies
 {
     [RequireMatchingQueriesForUpdate]
     [BurstCompile]
-    public partial struct DisableDeadCollidersSystem : ISystem
+    public partial struct DisableDeadCollidersSystem : ISystem, ISystemNewScene
     {
         EntityQuery          _query;
         LatiosWorldUnmanaged _world;
@@ -23,6 +23,11 @@ namespace Survivors.Play.Systems.Enemies
                 .Build();
 
             _world = state.GetLatiosWorldUnmanaged();
+        }
+
+        public void OnNewScene(ref SystemState state)
+        {
+            state.InitSystemRng("DisableDeadCollidersSystem");
         }
 
         [BurstCompile]

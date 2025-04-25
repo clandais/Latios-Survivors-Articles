@@ -7,16 +7,12 @@ using UnityEngine;
 
 namespace Survivors.Play.Components
 {
-    public struct PauseRequestedTag : IComponentData
-    {
-    }
+    public struct PauseRequestedTag : IComponentData { }
 
-    public struct DeadTag : IComponentData
-    {
-    }
+    public struct DeadTag : IComponentData { }
 
 
-    public struct HitInfos : IComponentData
+    public struct HitInfos : IComponentData, IEnableableComponent
     {
         public float3 Position;
         public float3 Normal;
@@ -26,9 +22,9 @@ namespace Survivors.Play.Components
     {
         public struct SfxSpawnData
         {
-            public int EventHash;
+            public int                EventHash;
             public EntityWith<Prefab> SfxPrefab;
-            public float3 Position;
+            public float3             Position;
         }
 
         public NativeQueue<SfxSpawnData> SfxQueue;
@@ -44,9 +40,7 @@ namespace Survivors.Play.Components
 
     #region Navigation
 
-    public struct FloorGridConstructedTag : IComponentData
-    {
-    }
+    public struct FloorGridConstructedTag : IComponentData { }
 
     /// <summary>
     ///     Settings for the flow field system.
@@ -62,8 +56,8 @@ namespace Survivors.Play.Components
     /// </summary>
     public partial struct FloorGrid : ICollectionComponent
     {
-        public NativeArray<bool> Walkable;
-        public NativeArray<int> IntegrationField;
+        public NativeArray<bool>   Walkable;
+        public NativeArray<int>    IntegrationField;
         public NativeArray<float2> VectorField;
 
         public int Width;
@@ -141,8 +135,10 @@ namespace Survivors.Play.Components
             var combinedDeps = inputDeps;
             if (Walkable.IsCreated)
                 combinedDeps = JobHandle.CombineDependencies(combinedDeps, Walkable.Dispose(combinedDeps));
+
             if (IntegrationField.IsCreated)
                 combinedDeps = JobHandle.CombineDependencies(combinedDeps, IntegrationField.Dispose(combinedDeps));
+
             if (VectorField.IsCreated)
                 combinedDeps = JobHandle.CombineDependencies(combinedDeps, VectorField.Dispose(combinedDeps));
 
@@ -218,6 +214,7 @@ namespace Survivors.Play.Components
         {
             if (cellPos.x < 0 || cellPos.x >= Grid.Width || cellPos.y < 0 || cellPos.y >= Grid.Height)
                 return float2.zero;
+
             var index = Grid.IndexFromCell(cellPos);
             return Grid.VectorField[index];
         }
@@ -245,10 +242,13 @@ namespace Survivors.Play.Components
                 var halfSize = Grid.CellSize / 2f;
                 Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize),
                     cellCenter + new float3(-halfSize, 0, halfSize), borderColor);
+
                 Debug.DrawLine(cellCenter + new float3(halfSize, 0, -halfSize),
                     cellCenter + new float3(halfSize, 0, halfSize), borderColor);
+
                 Debug.DrawLine(cellCenter + new float3(-halfSize, 0, -halfSize),
                     cellCenter + new float3(halfSize, 0, -halfSize), borderColor);
+
                 Debug.DrawLine(cellCenter + new float3(-halfSize, 0, halfSize),
                     cellCenter + new float3(halfSize, 0, halfSize), borderColor);
 

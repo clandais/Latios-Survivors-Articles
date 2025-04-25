@@ -26,31 +26,27 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         {
             var enemyCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnemyCollisionLayer>().Layer;
-            
-            var weaponCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
-                .GetCollectionComponent<WeaponCollisionLayer>().Layer;
 
-            var addComponentsCommandBuffer =
-                m_latiosWorldUnmanaged.syncPoint.CreateAddComponentsCommandBuffer<HitInfos>(AddComponentsDestroyedEntityResolution.DropData);
 
-            addComponentsCommandBuffer.AddComponentTag<DeadTag>();
-            
+            var icb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer();
+
             state.Dependency = new ThrownWeaponCollisionJob
             {
-                AddComponentsCommandBuffer = addComponentsCommandBuffer.AsParallelWriter(),
-                EnemyCollisionLayer        = enemyCollisionLayer,
-                DeltaTime                  = SystemAPI.Time.DeltaTime
+                EnemyCollisionLayer = enemyCollisionLayer,
+                DeltaTime           = SystemAPI.Time.DeltaTime,
+                HitInfosLookup      = SystemAPI.GetComponentLookup<HitInfos>(),
+                Icb                 = icb.AsParallelWriter()
             }.ScheduleParallel(state.Dependency);
         }
 
-        
 
         [BurstCompile]
         partial struct ThrownWeaponCollisionJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer                                      EnemyCollisionLayer;
-            [ReadOnly] public float                                               DeltaTime;
-            public            AddComponentsCommandBuffer<HitInfos>.ParallelWriter AddComponentsCommandBuffer;
+            [ReadOnly]                            public CollisionLayer                     EnemyCollisionLayer;
+            [ReadOnly]                            public float                              DeltaTime;
+            [NativeDisableParallelForRestriction] public ComponentLookup<HitInfos>          HitInfosLookup;
+            public                                       EntityCommandBuffer.ParallelWriter Icb;
 
             void Execute(
                 ref WorldTransform transform,
@@ -71,12 +67,25 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                             in EnemyCollisionLayer,
                             out var hitInfos,
                             out var bodyInfos))
-                        AddComponentsCommandBuffer.Add(bodyInfos.entity, new HitInfos
-                        {
-                            Position = hitInfos.hitpoint,
-                            Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed
-                        }, bodyInfos.bodyIndex);
+                    {
+                        var e = bodyInfos.entity;
+                        Icb.AddComponent<DeadTag>(bodyInfos.bodyIndex, e);
 
+
+                        HitInfosLookup.SetComponentEnabled(e, true);
+                        var hitInfosComponent = HitInfosLookup[e];
+                        hitInfosComponent.Position = hitInfos.hitpoint;
+                        hitInfosComponent.Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed;
+                        HitInfosLookup[e]          = hitInfosComponent;
+
+
+                        //AddComponentsCommandBuffer.Add(bodyInfos.entity, bodyInfos.bodyIndex);
+                        // AddComponentsCommandBuffer.Add(bodyInfos.entity, new HitInfos
+                        // {
+                        //     Position = hitInfos.hitpoint,
+                        //     Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed
+                        // }, bodyInfos.bodyIndex);
+                    }
 
                     transformQvs.position += thrownWeapon.Direction * steppedSpeed * DeltaTime;
                     transformQvs.rotation = math.mul(transformQvs.rotation, Quat.RotateAroundAxis(

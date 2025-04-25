@@ -1,6 +1,7 @@
 ﻿using Latios;
 using Survivors.Play.Components;
 using Survivors.Play.Systems.Input;
+using Survivors.Play.Systems.SFX;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems.SuperSystems
@@ -17,6 +18,7 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
 
 
             GetOrCreateAndAddManagedSystem<PlayerInputSystem>();
+            GetOrCreateAndAddManagedSystem<MainAudioListenerUpdateSystem>();
         }
 
         public override bool ShouldUpdateSystem()

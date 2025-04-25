@@ -48,8 +48,8 @@ MonoBehaviour:
   looping: 0
   autoDestroyOnFinish: 1
   volume: 0.5
-  innerRange: 1
-  outerRange: 5
+  innerRange: 20
+  outerRange: 200
   rangeFadeMargin: 1
   playFromBeginningAtSpawn: 0
   voices: 0

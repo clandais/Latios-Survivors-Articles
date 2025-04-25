@@ -12,26 +12,26 @@ namespace Survivors.GameScope.MonoBehaviours
 
         [SerializeField] CinemachineSplineDolly dolly;
 
-        [SerializeField] float scrollSensitivity = 1f;
+        [SerializeField] float scrollSensitivity    = 1f;
         [SerializeField] float maxZoomDistanceDelta = 0.1f;
-        [SerializeField] float defaultZoomDistance = .5f;
+        [SerializeField] float defaultZoomDistance  = .5f;
 
+        Camera _mainCamera;
 
-        float targetZoom;
+        float _targetZoom;
 
         void Awake()
         {
             dolly.CameraPosition = defaultZoomDistance;
-            targetZoom           = defaultZoomDistance;
+            _targetZoom          = defaultZoomDistance;
+            _mainCamera          = Camera.main;
         }
-
 
         void Update()
         {
             dolly.CameraPosition =
-                Mathf.MoveTowards(dolly.CameraPosition, targetZoom, maxZoomDistanceDelta * Time.deltaTime);
+                Mathf.MoveTowards(dolly.CameraPosition, _targetZoom, maxZoomDistanceDelta * Time.deltaTime);
         }
-
 
         public void SetTargetsPositions(Vector3 playerPosition, Vector3 aimPosition)
         {
@@ -41,8 +41,13 @@ namespace Survivors.GameScope.MonoBehaviours
 
         public void Zoom(float rawDelta)
         {
-            targetZoom += rawDelta * scrollSensitivity;
-            targetZoom =  math.clamp(targetZoom, 0f, 1f);
+            _targetZoom += rawDelta * scrollSensitivity;
+            _targetZoom =  math.clamp(_targetZoom, 0f, 1f);
+        }
+
+        public float3 GetCameraPosition()
+        {
+            return _mainCamera.transform.position;
         }
     }
 }
