@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Latios;
 using Survivors.Play.Components;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -14,7 +14,7 @@ namespace Survivors.Play.Authoring.Player.Weapons
         [SerializeField] float  rotationSpeed;
         [SerializeField] float3 rotationAxis;
 
-        [SerializeField] List<GameObject> sfxPrefabs;
+        [SerializeField] AxeSlashVfxAuthoring axeSlashVfxPrefab;
 
         class AxeAuthoringBaker : Baker<AxeAuthoring>
         {
@@ -30,6 +30,11 @@ namespace Survivors.Play.Authoring.Player.Weapons
                 ));
 
                 AddComponent<WeaponTag>(entity);
+
+                AddComponent(entity, new ThrownWeaponHitVfx
+                {
+                    Prefab = GetEntity(authoring.axeSlashVfxPrefab, TransformUsageFlags.Dynamic)
+                });
             }
         }
     }
@@ -56,5 +61,10 @@ namespace Survivors.Play.Authoring.Player.Weapons
             RotationSpeed = rotationSpeed;
             RotationAxis  = rotationAxis;
         }
+    }
+
+    public struct ThrownWeaponHitVfx : IComponentData
+    {
+        public EntityWith<Prefab> Prefab;
     }
 }

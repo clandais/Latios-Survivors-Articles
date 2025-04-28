@@ -38,6 +38,25 @@ namespace Survivors.Play.Components
         }
     }
 
+    public partial struct VfxSpawnQueue : ICollectionComponent
+    {
+        public struct VfxSpawnData
+        {
+            public EntityWith<Prefab> VfxPrefab;
+            public float3             Position;
+        }
+
+        public NativeQueue<VfxSpawnData> VfxQueue;
+
+        public JobHandle TryDispose(JobHandle inputDeps)
+        {
+            if (!VfxQueue.IsCreated)
+                return inputDeps;
+
+            return VfxQueue.Dispose(inputDeps);
+        }
+    }
+
     #region Navigation
 
     public struct FloorGridConstructedTag : IComponentData { }

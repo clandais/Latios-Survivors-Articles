@@ -13,7 +13,7 @@ namespace Survivors.Play.Systems.Animations
     public partial struct FourDirectionsAnimationEventsSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
-        EntityQuery m_query;
+        EntityQuery          m_query;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -30,11 +30,6 @@ namespace Survivors.Play.Systems.Animations
 
         public void OnNewScene(ref SystemState state)
         {
-            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new SfxSpawnQueue
-            {
-                SfxQueue = new NativeQueue<SfxSpawnQueue.SfxSpawnData>(Allocator.Persistent)
-            });
-
             state.InitSystemRng(new FixedString128Bytes("FourDirectionsAnimationEventsSystem"));
         }
 
@@ -53,7 +48,7 @@ namespace Survivors.Play.Systems.Animations
         partial struct AnimationEventsJob : IJobEntity, IJobEntityChunkBeginEnd
         {
             [NativeDisableParallelForRestriction] public NativeQueue<SfxSpawnQueue.SfxSpawnData> SfxQueue;
-            public SystemRng Rng;
+            public                                       SystemRng                               Rng;
 
             void Execute(
                 in FourDirectionClipStates clipStates,
@@ -113,9 +108,7 @@ namespace Survivors.Play.Systems.Animations
 
             public void OnChunkEnd(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
                 in v128 chunkEnabledMask,
-                bool chunkWasExecuted)
-            {
-            }
+                bool chunkWasExecuted) { }
         }
     }
 }

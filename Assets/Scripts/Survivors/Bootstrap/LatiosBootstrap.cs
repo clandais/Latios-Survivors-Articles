@@ -4,6 +4,7 @@ using Latios.Authoring;
 using Latios.Calligraphics;
 using Latios.Kinemation;
 using Latios.Kinemation.Authoring;
+using Latios.LifeFX;
 using Latios.Myri;
 using Latios.Psyshock.Authoring;
 using Latios.Transforms;
@@ -69,7 +70,7 @@ namespace Survivors.Bootstrap
             CalligraphicsBootstrap.InstallCalligraphics(world);
             CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
             UnikaBootstrap.InstallUnikaEntitySerialization(world);
-            //Latios.LifeFX.LifeFXBootstrap.InstallLifeFX(world);
+            LifeFXBootstrap.InstallLifeFX(world);
 
             AnnaBootstrap.InstallAnna(world);
 

@@ -41,7 +41,7 @@
       "url": "https://package.openupm.com"
     },
     "com.latios.latiosframework": {
-      "version": "0.12.6",
+      "version": "0.12.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -388,6 +388,15 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.visualeffectgraph": {
+      "version": "17.0.4",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "17.0.4",
+        "com.unity.render-pipelines.core": "17.0.4"
       }
     },
     "jp.hadashikick.vcontainer": {

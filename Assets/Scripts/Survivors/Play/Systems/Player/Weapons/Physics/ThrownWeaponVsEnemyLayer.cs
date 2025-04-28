@@ -30,12 +30,18 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
 
             var icb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer();
 
+            var vfxCommandBuffer = m_latiosWorldUnmanaged.syncPoint
+                .CreateInstantiateCommandBuffer<WorldTransform>();
+
             state.Dependency = new ThrownWeaponCollisionJob
             {
                 EnemyCollisionLayer = enemyCollisionLayer,
                 DeltaTime           = SystemAPI.Time.DeltaTime,
                 HitInfosLookup      = SystemAPI.GetComponentLookup<HitInfos>(),
-                Icb                 = icb.AsParallelWriter()
+                Icb                 = icb.AsParallelWriter(),
+                //VfxCommandBuffer    = vfxCommandBuffer.AsParallelWriter()
+                VfxQueue = m_latiosWorldUnmanaged.sceneBlackboardEntity
+                    .GetCollectionComponent<VfxSpawnQueue>().VfxQueue.AsParallelWriter()
             }.ScheduleParallel(state.Dependency);
         }
 
@@ -48,10 +54,16 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
             [NativeDisableParallelForRestriction] public ComponentLookup<HitInfos>          HitInfosLookup;
             public                                       EntityCommandBuffer.ParallelWriter Icb;
 
+            [NativeDisableParallelForRestriction]
+            public NativeQueue<VfxSpawnQueue.VfxSpawnData>.ParallelWriter VfxQueue;
+
             void Execute(
+                Entity _,
+                [EntityIndexInQuery] int entityIndexInQuery,
                 ref WorldTransform transform,
                 in ThrownWeaponComponent thrownWeapon,
-                in Collider collider
+                in Collider collider,
+                in ThrownWeaponHitVfx thrownWeaponHitVfx
             )
             {
                 var transformQvs = transform.worldTransform;
@@ -69,8 +81,9 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                             out var bodyInfos))
                     {
                         var e = bodyInfos.entity;
-                        Icb.AddComponent<DeadTag>(bodyInfos.bodyIndex, e);
+                        if (HitInfosLookup.IsComponentEnabled(e)) continue;
 
+                        Icb.AddComponent<DeadTag>(bodyInfos.bodyIndex, e);
 
                         HitInfosLookup.SetComponentEnabled(e, true);
                         var hitInfosComponent = HitInfosLookup[e];
@@ -79,12 +92,11 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                         HitInfosLookup[e]          = hitInfosComponent;
 
 
-                        //AddComponentsCommandBuffer.Add(bodyInfos.entity, bodyInfos.bodyIndex);
-                        // AddComponentsCommandBuffer.Add(bodyInfos.entity, new HitInfos
-                        // {
-                        //     Position = hitInfos.hitpoint,
-                        //     Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed
-                        // }, bodyInfos.bodyIndex);
+                        VfxQueue.Enqueue(new VfxSpawnQueue.VfxSpawnData
+                        {
+                            VfxPrefab = thrownWeaponHitVfx.Prefab,
+                            Position  = hitInfos.hitpoint
+                        });
                     }
 
                     transformQvs.position += thrownWeapon.Direction * steppedSpeed * DeltaTime;
