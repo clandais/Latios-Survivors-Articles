@@ -38,32 +38,10 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths:
-    - Rig
-    - Rig/root
-    - Rig/root/hips
-    - Rig/root/hips/spine
-    - Rig/root/hips/spine/chest
-    - Rig/root/hips/spine/chest/head
     - Rig/root/hips/spine/chest/head/head_end
-    - Rig/root/hips/spine/chest/upperarm.l
-    - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l
-    - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l
-    - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/handslot.l_end
-    - Rig/root/hips/spine/chest/upperarm.r
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/handslot.r_end
-    - Rig/root/hips/upperleg.l
-    - Rig/root/hips/upperleg.l/lowerleg.l
-    - Rig/root/hips/upperleg.l/lowerleg.l/foot.l
-    - Rig/root/hips/upperleg.l/lowerleg.l/foot.l/toes.l
     - Rig/root/hips/upperleg.l/lowerleg.l/foot.l/toes.l/toes.l_end
-    - Rig/root/hips/upperleg.r
-    - Rig/root/hips/upperleg.r/lowerleg.r
-    - Rig/root/hips/upperleg.r/lowerleg.r/foot.r
-    - Rig/root/hips/upperleg.r/lowerleg.r/foot.r/toes.r
     - Rig/root/hips/upperleg.r/lowerleg.r/foot.r/toes.r/toes.r_end
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l

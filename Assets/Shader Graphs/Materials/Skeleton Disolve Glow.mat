@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Skeleton Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 2e81eca1bd9254840a1901580d18a060, type: 3}
+  m_Name: Skeleton Disolve Glow
+  m_Shader: {fileID: -6465566751694194690, guid: 29b352b9234f0d14084c71193563332d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -85,6 +85,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 1
     - _AlphaToMask: 1
+    - _Alpha_Clip_Threshold: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -94,7 +95,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Disolve_Scale: 128
+    - _Disolve_Amount: 0
+    - _Disolve_Scale: 25
+    - _Disolve_Width: 0.05
     - _Dissolve_Amount: 0
     - _Dissolve_Width: 0.02
     - _DstBlend: 0
@@ -103,7 +106,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _IsEmissive: 0
+    - _IsEmissive: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -116,18 +119,22 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _Use_Latios_Vertex_Skinning: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - _latiosCurrentDeformBase: 0
+    - _latiosCurrentVertexSkinningMatrixBase: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Disolve_Color: {r: 0.4531141, g: 0.4531141, b: 2.6390164, a: 1}
     - _Dissolve_Color: {r: 0.253943, g: 0.7365982, b: 2.639016, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 2, g: 1.25074, b: 0, a: 1}
+    - _EmissiveColor: {r: 1.4980394, g: 1.2842703, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &7100737305739003358
+--- !u!114 &1918437354627178711
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

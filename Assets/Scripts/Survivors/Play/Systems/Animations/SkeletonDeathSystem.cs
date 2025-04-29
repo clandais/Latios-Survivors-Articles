@@ -1,10 +1,12 @@
 ﻿using Latios;
 using Latios.Kinemation;
+using Survivors.Play.Authoring.Materials;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Animations
 {
@@ -24,15 +26,22 @@ namespace Survivors.Play.Systems.Animations
                 .WithAspect<OptimizedSkeletonAspect>()
                 .With<DeathClips>()
                 .With<DeathClipsStates>()
+                .With<LinkedEntityGroup>()
                 .Build();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            var dcb = m_latiosWorldUnmanaged.syncPoint.CreateDestroyCommandBuffer();
+
             state.Dependency = new DeathAnimationJob
             {
-                Rng = state.GetJobRng(), DeltaTime = SystemAPI.Time.DeltaTime
+                Rng                  = state.GetJobRng(),
+                DeltaTime            = SystemAPI.Time.DeltaTime,
+                DissolveAmountLookup = SystemAPI.GetComponentLookup<MaterialDissolveAmount>(),
+                DissolveSpeedLookup  = SystemAPI.GetComponentLookup<MaterialDissolveSpeed>(true),
+                Dcb                  = dcb.AsParallelWriter()
             }.ScheduleParallel(m_query, state.Dependency);
         }
 
@@ -44,12 +53,19 @@ namespace Survivors.Play.Systems.Animations
         [BurstCompile]
         partial struct DeathAnimationJob : IJobEntity, IJobEntityChunkBeginEnd
         {
-            public SystemRng Rng;
-            public float     DeltaTime;
+            public                                       SystemRng                               Rng;
+            public                                       float                                   DeltaTime;
+            [NativeDisableParallelForRestriction] public ComponentLookup<MaterialDissolveAmount> DissolveAmountLookup;
+            [ReadOnly]                            public ComponentLookup<MaterialDissolveSpeed>  DissolveSpeedLookup;
+            public                                       DestroyCommandBuffer.ParallelWriter     Dcb;
 
-            void Execute(OptimizedSkeletonAspect skeleton,
+            void Execute(
+                Entity entity,
+                [EntityIndexInQuery] int idx,
+                OptimizedSkeletonAspect skeleton,
                 in DeathClips clips,
-                ref DeathClipsStates clipStates)
+                ref DeathClipsStates clipStates,
+                ref DynamicBuffer<LinkedEntityGroup> linkedEntityGroup)
             {
                 if (clipStates.ChosenState == -1) clipStates.ChosenState = Rng.NextInt(0, 3);
                 ref var state = ref clipStates.StateA;
@@ -74,7 +90,28 @@ namespace Survivors.Play.Systems.Animations
                 // One shot clips
                 if (state.Time >= clips.ClipSet.Value.clips[clipStates.ChosenState].duration)
                 {
+                    // Clamp to duration
                     state.Time = clips.ClipSet.Value.clips[clipStates.ChosenState].duration;
+                    
+                    var dissolved = false;
+
+                    // apply dissolve to linked entities' materials
+                    foreach (var entityGroup in linkedEntityGroup)
+                    {
+                        if (!DissolveAmountLookup.HasComponent(entityGroup.Value)) continue;
+
+                        var dissolve = DissolveAmountLookup.GetRefRW(entityGroup.Value);
+                        var dissolveSpeed = DissolveSpeedLookup.GetRefRO(entityGroup.Value);
+                        dissolve.ValueRW.Value =
+                            math.min(dissolve.ValueRW.Value + DeltaTime * dissolveSpeed.ValueRO.Value, 1f);
+
+                        dissolved = (dissolve.ValueRW.Value >= 1f);
+                    }
+
+                    if (dissolved)
+                        // Destroy the skeleton entity
+                        Dcb.Add(entity, idx);
+
                     return;
                 }
 
