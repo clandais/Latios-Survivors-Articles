@@ -1,8 +1,8 @@
 ﻿using Latios;
-using Latios.Anna.Systems;
 using Latios.Transforms.Systems;
 using Survivors.Bootstrap.RootSystems.SuperSystems;
 using Survivors.Play.Components;
+using Survivors.Play.Systems.VFX;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -16,6 +16,7 @@ namespace Survivors.Bootstrap.RootSystems
         {
             CreateQueries();
             GetOrCreateAndAddManagedSystem<AnimationSuperSystem>();
+            GetOrCreateAndAddUnmanagedSystem<VfxPositionEventSpawnerSystem>();
         }
 
         void CreateQueries()

@@ -3,8 +3,9 @@ using Latios.Systems;
 using Latios.Transforms.Systems;
 using Survivors.Play.Components;
 using Survivors.Play.Systems.Enemies;
-using Survivors.Play.Systems.Player.Weapons.Initialization;
 using Survivors.Play.Systems.Player.Weapons.Spawn;
+using Survivors.Play.Systems.SFX;
+using Survivors.Play.Systems.VFX;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -14,8 +15,9 @@ namespace Survivors.Bootstrap.RootSystems
     {
         protected override void CreateSystems()
         {
-
             GetOrCreateAndAddUnmanagedSystem<WeaponSpawnQueueSystem>();
+            GetOrCreateAndAddUnmanagedSystem<SfxSpawnQueueSystem>();
+            GetOrCreateAndAddUnmanagedSystem<VfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<DisableDeadCollidersSystem>();
         }
     }
@@ -25,17 +27,21 @@ namespace Survivors.Bootstrap.RootSystems
     public partial class SkeletonSpawnSystem : RootSuperSystem
     {
         EntityQuery m_pauseQuery;
-        
+
         void CreateQueries()
         {
             m_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
         }
+
         protected override void CreateSystems()
         {
             CreateQueries();
             GetOrCreateAndAddUnmanagedSystem<EnemySpawnerSystem>();
         }
 
-        public override bool ShouldUpdateSystem() => m_pauseQuery.IsEmptyIgnoreFilter;
+        public override bool ShouldUpdateSystem()
+        {
+            return m_pauseQuery.IsEmptyIgnoreFilter;
+        }
     }
 }

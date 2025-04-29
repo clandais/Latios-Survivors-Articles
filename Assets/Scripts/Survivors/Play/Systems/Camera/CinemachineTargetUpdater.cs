@@ -23,7 +23,8 @@ namespace Survivors.Play.Systems.Camera
         protected override void OnUpdate()
         {
             var playerPosition = sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            m_cinemachine.SetTargetPosition(playerPosition.Position);
+            var inputState = sceneBlackboardEntity.GetComponentData<PlayerInputState>();
+            m_cinemachine.SetTargetsPositions(playerPosition.Position, inputState.MousePosition);
         }
     }
 }

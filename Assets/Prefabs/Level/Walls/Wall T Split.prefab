@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1142324450585252464}
+  - {fileID: 5707077686875463984}
   - {fileID: 9021599522601154310}
   - {fileID: 854536038015830814}
   m_Father: {fileID: 0}
@@ -213,6 +214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall_Tsplit
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5f9dc9d1dd8197643a7d04c901b122ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -222,4 +227,66 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f9dc9d1dd8197643a7d04c901b122ca, type: 3}
   m_PrefabInstance: {fileID: 599228839572141467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5240260968830224091
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6739476458410110721}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000021855694
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+      propertyPath: m_Name
+      value: Wall T Split
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+--- !u!4 &5707077686875463984 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cfc393e352e74534d9aa522c2935199e, type: 3}
+  m_PrefabInstance: {fileID: 5240260968830224091}
   m_PrefabAsset: {fileID: 0}

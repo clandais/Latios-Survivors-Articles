@@ -10,6 +10,8 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
         protected override void CreateSystems()
         {
             GetOrCreateAndAddUnmanagedSystem<FourDirectionsAnimationSystem>();
+            GetOrCreateAndAddUnmanagedSystem<FourDirectionsAnimationEventsSystem>();
+
             GetOrCreateAndAddUnmanagedSystem<PlayerActionSystem>();
             GetOrCreateAndAddUnmanagedSystem<WeaponThrowTriggerSystem>();
             GetOrCreateAndAddUnmanagedSystem<SkeletonDeathSystem>();

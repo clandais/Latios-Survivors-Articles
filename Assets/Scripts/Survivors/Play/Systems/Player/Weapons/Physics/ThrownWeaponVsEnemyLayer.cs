@@ -26,36 +26,44 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         {
             var enemyCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnemyCollisionLayer>().Layer;
-            
-            var weaponCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
-                .GetCollectionComponent<WeaponCollisionLayer>().Layer;
 
-            var addComponentsCommandBuffer =
-                m_latiosWorldUnmanaged.syncPoint.CreateAddComponentsCommandBuffer<HitInfos>(AddComponentsDestroyedEntityResolution.DropData);
 
-            addComponentsCommandBuffer.AddComponentTag<DeadTag>();
-            
+            var icb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer();
+
+            var vfxCommandBuffer = m_latiosWorldUnmanaged.syncPoint
+                .CreateInstantiateCommandBuffer<WorldTransform>();
+
             state.Dependency = new ThrownWeaponCollisionJob
             {
-                AddComponentsCommandBuffer = addComponentsCommandBuffer.AsParallelWriter(),
-                EnemyCollisionLayer        = enemyCollisionLayer,
-                DeltaTime                  = SystemAPI.Time.DeltaTime
+                EnemyCollisionLayer = enemyCollisionLayer,
+                DeltaTime           = SystemAPI.Time.DeltaTime,
+                HitInfosLookup      = SystemAPI.GetComponentLookup<HitInfos>(),
+                Icb                 = icb.AsParallelWriter(),
+                //VfxCommandBuffer    = vfxCommandBuffer.AsParallelWriter()
+                VfxQueue = m_latiosWorldUnmanaged.sceneBlackboardEntity
+                    .GetCollectionComponent<VfxSpawnQueue>().VfxQueue.AsParallelWriter()
             }.ScheduleParallel(state.Dependency);
         }
 
-        
 
         [BurstCompile]
         partial struct ThrownWeaponCollisionJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer                                      EnemyCollisionLayer;
-            [ReadOnly] public float                                               DeltaTime;
-            public            AddComponentsCommandBuffer<HitInfos>.ParallelWriter AddComponentsCommandBuffer;
+            [ReadOnly]                            public CollisionLayer                     EnemyCollisionLayer;
+            [ReadOnly]                            public float                              DeltaTime;
+            [NativeDisableParallelForRestriction] public ComponentLookup<HitInfos>          HitInfosLookup;
+            public                                       EntityCommandBuffer.ParallelWriter Icb;
+
+            [NativeDisableParallelForRestriction]
+            public NativeQueue<VfxSpawnQueue.VfxSpawnData>.ParallelWriter VfxQueue;
 
             void Execute(
+                Entity _,
+                [EntityIndexInQuery] int entityIndexInQuery,
                 ref WorldTransform transform,
                 in ThrownWeaponComponent thrownWeapon,
-                in Collider collider
+                in Collider collider,
+                in ThrownWeaponHitVfx thrownWeaponHitVfx
             )
             {
                 var transformQvs = transform.worldTransform;
@@ -71,12 +79,25 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                             in EnemyCollisionLayer,
                             out var hitInfos,
                             out var bodyInfos))
-                        AddComponentsCommandBuffer.Add(bodyInfos.entity, new HitInfos
-                        {
-                            Position = hitInfos.hitpoint,
-                            Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed
-                        }, bodyInfos.bodyIndex);
+                    {
+                        var e = bodyInfos.entity;
+                        if (HitInfosLookup.IsComponentEnabled(e)) continue;
 
+                        Icb.AddComponent<DeadTag>(bodyInfos.bodyIndex, e);
+
+                        HitInfosLookup.SetComponentEnabled(e, true);
+                        var hitInfosComponent = HitInfosLookup[e];
+                        hitInfosComponent.Position = hitInfos.hitpoint;
+                        hitInfosComponent.Normal   = hitInfos.normalOnTarget * thrownWeapon.Speed;
+                        HitInfosLookup[e]          = hitInfosComponent;
+
+
+                        VfxQueue.Enqueue(new VfxSpawnQueue.VfxSpawnData
+                        {
+                            VfxPrefab = thrownWeaponHitVfx.Prefab,
+                            Position  = hitInfos.hitpoint
+                        });
+                    }
 
                     transformQvs.position += thrownWeapon.Direction * steppedSpeed * DeltaTime;
                     transformQvs.rotation = math.mul(transformQvs.rotation, Quat.RotateAroundAxis(

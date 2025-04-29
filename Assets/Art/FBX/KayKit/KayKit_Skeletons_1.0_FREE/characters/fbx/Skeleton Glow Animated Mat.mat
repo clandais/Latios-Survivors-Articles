@@ -130,9 +130,11 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _Use_Latios_Vertex_Skinning: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _latiosCurrentDeformBase: 0
+    - _latiosCurrentVertexSkinningMatrixBase: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

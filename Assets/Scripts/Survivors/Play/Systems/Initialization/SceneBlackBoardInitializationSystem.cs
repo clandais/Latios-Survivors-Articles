@@ -1,5 +1,6 @@
 ﻿using Latios;
 using Survivors.Play.Authoring.SceneBlackBoard;
+using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -28,6 +29,16 @@ namespace Survivors.Play.Systems.Initialization
             m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new WeaponSpawnQueue
             {
                 WeaponQueue = new NativeQueue<WeaponSpawnQueue.WeaponSpawnData>(Allocator.Persistent)
+            });
+
+            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new SfxSpawnQueue
+            {
+                SfxQueue = new NativeQueue<SfxSpawnQueue.SfxSpawnData>(Allocator.Persistent)
+            });
+
+            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new VfxSpawnQueue
+            {
+                VfxQueue = new NativeQueue<VfxSpawnQueue.VfxSpawnData>(Allocator.Persistent)
             });
         }
     }

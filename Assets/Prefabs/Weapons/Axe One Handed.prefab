@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7795027148151215856}
   - component: {fileID: 6372085146977786535}
   - component: {fileID: 4681654922069636882}
+  - component: {fileID: 415903391892548261}
   m_Layer: 0
   m_Name: Axe One Handed
   m_TagString: Untagged
@@ -52,6 +53,12 @@ MonoBehaviour:
     x: 0
     y: 1
     z: 0
+  sfxPrefabs:
+  - {fileID: 3401434405479552170, guid: 6c5b6f071e370b64ca0e2d305e6c6be4, type: 3}
+  - {fileID: 3401434405479552170, guid: f27354b357869e9448395e1a57c5517f, type: 3}
+  - {fileID: 3401434405479552170, guid: f55957b7cb6a48a4995d2da08918f7b9, type: 3}
+  - {fileID: 3401434405479552170, guid: 0bf903027e9dfeb49b113ba859fb64d1, type: 3}
+  axeSlashVfxPrefab: {fileID: 2629287540233105421, guid: a11387585c20d8f44a7a476bd114ea7e, type: 3}
 --- !u!136 &4681654922069636882
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -75,6 +82,24 @@ CapsuleCollider:
   m_Height: 2.5
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0.4}
+--- !u!114 &415903391892548261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048361051549915923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cff38ad5d0504f8a9cf2813929bb7929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swooshPrefabs:
+  - {fileID: 3401434405479552170, guid: 6c5b6f071e370b64ca0e2d305e6c6be4, type: 3}
+  - {fileID: 3401434405479552170, guid: f27354b357869e9448395e1a57c5517f, type: 3}
+  - {fileID: 3401434405479552170, guid: f55957b7cb6a48a4995d2da08918f7b9, type: 3}
+  - {fileID: 3401434405479552170, guid: 0bf903027e9dfeb49b113ba859fb64d1, type: 3}
+  eventType: 0
 --- !u!1001 &2943273414713575658
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -47,7 +47,7 @@ namespace Survivors.Play.Systems.Animations
         {
             [ReadOnly] public float DeltaTime;
 
-            public void Execute(
+            void Execute(
                 OptimizedSkeletonAspect skeleton,
                 in WorldTransform worldTransform,
                 in RigidBody rigidBody,
@@ -85,23 +85,34 @@ namespace Survivors.Play.Systems.Animations
 
 
                 // Update and sample animations
-                UpdateClipState(ref clipStates.Center, ref clips.ClipSet.Value.clips[(int)EDirections.Center], DeltaTime, centerWeight);
-                UpdateClipState(ref clipStates.Up, ref clips.ClipSet.Value.clips[(int)EDirections.Up], DeltaTime, upWeight);
-                UpdateClipState(ref clipStates.Down, ref clips.ClipSet.Value.clips[(int)EDirections.Down], DeltaTime, downWeight);
-                UpdateClipState(ref clipStates.Left, ref clips.ClipSet.Value.clips[(int)EDirections.Left], DeltaTime, leftWeight);
-                UpdateClipState(ref clipStates.Right, ref clips.ClipSet.Value.clips[(int)EDirections.Right], DeltaTime, rightWeight);
+                UpdateClipState(ref clipStates.Center, ref clips.ClipSet.Value.clips[(int)EDirections.Center],
+                    DeltaTime, centerWeight);
+                UpdateClipState(ref clipStates.Up, ref clips.ClipSet.Value.clips[(int)EDirections.Up], DeltaTime,
+                    upWeight);
+                UpdateClipState(ref clipStates.Down, ref clips.ClipSet.Value.clips[(int)EDirections.Down], DeltaTime,
+                    downWeight);
+                UpdateClipState(ref clipStates.Left, ref clips.ClipSet.Value.clips[(int)EDirections.Left], DeltaTime,
+                    leftWeight);
+                UpdateClipState(ref clipStates.Right, ref clips.ClipSet.Value.clips[(int)EDirections.Right], DeltaTime,
+                    rightWeight);
 
                 // Sample animations
-                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Center], clipStates.Center, centerWeight);
-                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Up], clipStates.Up, upWeight);
-                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Down], clipStates.Down, downWeight);
-                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Left], clipStates.Left, leftWeight);
-                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Right], clipStates.Right, rightWeight);
+                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Center], clipStates.Center,
+                    centerWeight);
+                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Up], clipStates.Up,
+                    upWeight);
+                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Down], clipStates.Down,
+                    downWeight);
+                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Left], clipStates.Left,
+                    leftWeight);
+                SampleAnimation(ref skeleton, ref clips.ClipSet.Value.clips[(int)EDirections.Right], clipStates.Right,
+                    rightWeight);
 
 
                 // Detect significant direction/movement change (for starting new blend)
                 var significantChange = math.abs(
-                    math.length(velocity.xz) - math.length(previousVelocity.Value.xz)) > inertialBlendState.VelocityChangeThreshold;
+                                            math.length(velocity.xz) - math.length(previousVelocity.Value.xz)) >
+                                        inertialBlendState.VelocityChangeThreshold;
 
                 // Start new inertial blend when movement changes significantly
                 if (significantChange && inertialBlendState.PreviousDeltaTime > 0f)
@@ -109,8 +120,8 @@ namespace Survivors.Play.Systems.Animations
                     skeleton.StartNewInertialBlend(inertialBlendState.PreviousDeltaTime, inertialBlendState.Duration);
                     inertialBlendState.TimeInCurrentState = 0f;
                 }
-                
-                
+
+
                 // Apply inertial blend with current time since blend started
                 if (!skeleton.IsFinishedWithInertialBlend(inertialBlendState.TimeInCurrentState))
                 {
@@ -125,11 +136,12 @@ namespace Survivors.Play.Systems.Animations
                 inertialBlendState.PreviousDeltaTime = DeltaTime;
             }
 
-            static void UpdateClipState(ref ClipState state,
+            void UpdateClipState(ref ClipState state,
                 ref SkeletonClip clip,
                 float deltaTime,
                 float weight)
             {
+                state.CurrentWeight = weight;
                 if (weight > math.EPSILON)
                 {
                     state.Update(deltaTime * state.SpeedMultiplier);
@@ -137,7 +149,7 @@ namespace Survivors.Play.Systems.Animations
                 }
             }
 
-            static void SampleAnimation(ref OptimizedSkeletonAspect skeleton,
+            void SampleAnimation(ref OptimizedSkeletonAspect skeleton,
                 ref SkeletonClip clip,
                 ClipState state,
                 float weight)

@@ -16,10 +16,10 @@ namespace Survivors.Play.Systems.Input
     {
         bool _attackTriggered;
 
-        ICommandPublisher   m_commandPublisher;
+        ICommandPublisher m_commandPublisher;
         InputSystem_Actions m_inputActions;
-        UnityEngine.Camera  m_mainCamera;
-        EntityQuery         m_Query;
+        UnityEngine.Camera m_mainCamera;
+        EntityQuery m_Query;
 
         [Inject]
         public void Construct(ICommandPublisher commandPublisher)
@@ -71,11 +71,10 @@ namespace Survivors.Play.Systems.Input
             inputState.Direction = move;
 
             float2 mousePosition = m_inputActions.Player.MousePosition.ReadValue<Vector2>();
-            
-            float mouseScroll = m_inputActions.Player.Scroll.ReadValue<float>();
 
-           
-            
+            var mouseScroll = m_inputActions.Player.Scroll.ReadValue<float>();
+
+
             m_commandPublisher.PublishAsync(new MousePositionCommand
             {
                 MousePosition = mousePosition
@@ -86,13 +85,24 @@ namespace Survivors.Play.Systems.Input
                 ScrollDelta = mouseScroll
             });
 
-            var ray = m_mainCamera.ScreenPointToRay(new float3(mousePosition.x, mousePosition.y, 0f));
-            var plane = new Plane(Vector3.up, Vector3.zero);
+            var mp = mousePosition;
+            var isInside = mp is { x: >= 0, y: >= 0 } && mp.x < Screen.width && mp.y < Screen.height;
 
-            if (plane.Raycast(ray, out var enter))
+            if (!isInside)
             {
-                float3 hitPoint = ray.GetPoint(enter);
-                inputState.MousePosition = new float3(hitPoint.x, 0f, hitPoint.z);
+                var playerPosition = sceneBlackboardEntity.GetComponentData<PlayerPosition>();
+                inputState.MousePosition = playerPosition.Position + playerPosition.ForwardDirection;
+            }
+            else
+            {
+                var ray = m_mainCamera.ScreenPointToRay(new float3(mousePosition.x, mousePosition.y, 0f));
+                var plane = new Plane(Vector3.up, Vector3.zero);
+
+                if (plane.Raycast(ray, out var enter))
+                {
+                    float3 hitPoint = ray.GetPoint(enter);
+                    inputState.MousePosition = new float3(hitPoint.x, 0f, hitPoint.z);
+                }
             }
 
 
