@@ -2,6 +2,7 @@
 using Latios.Anna;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
+using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Collections;
@@ -33,6 +34,7 @@ namespace Survivors.Play.Systems.Player
                 .With<MovementSettings>()
                 .With<PreviousVelocity>()
                 .With<PlayerTag>()
+                .Without<DeadTag>()
                 .Build();
         }
 
@@ -78,7 +80,8 @@ namespace Survivors.Play.Systems.Player
 
             var lookDir = PlayerInputState.MousePosition - transformAspect.worldPosition;
             var lookRotation = quaternion.LookRotationSafe(lookDir, math.up());
-            transformAspect.worldRotation = transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
+            transformAspect.worldRotation =
+                transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
         }
     }
 }

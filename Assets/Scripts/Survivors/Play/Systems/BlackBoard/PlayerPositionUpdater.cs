@@ -1,6 +1,7 @@
 ﻿using Latios;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
+using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Entities;
 

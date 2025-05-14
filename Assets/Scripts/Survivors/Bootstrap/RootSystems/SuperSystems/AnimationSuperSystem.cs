@@ -1,7 +1,9 @@
 ﻿using Latios;
+using Survivors.Play.Components;
 using Survivors.Play.Systems.Animations;
 using Survivors.Play.Systems.Player;
 using Survivors.Play.Systems.Player.Weapons.Initialization;
+using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems.SuperSystems
 {
@@ -12,9 +14,26 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
             GetOrCreateAndAddUnmanagedSystem<FourDirectionsAnimationSystem>();
             GetOrCreateAndAddUnmanagedSystem<FourDirectionsAnimationEventsSystem>();
 
+
+            GetOrCreateAndAddUnmanagedSystem<SkeletonAttackAnimationSystem>();
+            GetOrCreateAndAddUnmanagedSystem<SkeletonDeathSystem>();
+            GetOrCreateAndAddUnmanagedSystem<PlayerDeathSystem>();
+        }
+    }
+
+    public partial class PlayerAnimationSuperSystem : SuperSystem
+    {
+        EntityQuery m_entityQuery;
+
+        protected override void CreateSystems()
+        {
+            m_entityQuery = Fluent.With<PlayerTag>().With<DeadTag>().Build();
+
             GetOrCreateAndAddUnmanagedSystem<PlayerActionSystem>();
             GetOrCreateAndAddUnmanagedSystem<WeaponThrowTriggerSystem>();
-            GetOrCreateAndAddUnmanagedSystem<SkeletonDeathSystem>();
         }
+
+
+        public override bool ShouldUpdateSystem() => m_entityQuery.IsEmptyIgnoreFilter;
     }
 }

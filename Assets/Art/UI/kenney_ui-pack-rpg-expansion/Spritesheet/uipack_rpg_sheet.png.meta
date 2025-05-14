@@ -140,6 +140,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: progress_slot
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 363
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 14, z: 14, w: 14}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64fcdfaa7bbc2d74197d5d67561e6670
+      internalID: -2106468351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: health_center
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 126
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c8fe64ec1690cd428c1592e54583243
+      internalID: 696782958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: btn_blue_down
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 328
+        width: 45
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 7, y: 5, z: 7, w: 4}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cf3b8df18f52d14083f47c3d3af9641
+      internalID: 1926571694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -156,6 +222,9 @@ TextureImporter:
     nameFileIdTable:
       bg_brown: -789839099
       btn_blue: 485556674
+      btn_blue_down: 1926571694
+      health_center: 696782958
+      progress_slot: -2106468351
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

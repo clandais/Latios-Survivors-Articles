@@ -65,7 +65,7 @@ namespace Survivors.Play.Systems.Animations
                 OptimizedSkeletonAspect skeleton,
                 in DeathClips clips,
                 ref DeathClipsStates clipStates,
-                ref DynamicBuffer<LinkedEntityGroup> linkedEntityGroup)
+                in DynamicBuffer<LinkedEntityGroup> linkedEntityGroup)
             {
                 if (clipStates.ChosenState == -1) clipStates.ChosenState = Rng.NextInt(0, 3);
                 ref var state = ref clipStates.StateA;
@@ -92,7 +92,7 @@ namespace Survivors.Play.Systems.Animations
                 {
                     // Clamp to duration
                     state.Time = clips.ClipSet.Value.clips[clipStates.ChosenState].duration;
-                    
+
                     var dissolved = false;
 
                     // apply dissolve to linked entities' materials
@@ -105,7 +105,7 @@ namespace Survivors.Play.Systems.Animations
                         dissolve.ValueRW.Value =
                             math.min(dissolve.ValueRW.Value + DeltaTime * dissolveSpeed.ValueRO.Value, 1f);
 
-                        dissolved = (dissolve.ValueRW.Value >= 1f);
+                        dissolved = dissolve.ValueRW.Value >= 1f;
                     }
 
                     if (dissolved)

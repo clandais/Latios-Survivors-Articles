@@ -13,12 +13,26 @@ namespace Survivors.Bootstrap.RootSystems
     [UpdateInGroup(typeof(LatiosWorldSyncGroup))]
     public partial class SyncRootSystems : RootSuperSystem
     {
+        EntityQuery m_pauseQuery;
+        EntityQuery m_playerQuery;
+
         protected override void CreateSystems()
         {
+            CreateQueries();
+
             GetOrCreateAndAddUnmanagedSystem<WeaponSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<SfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<VfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<DisableDeadCollidersSystem>();
+        }
+
+        public override bool ShouldUpdateSystem() =>
+            m_pauseQuery.IsEmptyIgnoreFilter && m_playerQuery.IsEmptyIgnoreFilter;
+
+        void CreateQueries()
+        {
+            m_pauseQuery  = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
+            m_playerQuery = Fluent.With<PlayerTag>().With<DeadTag>().Build();
         }
     }
 
@@ -39,9 +53,6 @@ namespace Survivors.Bootstrap.RootSystems
             GetOrCreateAndAddUnmanagedSystem<EnemySpawnerSystem>();
         }
 
-        public override bool ShouldUpdateSystem()
-        {
-            return m_pauseQuery.IsEmptyIgnoreFilter;
-        }
+        public override bool ShouldUpdateSystem() => m_pauseQuery.IsEmptyIgnoreFilter;
     }
 }

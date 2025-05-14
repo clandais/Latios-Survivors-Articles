@@ -113,7 +113,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: 1H_Melee_Attack_Jump_Chop
+      name: SK_1H_Melee_Attack_Jump_Chop
       takeName: 1H_Melee_Attack_Jump_Chop
       internalID: -1272215259011234369
       firstFrame: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.Play.Components;
 using Survivors.ScriptableObjects;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -11,7 +12,9 @@ namespace Survivors.Play.Authoring
     {
         [FormerlySerializedAs("playerData")] [SerializeField]
         public MovementSettingsData movementSettingsData;
-        // [SerializeField] MovementSettings movementSettings;
+
+        [SerializeField] int   playerStartingHealth = 100;
+        [SerializeField] float damageDelay          = 0.5f;
 
         class PlayerAuthoringBaker : Baker<PlayerAuthoring>
         {
@@ -24,11 +27,18 @@ namespace Survivors.Play.Authoring
                 {
                     Value = float3.zero
                 });
+
+                AddComponent(entity, new PlayerHealth
+                {
+                    CurrentHealth  = authoring.playerStartingHealth,
+                    MaxHealth      = authoring.playerStartingHealth,
+                    DamageDelay    = authoring.damageDelay,
+                    LastDamageTime = 0
+                });
             }
         }
     }
 
-    public struct PlayerTag : IComponentData { }
 
     [Serializable]
     public struct MovementSettings : IComponentData
@@ -36,10 +46,5 @@ namespace Survivors.Play.Authoring
         public float moveSpeed;
         public float maxAngleDelta;
         public float speedChangeRate;
-    }
-
-    public struct PreviousVelocity : IComponentData
-    {
-        public float3 Value;
     }
 }

@@ -16,6 +16,7 @@ namespace Survivors.Bootstrap.RootSystems
         {
             CreateQueries();
             GetOrCreateAndAddManagedSystem<AnimationSuperSystem>();
+            GetOrCreateAndAddManagedSystem<PlayerAnimationSuperSystem>();
             GetOrCreateAndAddUnmanagedSystem<VfxPositionEventSpawnerSystem>();
         }
 
@@ -24,9 +25,6 @@ namespace Survivors.Bootstrap.RootSystems
             m_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
         }
 
-        public override bool ShouldUpdateSystem()
-        {
-            return m_pauseQuery.IsEmptyIgnoreFilter;
-        }
+        public override bool ShouldUpdateSystem() => m_pauseQuery.IsEmptyIgnoreFilter;
     }
 }

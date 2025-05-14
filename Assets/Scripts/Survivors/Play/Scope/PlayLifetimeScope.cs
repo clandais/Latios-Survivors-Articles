@@ -3,6 +3,7 @@ using Survivors.Play.Systems.Camera;
 using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Input;
 using Survivors.Play.Systems.SFX;
+using Survivors.Play.Systems.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -17,16 +18,19 @@ namespace Survivors.Play.Scope
         [SerializeField] PlayStateMenu playStateMenu;
         [SerializeField] Image         crosshair;
         [SerializeField] DebugCanvas   debugCanvas;
+        [SerializeField] PlayerHud     playerHud;
 
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(playStateMenu);
             builder.RegisterInstance(crosshair);
+            builder.RegisterInstance(playerHud);
             builder.RegisterInstance(debugCanvas);
 
             builder.UseEntryPoints(cfg =>
             {
                 cfg.Add<PlayStateController>();
+                cfg.Add<PlayerHudController>();
                 cfg.OnException(Debug.LogException);
             });
 
@@ -41,6 +45,7 @@ namespace Survivors.Play.Scope
             builder.RegisterSystemFromDefaultWorld<EscapeKeySystem>();
             builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
             builder.RegisterSystemFromDefaultWorld<PlayerInputSystem>();
+            builder.RegisterSystemFromDefaultWorld<PlayerHudSystem>();
             builder.RegisterSystemFromDefaultWorld<MainAudioListenerUpdateSystem>();
             builder.RegisterSystemFromDefaultWorld<EnemyCounterSystem>();
 

@@ -935,7 +935,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Death_B
+      name: Barb_Death_B
       takeName: Death_B
       internalID: 3311174667178009610
       firstFrame: 0

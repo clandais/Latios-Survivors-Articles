@@ -3,6 +3,7 @@ using Latios.Anna;
 using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
+using Survivors.Play.Authoring.Enemies;
 using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
@@ -27,26 +28,31 @@ namespace Survivors.Play.Systems.Enemies
                 .With<RigidBody>()
                 .With<MovementSettings>()
                 .With<PreviousVelocity>()
+                .With<SkeletonMinionAttackAnimationState>()
+                .WithDisabled<SkeletonMinionAttackAnimationTag>()
                 .With<EnemyTag>()
                 .Without<DeadTag>()
                 .Build();
-            
+
             state.RequireForUpdate<FloorGridConstructedTag>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true).layer;
+            var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true)
+                .layer;
+
             var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            var grid = m_world.GetCollectionAspect<VectorFieldAspect>( m_world.sceneBlackboardEntity);
+            var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
 
             state.Dependency = new FollowPlayerJob
             {
-                EnvironmentLayer = environmentLayer,
-                Grid             = grid,
-                DeltaTime        = SystemAPI.Time.DeltaTime,
-                PlayerPosition   = playerPosition
+                EnvironmentLayer         = environmentLayer,
+                Grid                     = grid,
+                DeltaTime                = SystemAPI.Time.DeltaTime,
+                PlayerPosition           = playerPosition,
+                AttackAnimationTagLookup = SystemAPI.GetComponentLookup<SkeletonMinionAttackAnimationTag>()
             }.ScheduleParallel(m_query, state.Dependency);
         }
 
@@ -59,13 +65,20 @@ namespace Survivors.Play.Systems.Enemies
             [ReadOnly] public float             DeltaTime;
             [ReadOnly] public PlayerPosition    PlayerPosition;
 
-            void Execute(TransformAspect transformAspect,
+            [NativeDisableParallelForRestriction]
+            public ComponentLookup<SkeletonMinionAttackAnimationTag> AttackAnimationTagLookup;
+
+            void Execute(
+                Entity entity,
+                [EntityIndexInQuery] int entityIndexInQuery,
+                TransformAspect transformAspect,
                 in MovementSettings movementSettings,
                 ref RigidBody rigidBody,
-                ref PreviousVelocity previousVelocity)
+                ref PreviousVelocity previousVelocity,
+                ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
                 var targetDelta = float3.zero;
-                
+
                 var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
                 var deltaToPlayer = math.normalizesafe(PlayerPosition.Position - transformAspect.worldPosition);
 
@@ -74,7 +87,7 @@ namespace Survivors.Play.Systems.Enemies
 
                 // Check if the raycast to the player hits the environment
                 // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out RaycastResult result, out _))
+                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out var result, out _))
                     vecDelta += deltaToPlayer.xz;
 
 
@@ -104,18 +117,30 @@ namespace Survivors.Play.Systems.Enemies
                     desiredVelocity = float3.zero;
                     UnityEngine.Debug.Log($"Nan detected in desiredVelocity: {desiredVelocity}");
                 }
-                
 
                 desiredVelocity.y      = currentVelocity.y;
                 previousVelocity.Value = currentVelocity;
 
-                currentVelocity           = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
+                currentVelocity = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
                 rigidBody.velocity.linear = currentVelocity;
 
 
-                var lookDirection = math.length(currentVelocity) > math.EPSILON ? math.normalize(currentVelocity) : math.normalize(desiredVelocity);
+                var lookDirection = math.length(currentVelocity) > math.EPSILON
+                    ? math.normalize(currentVelocity)
+                    : math.normalize(desiredVelocity);
+
                 var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
-                transformAspect.worldRotation = transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
+                transformAspect.worldRotation =
+                    transformAspect.worldRotation.RotateTowards(lookRotation,
+                        movementSettings.maxAngleDelta * DeltaTime);
+
+                if (math.distance(transformAspect.worldPosition, PlayerPosition.Position) <=
+                    attackAnimationState.DistanceToTarget)
+                {
+                    rigidBody.velocity.linear = float3.zero;
+                    AttackAnimationTagLookup.SetComponentEnabled(entity, true);
+                    transformAspect.worldRotation = lookRotation;
+                }
             }
         }
     }

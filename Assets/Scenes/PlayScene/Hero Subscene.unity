@@ -259,25 +259,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4048573199161245518, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
-      propertyPath: animations.up.speedMultiplier
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4048573199161245518, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
-      propertyPath: animations.left.speedMultiplier
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4048573199161245518, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
-      propertyPath: animations.right.speedMultiplier
-      value: 1.2
+    - target: {fileID: 3891165883131494202, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
+      propertyPath: playerStartingHealth
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7386942831741955095, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
       propertyPath: m_Name
       value: Barbarian
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 4278816393110974306, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}
