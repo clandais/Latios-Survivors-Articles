@@ -1,16 +1,8 @@
 ﻿using Latios;
 using Latios.Anna;
-using Latios.Psyshock;
-using Latios.Transforms;
-using Survivors.Play.Authoring;
 using Survivors.Play.Components;
 using Unity.Burst;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
-using Unity.Entities.Serialization;
-using UnityEngine;
-using Collider = Latios.Psyshock.Collider;
 
 namespace Survivors.Play.Systems.Debug
 {
@@ -37,20 +29,20 @@ namespace Survivors.Play.Systems.Debug
             //     .GetCollectionComponent<EnemyCollisionLayer>().Layer;
             // state.Dependency = PhysicsDebug.DrawLayer(layer).ScheduleParallel(state.Dependency);
 
-            var envLayer = m_world.sceneBlackboardEntity
-                .GetCollectionComponent<EnvironmentCollisionLayer>().layer;
+            // var envLayer = m_world.sceneBlackboardEntity
+            //     .GetCollectionComponent<EnvironmentCollisionLayer>().layer;
+            //
+            // state.Dependency = PhysicsDebug.DrawLayer(envLayer).ScheduleParallel(state.Dependency);
 
-            state.Dependency = PhysicsDebug.DrawLayer(envLayer).ScheduleParallel(state.Dependency);
 
-            
-            // if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
-            // {
-            //     var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
-            //     grid.Draw();
-            // }
-            
-            
-            
+            if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
+            {
+                var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
+                grid.Draw();
+            }
+
+
+
             // Collider colliderA = default;
             // TransformQvvs transformA = default;
             //
@@ -117,9 +109,5 @@ namespace Survivors.Play.Systems.Debug
             //     PhysicsDebug.DrawCollider(in collider.ValueRO, in t, Color.red);
             // }
         }
-
-
-
     }
-    
 }

@@ -31,10 +31,12 @@ namespace Survivors.Play.Systems.Enemies
                 .With<SkeletonMinionAttackAnimationState>()
                 .WithDisabled<SkeletonMinionAttackAnimationTag>()
                 .With<EnemyTag>()
+                .With<BoidSettings>()
+                .With<BoidForces>()
                 .Without<DeadTag>()
                 .Build();
 
-            state.RequireForUpdate<FloorGridConstructedTag>();
+            // state.RequireForUpdate<FloorGridConstructedTag>();
         }
 
         [BurstCompile]
@@ -74,6 +76,8 @@ namespace Survivors.Play.Systems.Enemies
                 TransformAspect transformAspect,
                 in MovementSettings movementSettings,
                 ref RigidBody rigidBody,
+                in BoidSettings boidSettings,
+                in BoidForces boidForces,
                 ref PreviousVelocity previousVelocity,
                 ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
@@ -105,10 +109,16 @@ namespace Survivors.Play.Systems.Enemies
 
                 targetDelta.xz = vecDelta;
                 targetDelta.y  = transformAspect.worldPosition.y;
+                targetDelta    = math.normalizesafe(targetDelta);
+
+                var d = boidForces.AlignmentForce +
+                        boidForces.AvoidanceForce +
+                        boidForces.CenteringForce +
+                        targetDelta * boidSettings.followStrength;
 
 
                 var currentVelocity = rigidBody.velocity.linear;
-                var desiredVelocity = math.normalizesafe(targetDelta) * movementSettings.moveSpeed;
+                var desiredVelocity = math.normalizesafe(d) * movementSettings.moveSpeed;
 
                 var isDesiredVelocityNan = math.isnan(desiredVelocity);
 
@@ -122,6 +132,7 @@ namespace Survivors.Play.Systems.Enemies
                 previousVelocity.Value = currentVelocity;
 
                 currentVelocity = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
+
                 rigidBody.velocity.linear = currentVelocity;
 
 

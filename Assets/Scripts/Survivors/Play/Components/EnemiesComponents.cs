@@ -7,10 +7,18 @@ namespace Survivors.Play.Components
 {
     public struct EnemyTag : IComponentData { }
 
+
+    public struct BoidTag : IComponentData { }
+
+    public struct BoidNeighbor : IBufferElementData
+    {
+        public EntityWith<BoidTag> Neighbor;
+    }
+
     public partial struct EnemyCollisionLayer : ICollectionComponent
     {
         public CollisionLayer Layer;
 
-        public JobHandle TryDispose(JobHandle inputDeps) => inputDeps;  // Uses WorldUpdateAllocator
+        public JobHandle TryDispose(JobHandle inputDeps) => inputDeps; // Uses WorldUpdateAllocator
     }
 }

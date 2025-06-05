@@ -232,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7d1097ff5406bd344acafcc3524636ed, type: 2}
     - target: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_Name
-      value: Skeleton_Minion_LOD_Maker
+      value: Skeleton_Minion_LOD
       objectReference: {fileID: 0}
     - target: {fileID: 995268213508381258, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -405,6 +405,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6135918542614395995}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1768106108554468978}
     - targetCorrespondingSourceObject: {fileID: -3626970612312859162, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1424766222851798238}
@@ -1096,6 +1099,26 @@ MonoBehaviour:
     clip: {fileID: -1272215259011234369, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
     speedMultiplier: 2
   minDistanceToTarget: 2
+--- !u!114 &1768106108554468978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499177986544258898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed5ac088fb5428795ad1bc7bafe622f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boidSettings:
+    neighborRadius: 25
+    centeringStrength: 3
+    avoidanceRadius: 3
+    avoidanceStrength: 10
+    alignmentRadius: 10
+    alignmentStrength: 1
+    followStrength: 10
 --- !u!1 &2629580407731572136 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 725520994148925355, guid: a9ea84ade677e3347974486f2d311681, type: 3}

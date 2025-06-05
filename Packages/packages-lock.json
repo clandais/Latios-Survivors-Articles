@@ -34,7 +34,7 @@
       "url": "https://package.openupm.com"
     },
     "com.github-glitchenzo.nugetforunity": {
-      "version": "4.3.0",
+      "version": "4.4.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -57,7 +57,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3a381d0a7772b97cec0084624a1c3c4af3bc4867"
+      "hash": "0c26a13bca78b2114de709f6c245c09028b99137"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -66,7 +66,7 @@
       "dependencies": {}
     },
     "com.unity.ai.navigation": {
-      "version": "2.0.7",
+      "version": "2.0.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -88,7 +88,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.19",
+      "version": "1.8.21",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -256,7 +256,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
-      "version": "17.0.4",
+      "version": "17.1.0",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
@@ -271,12 +271,12 @@
       }
     },
     "com.unity.render-pipelines.universal": {
-      "version": "17.0.4",
+      "version": "17.1.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.render-pipelines.core": "17.0.4",
-        "com.unity.shadergraph": "17.0.4",
+        "com.unity.render-pipelines.core": "17.1.0",
+        "com.unity.shadergraph": "17.1.0",
         "com.unity.render-pipelines.universal-config": "17.0.3"
       }
     },
@@ -299,10 +299,13 @@
       }
     },
     "com.unity.scriptablebuildpipeline": {
-      "version": "2.1.4",
+      "version": "2.4.0",
       "depth": 1,
       "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.unity.test-framework": "1.4.5",
+        "com.unity.modules.assetbundle": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.searcher": {
@@ -330,16 +333,16 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
-      "version": "17.0.4",
+      "version": "17.1.0",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
-        "com.unity.render-pipelines.core": "17.0.4",
+        "com.unity.render-pipelines.core": "17.1.0",
         "com.unity.searcher": "4.9.3"
       }
     },
     "com.unity.splines": {
-      "version": "2.8.0",
+      "version": "2.8.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -360,11 +363,11 @@
       }
     },
     "com.unity.test-framework.performance": {
-      "version": "3.0.3",
+      "version": "3.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.test-framework": "1.1.31",
+        "com.unity.test-framework": "1.1.33",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
@@ -391,12 +394,12 @@
       }
     },
     "com.unity.visualeffectgraph": {
-      "version": "17.0.4",
+      "version": "17.1.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.shadergraph": "17.0.4",
-        "com.unity.render-pipelines.core": "17.0.4"
+        "com.unity.shadergraph": "17.1.0",
+        "com.unity.render-pipelines.core": "17.1.0"
       }
     },
     "jp.hadashikick.vcontainer": {

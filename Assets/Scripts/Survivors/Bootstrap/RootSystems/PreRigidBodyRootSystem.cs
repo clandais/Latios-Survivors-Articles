@@ -2,7 +2,6 @@
 using Latios.Anna.Systems;
 using Survivors.Bootstrap.RootSystems.SuperSystems;
 using Survivors.Play.Components;
-using Survivors.Play.Systems.Debug;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -27,7 +26,7 @@ namespace Survivors.Bootstrap.RootSystems
             GetOrCreateAndAddManagedSystem<EnemiesMotionSuperSystem>();
             GetOrCreateAndAddManagedSystem<WeaponUpdateSuperSystem>();
 
-            GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
+            // GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
         }
 
         public override bool ShouldUpdateSystem() => m_shouldUpdateQuery.IsEmptyIgnoreFilter &&
