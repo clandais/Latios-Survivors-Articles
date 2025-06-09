@@ -81,7 +81,7 @@ namespace Survivors.Play.Systems.Enemies.Boids
                 // var mag = math.clamp(math.length(avoidance), 0f, boidSettings.avoidanceStrength);
 
                 // avoidance                 = math.normalizesafe(avoidance) * mag; // * boidSettings.avoidanceStrength;
-                avoidance = math.normalizesafe(avoidance) * boidSettings.avoidanceStrength;
+                avoidance = math.normalizesafe(avoidance);
                 // Set the avoidance force
                 boidForces.AvoidanceForce = avoidance;
 

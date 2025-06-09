@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Player Movement Settings
   m_EditorClassIdentifier: Assembly-CSharp:Survivors.ScriptableObjects:PlayerData
   movementSettings:
-    moveSpeed: 10
+    moveSpeed: 8
     maxAngleDelta: 270
-    speedChangeRate: 0.5
+    speedChangeRate: 0.25

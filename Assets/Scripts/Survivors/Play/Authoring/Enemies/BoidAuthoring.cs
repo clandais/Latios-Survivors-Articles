@@ -49,5 +49,6 @@ namespace Survivors.Play.Authoring.Enemies
         public float3 AvoidanceForce;
         public float3 AlignmentForce;
         public float3 CenteringForce;
+        public float3 FollowForce;
     }
 }

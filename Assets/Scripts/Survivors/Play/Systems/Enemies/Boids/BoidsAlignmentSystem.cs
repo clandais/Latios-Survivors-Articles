@@ -74,7 +74,7 @@ namespace Survivors.Play.Systems.Enemies.Boids
                 {
                     // Average the alignment vector
                     alignment                 /= neighborCount;
-                    alignment                 =  math.normalizesafe(alignment) * boidSettings.alignmentStrength;
+                    alignment                 =  math.normalizesafe(alignment);
                     boidForces.AlignmentForce =  alignment;
 
                     UnityEngine.Debug.DrawLine(

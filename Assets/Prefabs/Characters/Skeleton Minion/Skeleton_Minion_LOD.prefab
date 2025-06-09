@@ -1113,9 +1113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boidSettings:
     neighborRadius: 25
-    centeringStrength: 3
-    avoidanceRadius: 3
-    avoidanceStrength: 10
+    centeringStrength: 4
+    avoidanceRadius: 2
+    avoidanceStrength: 8
     alignmentRadius: 10
     alignmentStrength: 1
     followStrength: 10

@@ -41,7 +41,8 @@ namespace Survivors.Play.Systems.Enemies.Boids
             }.ScheduleParallel(m_query, state.Dependency);
 
             state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(bodies)
-                .ScheduleParallel(out var layer, Allocator.TempJob, state.Dependency);
+                .ScheduleParallel(out var layer, state.WorldUpdateAllocator, state.Dependency);
+
 
             var findNeighbors = new FindNeighbors
             {

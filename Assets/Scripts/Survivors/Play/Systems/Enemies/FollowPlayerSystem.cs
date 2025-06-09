@@ -1,6 +1,5 @@
 ﻿using Latios;
 using Latios.Anna;
-using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Enemies;
@@ -50,8 +49,8 @@ namespace Survivors.Play.Systems.Enemies
 
             state.Dependency = new FollowPlayerJob
             {
-                EnvironmentLayer         = environmentLayer,
-                Grid                     = grid,
+                // EnvironmentLayer         = environmentLayer,
+                // Grid                     = grid,
                 DeltaTime                = SystemAPI.Time.DeltaTime,
                 PlayerPosition           = playerPosition,
                 AttackAnimationTagLookup = SystemAPI.GetComponentLookup<SkeletonMinionAttackAnimationTag>()
@@ -62,10 +61,10 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         partial struct FollowPlayerJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer    EnvironmentLayer;
-            [ReadOnly] public VectorFieldAspect Grid;
-            [ReadOnly] public float             DeltaTime;
-            [ReadOnly] public PlayerPosition    PlayerPosition;
+            // [ReadOnly] public CollisionLayer    EnvironmentLayer;
+            // [ReadOnly] public VectorFieldAspect Grid;
+            [ReadOnly] public float          DeltaTime;
+            [ReadOnly] public PlayerPosition PlayerPosition;
 
             [NativeDisableParallelForRestriction]
             public ComponentLookup<SkeletonMinionAttackAnimationTag> AttackAnimationTagLookup;
@@ -81,52 +80,14 @@ namespace Survivors.Play.Systems.Enemies
                 ref PreviousVelocity previousVelocity,
                 ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
-                var targetDelta = float3.zero;
-
-                var vecDelta = Grid.InterpolatedVectorAt(transformAspect.worldPosition.xz);
-                var deltaToPlayer = math.normalizesafe(PlayerPosition.Position - transformAspect.worldPosition);
-
-                var rayStart = transformAspect.worldPosition + math.up();
-                var rayEnd = transformAspect.worldPosition + math.up() + deltaToPlayer * 25f;
-
-                // Check if the raycast to the player hits the environment
-                // If it does, we just follow the vector field
-                if (!Latios.Psyshock.Physics.Raycast(rayStart, rayEnd, in EnvironmentLayer, out var result, out _))
-                    vecDelta += deltaToPlayer.xz;
-
-
-                vecDelta = math.normalizesafe(vecDelta);
-
-
-                var nan = math.isnan(vecDelta);
-
-                if (nan.x || nan.y)
-                {
-                    vecDelta = float2.zero;
-                    UnityEngine.Debug.Log($"Nan detected in vecDelta: {vecDelta}");
-                }
-
-
-                targetDelta.xz = vecDelta;
-                targetDelta.y  = transformAspect.worldPosition.y;
-                targetDelta    = math.normalizesafe(targetDelta);
-
-                var d = boidForces.AlignmentForce +
-                        boidForces.AvoidanceForce +
-                        boidForces.CenteringForce +
-                        targetDelta * boidSettings.followStrength;
+                var d = boidForces.AlignmentForce * boidSettings.alignmentStrength +
+                        boidForces.AvoidanceForce * boidSettings.avoidanceStrength +
+                        boidForces.CenteringForce * boidSettings.centeringStrength +
+                        boidForces.FollowForce * boidSettings.followStrength;
 
 
                 var currentVelocity = rigidBody.velocity.linear;
                 var desiredVelocity = math.normalizesafe(d) * movementSettings.moveSpeed;
-
-                var isDesiredVelocityNan = math.isnan(desiredVelocity);
-
-                if (isDesiredVelocityNan.x || isDesiredVelocityNan.y)
-                {
-                    desiredVelocity = float3.zero;
-                    UnityEngine.Debug.Log($"Nan detected in desiredVelocity: {desiredVelocity}");
-                }
 
                 desiredVelocity.y      = currentVelocity.y;
                 previousVelocity.Value = currentVelocity;
@@ -134,7 +95,6 @@ namespace Survivors.Play.Systems.Enemies
                 currentVelocity = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
 
                 rigidBody.velocity.linear = currentVelocity;
-
 
                 var lookDirection = math.length(currentVelocity) > math.EPSILON
                     ? math.normalize(currentVelocity)

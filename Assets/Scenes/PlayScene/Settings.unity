@@ -228,8 +228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBounds:
-    m_Center: {x: 0, y: 4, z: -36}
-    m_Extent: {x: 82, y: 10, z: 50}
+    m_Center: {x: 0, y: 4, z: 0}
+    m_Extent: {x: 82, y: 10, z: 80}
   subdivisionsPerAxis:
     x: 4
     y: 1

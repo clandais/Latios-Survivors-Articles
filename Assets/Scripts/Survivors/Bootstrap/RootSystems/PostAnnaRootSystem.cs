@@ -16,6 +16,7 @@ namespace Survivors.Bootstrap.RootSystems
         {
             GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<DrawNavSystem>();
 
             GetOrCreateAndAddUnmanagedSystem<PlayerTakeDamageSystem>();
 

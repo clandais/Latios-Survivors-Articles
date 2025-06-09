@@ -66,7 +66,7 @@ namespace Survivors.Play.Systems.Enemies.Boids
                 if (math.lengthsq(center) > 0f && neighborCount > 0)
                 {
                     center /= neighborCount;
-                    var direction = math.normalizesafe(center - transform.position) * boidSettings.centeringStrength;
+                    var direction = math.normalizesafe(center - transform.position);
                     boidForces.CenteringForce = direction;
 
                     UnityEngine.Debug.DrawLine(

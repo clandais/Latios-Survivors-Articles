@@ -19,7 +19,11 @@ namespace Survivors.Play.Systems.Physics
         {
             m_latiosWorldUnmanaged = state.GetLatiosWorldUnmanaged();
             m_typeHandles          = new BuildCollisionLayerTypeHandles(ref state);
-            m_query                = state.Fluent().With<EnemyTag>(true).PatchQueryForBuildingCollisionLayer().Build();
+            m_query = state.Fluent()
+                .With<EnemyTag>(true)
+                .Without<DeadTag>()
+                .PatchQueryForBuildingCollisionLayer()
+                .Build();
         }
 
         [BurstCompile]
@@ -53,7 +57,8 @@ namespace Survivors.Play.Systems.Physics
 
         public void OnNewScene(ref SystemState state)
         {
-            m_latiosWorldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld<EnemyCollisionLayer>(default);
+            m_latiosWorldUnmanaged.sceneBlackboardEntity
+                .AddOrSetCollectionComponentAndDisposeOld<EnemyCollisionLayer>(default);
         }
     }
 }

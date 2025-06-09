@@ -15,11 +15,12 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
             m_query = Fluent.With<FloorGridConstructedTag>()
                 .Build();
 
+
             GetOrCreateAndAddUnmanagedSystem<BoidsInitializeSystem>();
             GetOrCreateAndAddUnmanagedSystem<BoidsCenterSystem>();
             GetOrCreateAndAddUnmanagedSystem<BoidsAvoidanceSystem>();
             GetOrCreateAndAddUnmanagedSystem<BoidsAlignmentSystem>();
-            //GetOrCreateAndAddUnmanagedSystem<SkeletonBoiding>();
+            GetOrCreateAndAddUnmanagedSystem<BoidsFollowSystem>();
             GetOrCreateAndAddUnmanagedSystem<FollowPlayerSystem>();
         }
 

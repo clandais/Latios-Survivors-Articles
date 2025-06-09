@@ -100,40 +100,20 @@ namespace Survivors.Play.Components
 
         #region Coordinate Conversion
 
-        public int2 WorldToCell(float2 worldPos)
-        {
-            return new int2((int)(worldPos.x - MinX) / CellSize, (int)(worldPos.y - MinY) / CellSize);
-        }
+        public int2 WorldToCell(float2 worldPos) =>
+            new((int)(worldPos.x - MinX) / CellSize, (int)(worldPos.y - MinY) / CellSize);
 
-        public float2 CellToWorld(int2 cellPos)
-        {
-            return new float2(cellPos.x * CellSize + MinX, cellPos.y * CellSize + MinY);
-        }
+        public float2 CellToWorld(int2 cellPos) => new(cellPos.x * CellSize + MinX, cellPos.y * CellSize + MinY);
 
-        public int2 IndexToCell(int index)
-        {
-            return new int2(index % Width, index / Width);
-        }
+        public int2 IndexToCell(int index) => new(index % Width, index / Width);
 
-        public int IndexFromCell(int2 cellPos)
-        {
-            return cellPos.y * Width + cellPos.x;
-        }
+        public int IndexFromCell(int2 cellPos) => cellPos.y * Width + cellPos.x;
 
-        public float2 IndexToWorld(int index)
-        {
-            return CellToWorld(IndexToCell(index));
-        }
+        public float2 IndexToWorld(int index) => CellToWorld(IndexToCell(index));
 
-        public int IndexFromWorld(float2 worldPos)
-        {
-            return IndexFromCell(WorldToCell(worldPos));
-        }
+        public int IndexFromWorld(float2 worldPos) => IndexFromCell(WorldToCell(worldPos));
 
-        public int CellToIndex(int2 cellPos)
-        {
-            return cellPos.x + cellPos.y * Width;
-        }
+        public int CellToIndex(int2 cellPos) => cellPos.x + cellPos.y * Width;
 
         #endregion
 
@@ -183,15 +163,12 @@ namespace Survivors.Play.Components
             };
         }
 
-        public FluentQuery AppendToQuery(FluentQuery query)
-        {
-            return query.With<FloorGrid.ExistComponent>(true);
-        }
+        public FluentQuery AppendToQuery(FluentQuery query) => query.With<FloorGrid.ExistComponent>(true);
 
         #region Methods
 
         /// <summary>
-        ///     Interpolates the vector field at a given world position.
+        ///     (Not really anymore) Interpolates the vector field at a given world position.
         /// </summary>
         /// <param name="worldPos">
         ///     The world position to interpolate the vector field at.
@@ -201,32 +178,21 @@ namespace Survivors.Play.Components
         /// </returns>
         public float2 InterpolatedVectorAt(float2 worldPos)
         {
-            var relX = worldPos.x - Grid.MinX;
-            var relY = worldPos.y - Grid.MinY;
+            var dir = GetVectorSafe(Grid.WorldToCell(worldPos));
 
-            var fx = relX / Grid.CellSize;
-            var fy = relY / Grid.CellSize;
+            if (math.lengthsq(dir) > 0) return math.normalize(dir);
 
-            var ix = (int)math.floor(fx);
-            var iy = (int)math.floor(fy);
+            for (var x = -1; x <= 1; x++)
+            for (var y = -1; y <= 1; y++)
+            {
+                var cellPos = Grid.WorldToCell(worldPos) + new int2(x, y);
+                var vector = GetVectorSafe(cellPos);
+                if (math.lengthsq(vector) > 0)
+                    return math.normalize(vector);
+            }
 
-            var fracX = fx - ix;
-            var fracY = fy - iy;
-
-            var cell00 = new int2(ix, iy);
-            var cell10 = new int2(ix + 1, iy);
-            var cell01 = new int2(ix, iy + 1);
-            var cell11 = new int2(ix + 1, iy + 1);
-
-            var v00 = GetVectorSafe(cell00);
-            var v10 = GetVectorSafe(cell10);
-            var v01 = GetVectorSafe(cell01);
-            var v11 = GetVectorSafe(cell11);
-
-            var interpX1 = math.lerp(v00, v10, fracX);
-            var interpX2 = math.lerp(v01, v11, fracX);
-            var finalVec = math.lerp(interpX1, interpX2, fracY);
-            return math.normalizesafe(finalVec);
+            // If no valid vector is found, return zero vector
+            return float2.zero;
         }
 
         public float2 GetVectorSafe(int2 cellPos)

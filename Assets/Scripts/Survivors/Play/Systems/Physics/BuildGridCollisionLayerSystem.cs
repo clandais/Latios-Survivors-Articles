@@ -3,22 +3,18 @@ using Latios.Anna;
 using Latios.Psyshock;
 using Survivors.Play.Authoring.SceneBlackBoard;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 namespace Survivors.Play.Systems.Physics
 {
-    
-    
     [RequireMatchingQueriesForUpdate]
     [BurstCompile]
     public partial struct BuildGridCollisionLayerSystem : ISystem, ISystemNewScene
     {
-    
-        LatiosWorldUnmanaged m_latiosWorldUnmanaged;
+        LatiosWorldUnmanaged           m_latiosWorldUnmanaged;
         BuildCollisionLayerTypeHandles m_typeHandles;
-        EntityQuery m_query;
-        
+        EntityQuery                    m_query;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
@@ -36,26 +32,23 @@ namespace Survivors.Play.Systems.Physics
         {
             m_typeHandles.Update(ref state);
 
+            var settings = m_latiosWorldUnmanaged.GetPhysicsSettings();
 
-           var settings = m_latiosWorldUnmanaged.GetPhysicsSettings();
-            
-            state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query, in m_typeHandles )
-                .WithSettings( new CollisionLayerSettings
+            state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query, in m_typeHandles)
+                .WithSettings(new CollisionLayerSettings
                 {
-                    worldAabb = settings.collisionLayerSettings.worldAabb,
-                    worldSubdivisionsPerAxis = settings.collisionLayerSettings.worldSubdivisionsPerAxis,
+                    worldAabb                = settings.collisionLayerSettings.worldAabb,
+                    worldSubdivisionsPerAxis = settings.collisionLayerSettings.worldSubdivisionsPerAxis
                 })
                 .ScheduleParallel(out var gridCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
-            
-            m_latiosWorldUnmanaged.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld( new GridCollisionLayer
+
+            m_latiosWorldUnmanaged.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(new GridCollisionLayer
             {
-                Layer = gridCollisionLayer,
+                Layer = gridCollisionLayer
             });
-            
-            
+
+
             state.Enabled = false;
-            
-            
         }
 
         [BurstCompile]
@@ -63,7 +56,8 @@ namespace Survivors.Play.Systems.Physics
 
         public void OnNewScene(ref SystemState state)
         {
-            m_latiosWorldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld<GridCollisionLayer>(default);
+            m_latiosWorldUnmanaged.sceneBlackboardEntity
+                .AddOrSetCollectionComponentAndDisposeOld<GridCollisionLayer>(default);
         }
     }
 }
