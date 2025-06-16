@@ -8,6 +8,7 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
 {
     public partial class PlayerInputSuperSystem : SuperSystem
     {
+        EntityQuery m_playerDeadQuery;
         EntityQuery m_shouldUpdateQuery;
 
         protected override void CreateSystems()
@@ -16,14 +17,16 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
                 .With<PauseRequestedTag>()
                 .Build();
 
+            m_playerDeadQuery = Fluent
+                .With<PlayerTag>()
+                .With<DeadTag>()
+                .Build();
 
             GetOrCreateAndAddManagedSystem<PlayerInputSystem>();
             GetOrCreateAndAddManagedSystem<MainAudioListenerUpdateSystem>();
         }
 
-        public override bool ShouldUpdateSystem()
-        {
-            return m_shouldUpdateQuery.IsEmptyIgnoreFilter;
-        }
+        public override bool ShouldUpdateSystem() => m_shouldUpdateQuery.IsEmptyIgnoreFilter &&
+                                                     m_playerDeadQuery.IsEmptyIgnoreFilter;
     }
 }

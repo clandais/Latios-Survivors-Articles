@@ -1,5 +1,6 @@
 ﻿using Latios;
 using R3;
+using Survivors.GameScope.Commands;
 using Survivors.Play.Components;
 using Survivors.Play.Scope.Commands;
 using Unity.Entities;
@@ -32,6 +33,9 @@ namespace Survivors.Play.Systems.UI
                 CurrentHealth = playerHealth.CurrentHealth,
                 MaxHealth     = playerHealth.MaxHealth
             });
+
+            if (playerHealth.CurrentHealth == 0)
+                m_commandPublisher.PublishAsync(new PlayerDeadCommand());
         }
 
         protected override void OnUpdate()

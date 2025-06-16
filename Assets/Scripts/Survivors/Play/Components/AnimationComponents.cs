@@ -26,6 +26,11 @@ namespace Survivors.Play.Components
         public BlobAssetReference<SkeletonClipSetBlob> ClipSet;
     }
 
+    public struct DeathClipState : IComponentData
+    {
+        public ClipState State;
+    }
+
     public struct DeathClipsStates : IComponentData
     {
         public ClipState StateA;

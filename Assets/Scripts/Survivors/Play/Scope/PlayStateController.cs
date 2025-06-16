@@ -3,7 +3,6 @@ using R3;
 using Survivors.GameScope.Commands;
 using Survivors.GameScope.MonoBehaviours;
 using Survivors.Play.Scope.MonoBehaviours;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -14,13 +13,13 @@ namespace Survivors.Play.Scope
 {
     public class PlayStateController : IStartable, IDisposable
     {
+        [Inject] CinemachineBehaviour m_cinemachineCamera;
         [Inject] ICommandPublisher    m_commandPublisher;
         [Inject] ICommandSubscribable m_commandSubscribable;
         [Inject] Image                m_crosshair;
 
         DisposableBag          m_disposable;
         [Inject] PlayStateMenu m_playStateMenu;
-        [Inject] CinemachineBehaviour    m_cinemachineCamera;
 
         public void Dispose()
         {
@@ -33,25 +32,35 @@ namespace Survivors.Play.Scope
 
             m_playStateMenu.ResumeButton.OnClickAsObservable().Subscribe(OnResumeClicked)
                 .AddTo(ref m_disposable);
+
             m_playStateMenu.MainMenuButton.OnClickAsObservable().Subscribe(OnMainMenuClicked)
                 .AddTo(ref m_disposable);
+
             m_playStateMenu.QuitButton.OnClickAsObservable().Subscribe(OnQuitClicked)
                 .AddTo(ref m_disposable);
 
             m_commandSubscribable.Subscribe<RequestPauseStateCommand>(OnPauseStateRequested)
                 .AddTo(ref m_disposable);
+
             m_commandSubscribable.Subscribe<RequestResumeStateCommand>(OnResumeStateRequested)
                 .AddTo(ref m_disposable);
+
             m_commandSubscribable.Subscribe<MousePositionChangedCommand>(OnMousePositionChanged)
                 .AddTo(ref m_disposable);
-            
+
             m_commandSubscribable.Subscribe<MouseScrollChangedCommand>(OnMouseScrollChanged)
+                .AddTo(ref m_disposable);
+
+            m_commandSubscribable.Subscribe<PlayerDeadCommand>(OnPlayerDead)
                 .AddTo(ref m_disposable);
 
             m_playStateMenu.Hide();
         }
 
-
+        void OnPlayerDead(PlayerDeadCommand _, PublishContext ctx)
+        {
+            m_playStateMenu.ShowDead();
+        }
 
 
         void OnPauseStateRequested(RequestPauseStateCommand _,
@@ -59,6 +68,7 @@ namespace Survivors.Play.Scope
         {
             m_playStateMenu.Show();
         }
+
 
         void OnResumeStateRequested(RequestResumeStateCommand _,
             PublishContext ctx)
@@ -71,7 +81,7 @@ namespace Survivors.Play.Scope
         {
             m_crosshair.rectTransform.position = new Vector3(cmd.Position.x, cmd.Position.y, 0);
         }
-        
+
         void OnMouseScrollChanged(MouseScrollChangedCommand cmd,
             PublishContext arg2)
         {

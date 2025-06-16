@@ -107,11 +107,9 @@ namespace Survivors.Play.Systems.Enemies
 
                 if (math.distance(transformAspect.worldPosition, PlayerPosition.Position) <=
                     attackAnimationState.DistanceToTarget)
-                {
-                    rigidBody.velocity.linear = float3.zero;
+                    // rigidBody.velocity.linear = float3.zero;
                     AttackAnimationTagLookup.SetComponentEnabled(entity, true);
-                    transformAspect.worldRotation = lookRotation;
-                }
+                // transformAspect.worldRotation = lookRotation;
             }
         }
     }

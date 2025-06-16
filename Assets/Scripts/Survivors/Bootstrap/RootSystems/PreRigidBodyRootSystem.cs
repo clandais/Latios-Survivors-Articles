@@ -26,7 +26,6 @@ namespace Survivors.Bootstrap.RootSystems
             GetOrCreateAndAddManagedSystem<PlayerMotionSuperSystem>();
             GetOrCreateAndAddManagedSystem<EnemiesMotionSuperSystem>();
             GetOrCreateAndAddManagedSystem<WeaponUpdateSuperSystem>();
-
             GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
         }
 

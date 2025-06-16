@@ -30,16 +30,12 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
 
             var icb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer();
 
-            var vfxCommandBuffer = m_latiosWorldUnmanaged.syncPoint
-                .CreateInstantiateCommandBuffer<WorldTransform>();
-
             state.Dependency = new ThrownWeaponCollisionJob
             {
                 EnemyCollisionLayer = enemyCollisionLayer,
                 DeltaTime           = SystemAPI.Time.DeltaTime,
                 HitInfosLookup      = SystemAPI.GetComponentLookup<HitInfos>(),
                 Icb                 = icb.AsParallelWriter(),
-                //VfxCommandBuffer    = vfxCommandBuffer.AsParallelWriter()
                 VfxQueue = m_latiosWorldUnmanaged.sceneBlackboardEntity
                     .GetCollectionComponent<VfxSpawnQueue>().VfxQueue.AsParallelWriter()
             }.ScheduleParallel(state.Dependency);

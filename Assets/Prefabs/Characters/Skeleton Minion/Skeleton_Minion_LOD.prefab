@@ -1098,7 +1098,7 @@ MonoBehaviour:
   attackClipProperty:
     clip: {fileID: -1272215259011234369, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
     speedMultiplier: 2
-  minDistanceToTarget: 2
+  minDistanceToTarget: 4
 --- !u!114 &1768106108554468978
 MonoBehaviour:
   m_ObjectHideFlags: 0
