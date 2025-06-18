@@ -2,7 +2,6 @@
 using Latios.Anna.Systems;
 using Survivors.Play.Components;
 using Survivors.Play.Systems.Enemies;
-using Survivors.Play.Systems.Pathfinding;
 using Survivors.Play.Systems.Physics;
 using Survivors.Play.Systems.Physics.FindPairs;
 using Survivors.Play.Systems.Player.Weapons.Physics;
@@ -20,14 +19,14 @@ namespace Survivors.Bootstrap.RootSystems
             m_shouldUpdateQuery = Fluent.With<PauseRequestedTag>()
                 .Build();
 
-            GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
+            // GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
 
             GetOrCreateAndAddUnmanagedSystem<PlayerTakeDamageSystem>();
 
             GetOrCreateAndAddUnmanagedSystem<BuildWeaponCollisionLayerSystem>();
-            GetOrCreateAndAddUnmanagedSystem<FlowGridSystem>();
-            GetOrCreateAndAddUnmanagedSystem<FlowFieldSystem>();
+            // GetOrCreateAndAddUnmanagedSystem<FlowGridSystem>();
+            // GetOrCreateAndAddUnmanagedSystem<FlowFieldSystem>();
             GetOrCreateAndAddUnmanagedSystem<SkeletonHitInfosUpdateSystem>();
         }
 

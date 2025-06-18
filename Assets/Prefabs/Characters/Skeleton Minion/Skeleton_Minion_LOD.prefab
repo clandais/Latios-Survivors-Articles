@@ -72,7 +72,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.98
+      value: 78.79288
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LocalPosition.y
@@ -80,7 +80,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.33
+      value: 1.50234
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       propertyPath: m_LocalRotation.w
@@ -407,7 +407,10 @@ PrefabInstance:
       addedObject: {fileID: 6135918542614395995}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1768106108554468978}
+      addedObject: {fileID: 7566634355277390308}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5787477749881674075}
     - targetCorrespondingSourceObject: {fileID: -3626970612312859162, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1424766222851798238}
@@ -1099,7 +1102,29 @@ MonoBehaviour:
     clip: {fileID: -1272215259011234369, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
     speedMultiplier: 2
   minDistanceToTarget: 4
---- !u!114 &1768106108554468978
+--- !u!195 &7566634355277390308
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499177986544258898}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.7
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &5787477749881674075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1108,16 +1133,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2499177986544258898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed5ac088fb5428795ad1bc7bafe622f, type: 3}
+  m_Script: {fileID: 11500000, guid: 2be0ff6151fe2734d938fb5e17914aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boidSettings:
-    neighborRadius: 25
-    centeringStrength: 4
-    avoidanceRadius: 2
+    agentRadius: 1
+    maxSpeed: 5
+    maxForce: 1
+    centeringRadius: 15
+    centeringStrength: 5
+    avoidanceRadius: 1
     avoidanceStrength: 8
     alignmentRadius: 10
-    alignmentStrength: 1
+    alignmentStrength: 2
     followStrength: 10
 --- !u!1 &2629580407731572136 stripped
 GameObject:

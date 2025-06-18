@@ -1,7 +1,6 @@
 ﻿using Latios;
-using Survivors.Play.Components;
 using Survivors.Play.Systems.Enemies;
-using Survivors.Play.Systems.Enemies.Boids;
+using Survivors.Play.Systems.NavMesh;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems.SuperSystems
@@ -12,18 +11,20 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
 
         protected override void CreateSystems()
         {
-            m_query = Fluent.With<FloorGridConstructedTag>()
-                .Build();
+            // m_query = Fluent.With<FloorGridConstructedTag>()
+            //     .Build();
 
 
-            GetOrCreateAndAddUnmanagedSystem<BoidsInitializeSystem>();
-            GetOrCreateAndAddUnmanagedSystem<BoidsCenterSystem>();
-            GetOrCreateAndAddUnmanagedSystem<BoidsAvoidanceSystem>();
-            GetOrCreateAndAddUnmanagedSystem<BoidsAlignmentSystem>();
-            GetOrCreateAndAddUnmanagedSystem<BoidsFollowSystem>();
+            GetOrCreateAndAddUnmanagedSystem<NavMeshDebugSystem>();
+
+            GetOrCreateAndAddUnmanagedSystem<EnemiesRequestPathToPlayerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<EnemiesPathDebugSystem>();
+
+            // GetOrCreateAndAddUnmanagedSystem<BoidsFollowSystem>();
+            GetOrCreateAndAddUnmanagedSystem<SetBoidAgentsGoalSystem>();
             GetOrCreateAndAddUnmanagedSystem<FollowPlayerSystem>();
         }
 
-        public override bool ShouldUpdateSystem() => !m_query.IsEmptyIgnoreFilter;
+        // public override bool ShouldUpdateSystem() => !m_query.IsEmptyIgnoreFilter;
     }
 }

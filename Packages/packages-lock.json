@@ -40,6 +40,20 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.github.clandais.latiosboids": {
+      "version": "https://github.com/clandais/LatiosStupidBoids.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3f6e449c97252f68db3531ddadf6a20570ce860d"
+    },
+    "com.github.clandais.latiosnavigation": {
+      "version": "https://github.com/clandais/LatiosNavigation.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "bcae6f66781972e52b3b8bd916a6bdc41858c8b2"
+    },
     "com.latios.latiosframework": {
       "version": "0.12.7",
       "depth": 0,
@@ -403,7 +417,7 @@
       }
     },
     "jp.hadashikick.vcontainer": {
-      "version": "1.16.8",
+      "version": "1.16.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

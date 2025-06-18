@@ -1,3 +1,4 @@
+using Boids;
 using Latios;
 using Latios.Anna;
 using Latios.Authoring;
@@ -11,6 +12,7 @@ using Latios.Transforms;
 using Latios.Transforms.Authoring;
 using Latios.Unika;
 using Latios.Unika.Authoring;
+using LatiosNavigation;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
@@ -26,6 +28,7 @@ namespace Survivors.Bootstrap
             PsyshockBakingBootstrap.InstallUnityColliderBakers(ref context);
             KinemationBakingBootstrap.InstallKinemation(ref context);
             UnikaBakingBootstrap.InstallUnikaEntitySerialization(ref context);
+            NavBakingBootstrap.InstallNavBakers(ref context);
         }
     }
 
@@ -71,6 +74,8 @@ namespace Survivors.Bootstrap
             CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
             UnikaBootstrap.InstallUnikaEntitySerialization(world);
             LifeFXBootstrap.InstallLifeFX(world);
+            NavBoostrap.InstallNav(world);
+            StupidBoidsBootstrap.InstallBoids(world);
 
             AnnaBootstrap.InstallAnna(world);
 

@@ -1,4 +1,5 @@
-﻿using Latios;
+﻿using Boids.Components;
+using Latios;
 using Latios.Anna;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
@@ -12,6 +13,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Enemies
 {
+    [RequireMatchingQueriesForUpdate]
     [BurstCompile]
     public partial struct FollowPlayerSystem : ISystem
     {
@@ -24,14 +26,13 @@ namespace Survivors.Play.Systems.Enemies
             m_world = state.GetLatiosWorldUnmanaged();
             m_query = state.Fluent()
                 .WithAspect<TransformAspect>()
+                .WithAspect<BoidAspect>()
                 .With<RigidBody>()
                 .With<MovementSettings>()
-                .With<PreviousVelocity>()
                 .With<SkeletonMinionAttackAnimationState>()
                 .WithDisabled<SkeletonMinionAttackAnimationTag>()
+                .With<PreviousVelocity>()
                 .With<EnemyTag>()
-                .With<BoidSettings>()
-                .With<BoidForces>()
                 .Without<DeadTag>()
                 .Build();
 
@@ -41,11 +42,11 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true)
-                .layer;
+            // var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true)
+            //     .layer;
 
             var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
+            //    var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
 
             state.Dependency = new FollowPlayerJob
             {
@@ -73,18 +74,14 @@ namespace Survivors.Play.Systems.Enemies
                 Entity entity,
                 [EntityIndexInQuery] int entityIndexInQuery,
                 TransformAspect transformAspect,
+                BoidAspect boidAspect,
                 in MovementSettings movementSettings,
                 ref RigidBody rigidBody,
-                in BoidSettings boidSettings,
-                in BoidForces boidForces,
                 ref PreviousVelocity previousVelocity,
                 ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
-                var d = boidForces.AlignmentForce * boidSettings.alignmentStrength +
-                        boidForces.AvoidanceForce * boidSettings.avoidanceStrength +
-                        boidForces.CenteringForce * boidSettings.centeringStrength +
-                        boidForces.FollowForce * boidSettings.followStrength;
-
+                var newPosition = boidAspect.Update(transformAspect.worldPosition, DeltaTime);
+                var d = newPosition - transformAspect.worldPosition;
 
                 var currentVelocity = rigidBody.velocity.linear;
                 var desiredVelocity = math.normalizesafe(d) * movementSettings.moveSpeed;
