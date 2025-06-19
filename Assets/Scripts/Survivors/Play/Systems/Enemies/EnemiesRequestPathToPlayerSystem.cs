@@ -1,5 +1,5 @@
 ﻿using Latios;
-using LatiosNavigation.Authoring;
+using Latios.Navigator.Components;
 using Survivors.Play.Authoring;
 using Survivors.Play.Components;
 using Unity.Burst;
@@ -50,8 +50,8 @@ namespace Survivors.Play.Systems.Enemies
             void Execute(Entity entity, [EntityIndexInQuery] int index,
                 ref AgentDestination destination)
             {
-                destination.Position = PlayerPosition.Position;
                 CommandBuffer.SetComponentEnabled<AgenPathRequestedTag>(index, entity, true);
+                destination.Position = PlayerPosition.Position;
             }
         }
     }

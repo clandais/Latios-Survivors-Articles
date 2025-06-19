@@ -45,33 +45,26 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3f6e449c97252f68db3531ddadf6a20570ce860d"
-    },
-    "com.github.clandais.latiosnavigation": {
-      "version": "https://github.com/clandais/LatiosNavigation.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "bcae6f66781972e52b3b8bd916a6bdc41858c8b2"
+      "hash": "7e7db72b4d9abc1f598f90e00968582e9185cef3"
     },
     "com.latios.latiosframework": {
-      "version": "0.12.7",
+      "version": "https://github.com/Dreaming381/Latios-Framework.git#prerelease/0.13.0",
       "depth": 0,
-      "source": "registry",
+      "source": "git",
       "dependencies": {
         "com.unity.entities": "1.3.14",
         "com.unity.audio.dspgraph": "0.1.0-preview.22",
         "com.unity.entities.graphics": "1.4.12",
         "com.unity.burst": "1.8.19"
       },
-      "url": "https://package.openupm.com"
+      "hash": "3dcce773e9434749af4a7f11fd96c1643f46b175"
     },
     "com.latios.latiosframework.addons": {
-      "version": "https://github.com/Dreaming381/Latios-Framework-Add-Ons.git",
+      "version": "https://github.com/Dreaming381/Latios-Framework-Add-Ons.git#prerelease/framework_0.13.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "0c26a13bca78b2114de709f6c245c09028b99137"
+      "hash": "e85b37ec6aac361594bd0a77fb2b099c78c1ff6c"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

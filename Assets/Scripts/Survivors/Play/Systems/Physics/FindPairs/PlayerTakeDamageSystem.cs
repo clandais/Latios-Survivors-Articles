@@ -1,7 +1,7 @@
 ﻿using Latios;
-using Latios.Anna;
 using Latios.Psyshock;
 using Latios.Transforms;
+using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Enemies;
 using Survivors.Play.Authoring.Player.SFX;
 using Survivors.Play.Components;
@@ -12,12 +12,13 @@ using Unity.Jobs;
 namespace Survivors.Play.Systems.Physics.FindPairs
 {
     [BurstCompile]
-    public partial struct PlayerTakeDamageSystem : ISystem, ISystemNewScene
+    public partial struct PlayerTakeDamageSystem : ISystem, ISystemNewScene, ISystemShouldUpdate
     {
         BuildCollisionLayerTypeHandles m_handles;
         LatiosWorldUnmanaged           m_world;
         EntityQuery                    m_playerQuery;
         EntityQuery                    m_enemyAttackingQuery;
+        EntityQuery                    m_shouldUpdateQuery;
         Rng                            m_rng;
 
         [BurstCompile]
@@ -31,7 +32,13 @@ namespace Survivors.Play.Systems.Physics.FindPairs
             m_enemyAttackingQuery = state.Fluent().With<EnemyTag>().Without<DeadTag>()
                 .WithEnabled<SkeletonMinionAttackAnimationTag>()
                 .PatchQueryForBuildingCollisionLayer().Build();
+
+            m_shouldUpdateQuery = state.Fluent()
+                .With<PlayerTag>()
+                .With<InvincibleTag>()
+                .Build();
         }
+
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
@@ -107,7 +114,7 @@ namespace Survivors.Play.Systems.Physics.FindPairs
                     };
 
                     Ecb.SetComponent(result.bodyIndexA, deathSfxInstance, transform);
-                    Ecb.RemoveComponent<RigidBody>(result.bodyIndexA, result.entityA);
+                    Ecb.RemoveComponent<Collider>(result.bodyIndexA, result.entityA);
                 }
             }
         }
@@ -116,5 +123,7 @@ namespace Survivors.Play.Systems.Physics.FindPairs
         {
             m_rng = new Rng("PlayerTakeDamageSystem");
         }
+
+        public bool ShouldUpdateSystem(ref SystemState state) => m_shouldUpdateQuery.IsEmptyIgnoreFilter;
     }
 }

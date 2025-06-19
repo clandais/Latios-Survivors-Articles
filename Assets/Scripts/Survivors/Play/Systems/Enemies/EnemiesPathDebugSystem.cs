@@ -1,6 +1,6 @@
 ﻿using Latios;
+using Latios.Navigator.Components;
 using Latios.Transforms;
-using LatiosNavigation.Authoring;
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;

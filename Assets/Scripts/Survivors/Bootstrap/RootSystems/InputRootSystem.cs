@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
 {
-    [UpdateInGroup(typeof(PreTransformSuperSystem))]
+    [UpdateInGroup(typeof(PostTransformSuperSystem))]
     public partial class InputRootSystem : RootSuperSystem
     {
         protected override void CreateSystems()

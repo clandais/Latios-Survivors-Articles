@@ -1,5 +1,6 @@
 ﻿using Latios;
 using Survivors.Play.Components;
+using Survivors.VfxTunnels;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -15,6 +16,15 @@ namespace Survivors.Play.Authoring.Player.Weapons
         [SerializeField] float3 rotationAxis;
 
         [SerializeField] AxeSlashVfxAuthoring axeSlashVfxPrefab;
+
+        [SerializeField] Vector3                     trailEmitterOffset;
+        [SerializeField] PositionGraphicsEventTunnel positionGraphicsEventTunnel;
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position + trailEmitterOffset, 0.1f);
+        }
 
         class AxeAuthoringBaker : Baker<AxeAuthoring>
         {
@@ -34,6 +44,19 @@ namespace Survivors.Play.Authoring.Player.Weapons
                 AddComponent(entity, new ThrownWeaponHitVfx
                 {
                     Prefab = GetEntity(authoring.axeSlashVfxPrefab, TransformUsageFlags.Dynamic)
+                });
+
+                AddComponent(entity, new AxeTrailEmitter
+                {
+                    Offset = authoring.trailEmitterOffset
+                });
+
+                AddComponent(entity, new PersistentPositionEventSpawner
+                {
+                    PositionGraphicsEventTunnel = new UnityObjectRef<PositionGraphicsEventTunnel>
+                    {
+                        Value = authoring.positionGraphicsEventTunnel
+                    }
                 });
             }
         }
@@ -66,5 +89,15 @@ namespace Survivors.Play.Authoring.Player.Weapons
     public struct ThrownWeaponHitVfx : IComponentData
     {
         public EntityWith<Prefab> Prefab;
+    }
+
+    public struct AxeTrailEmitter : IComponentData
+    {
+        public float3 Offset;
+    }
+
+    public struct PersistentPositionEventSpawner : IComponentData
+    {
+        public UnityObjectRef<PositionGraphicsEventTunnel> PositionGraphicsEventTunnel;
     }
 }

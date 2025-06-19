@@ -1,12 +1,13 @@
 ﻿using Latios;
-using Latios.Anna;
 using Latios.Psyshock;
 using Survivors.Play.Components;
+using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace Survivors.Play.Systems.Physics
 {
+    [RequireMatchingQueriesForUpdate]
     [BurstCompile]
     public partial struct BuildEnemyCollisionLayerSystem : ISystem, ISystemNewScene
     {
@@ -32,13 +33,14 @@ namespace Survivors.Play.Systems.Physics
             m_typeHandles.Update(ref state);
 
 
-            var physicsSettings = m_latiosWorldUnmanaged.GetPhysicsSettings();
+            var physicsSettings =
+                m_latiosWorldUnmanaged.GetPhysicsSettings();
 
 
             var settings = new CollisionLayerSettings
             {
-                worldAabb                = physicsSettings.collisionLayerSettings.worldAabb,
-                worldSubdivisionsPerAxis = physicsSettings.collisionLayerSettings.worldSubdivisionsPerAxis
+                worldAabb                = physicsSettings.CollisionLayerSettings.worldAabb,
+                worldSubdivisionsPerAxis = physicsSettings.CollisionLayerSettings.worldSubdivisionsPerAxis
             };
 
             state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query,
@@ -52,9 +54,8 @@ namespace Survivors.Play.Systems.Physics
             });
         }
 
-        [BurstCompile]
-        public void OnDestroy(ref SystemState state) { }
 
+        [BurstCompile]
         public void OnNewScene(ref SystemState state)
         {
             m_latiosWorldUnmanaged.sceneBlackboardEntity

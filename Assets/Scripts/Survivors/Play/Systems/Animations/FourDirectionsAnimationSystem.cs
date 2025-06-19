@@ -1,5 +1,4 @@
 ﻿using Latios;
-using Latios.Anna;
 using Latios.Kinemation;
 using Latios.Transforms;
 using Survivors.Play.Components;
@@ -23,7 +22,7 @@ namespace Survivors.Play.Systems.Animations
                 .WithAspect<OptimizedSkeletonAspect>()
                 .With<Clips>()
                 .With<FourDirectionClipStates>()
-                .With<RigidBody>()
+                .With<CurrentVelocity>()
                 .With<PreviousVelocity>()
                 .With<InertialBlendState>()
                 .Without<DeadTag>()
@@ -49,7 +48,7 @@ namespace Survivors.Play.Systems.Animations
             void Execute(
                 OptimizedSkeletonAspect skeleton,
                 in WorldTransform worldTransform,
-                in RigidBody rigidBody,
+                in CurrentVelocity currentVelocity,
                 in Clips clips,
                 in PreviousVelocity previousVelocity,
                 ref FourDirectionClipStates clipStates,
@@ -57,7 +56,7 @@ namespace Survivors.Play.Systems.Animations
             )
             {
                 // Get Local Velocity
-                var velocity = math.mul(math.inverse(worldTransform.rotation), rigidBody.velocity.linear);
+                var velocity = math.mul(math.inverse(worldTransform.rotation), currentVelocity.Value);
                 var magnitude = math.length(velocity);
                 var rotatedVelocity = math.normalizesafe(velocity);
 

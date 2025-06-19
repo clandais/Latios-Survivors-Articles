@@ -1,9 +1,8 @@
 ﻿using Latios;
-using Latios.Anna;
 using Latios.Psyshock;
 using Latios.Transforms;
+using Survivors.Play.Authoring.Environment;
 using Survivors.Play.Authoring.Player.Weapons;
-using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Collections;

@@ -1,8 +1,9 @@
 ﻿using Latios;
-using LatiosNavigation.Authoring;
-using LatiosNavigation.Utils;
+using Latios.Navigator.Components;
+using Latios.Navigator.Utils;
 using Unity.Burst;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Survivors.Play.Systems.NavMesh
 {
@@ -35,7 +36,7 @@ namespace Survivors.Play.Systems.NavMesh
             void Execute(in NavMeshSurfaceBlobReference blob)
             {
                 ref var blobAsset = ref blob.NavMeshSurfaceBlob.Value;
-                NavUtils.Debug(ref blobAsset);
+                NavUtils.Debug(ref blobAsset, Color.aquamarine);
             }
         }
     }

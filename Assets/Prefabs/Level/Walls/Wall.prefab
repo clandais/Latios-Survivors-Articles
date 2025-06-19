@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1154784673298145592}
   - component: {fileID: 2594754027799700906}
-  - component: {fileID: 5192160626824591321}
+  - component: {fileID: 1489107467938246739}
   m_Layer: 6
   m_Name: Wall
   m_TagString: Untagged
@@ -55,7 +55,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 4, z: 1}
   m_Center: {x: 2, y: 2, z: 0}
---- !u!114 &5192160626824591321
+--- !u!114 &1489107467938246739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

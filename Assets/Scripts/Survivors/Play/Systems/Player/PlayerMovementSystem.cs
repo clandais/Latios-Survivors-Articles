@@ -1,5 +1,4 @@
 ﻿using Latios;
-using Latios.Anna;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Components;
@@ -30,8 +29,8 @@ namespace Survivors.Play.Systems.Player
 
             m_jobQuery = state.Fluent()
                 .WithAspect<TransformAspect>()
-                .With<RigidBody>()
                 .With<MovementSettings>()
+                .With<CurrentVelocity>()
                 .With<PreviousVelocity>()
                 .With<PlayerTag>()
                 .Without<DeadTag>()
@@ -62,21 +61,22 @@ namespace Survivors.Play.Systems.Player
 
         void Execute(TransformAspect transformAspect,
             in MovementSettings movementSettings,
-            ref RigidBody rigidBody,
+            ref CurrentVelocity currentVelocityComponent,
             ref PreviousVelocity previousVelocity)
         {
             var move = PlayerInputState.Direction;
 
-            var currentVelocity = rigidBody.velocity.linear;
+            var currentVelocity = currentVelocityComponent.Value;
             var desiredVelocity = new float3(move.x, 0f, move.y) * movementSettings.moveSpeed;
 
             // We don't want to change the gravity force
             desiredVelocity.y = currentVelocity.y;
 
             previousVelocity.Value = currentVelocity;
+            currentVelocityComponent.Value =
+                currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
 
-            currentVelocity           = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
-            rigidBody.velocity.linear = currentVelocity;
+            transformAspect.worldPosition += currentVelocity * DeltaTime;
 
             var lookDir = PlayerInputState.MousePosition - transformAspect.worldPosition;
             var lookRotation = quaternion.LookRotationSafe(lookDir, math.up());

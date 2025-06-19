@@ -1,26 +1,27 @@
 ﻿using Latios;
-using Latios.Anna;
 using Latios.Psyshock;
 using Survivors.Play.Components;
+using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace Survivors.Play.Systems.Player.Weapons.Physics
 {
+    [RequireMatchingQueriesForUpdate]
     public partial struct BuildWeaponCollisionLayerSystem : ISystem, ISystemNewScene
     {
-        LatiosWorldUnmanaged latiosWorld;
+        LatiosWorldUnmanaged           latiosWorld;
         BuildCollisionLayerTypeHandles m_handles;
         EntityQuery                    m_query;
-        
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             latiosWorld = state.GetLatiosWorldUnmanaged();
-            m_handles = new BuildCollisionLayerTypeHandles(ref state);
+            m_handles   = new BuildCollisionLayerTypeHandles(ref state);
             m_query = state.Fluent()
                 .With<WeaponTag>(true)
-                .With<Collider>( true)
+                .With<Collider>(true)
                 .PatchQueryForBuildingCollisionLayer()
                 .Build();
         }
@@ -30,18 +31,19 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
         {
             m_handles.Update(ref state);
             var physicsSettings = latiosWorld.GetPhysicsSettings();
+
             state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query, in m_handles)
-                .WithSettings(physicsSettings.collisionLayerSettings)
+                .WithSettings(physicsSettings.CollisionLayerSettings)
                 .ScheduleParallel(out var layer, state.WorldUpdateAllocator, state.Dependency);
-            
-            
-            latiosWorld.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(new WeaponCollisionLayer 
+
+
+            latiosWorld.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(new WeaponCollisionLayer
             {
                 Layer = layer
             });
         }
 
-
+        [BurstCompile]
         public void OnNewScene(ref SystemState state)
         {
             latiosWorld.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld<WeaponCollisionLayer>(default);

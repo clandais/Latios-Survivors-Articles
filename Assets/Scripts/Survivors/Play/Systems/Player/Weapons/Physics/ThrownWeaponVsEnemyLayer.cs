@@ -11,22 +11,44 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Player.Weapons.Physics
 {
+    [RequireMatchingQueriesForUpdate]
     public partial struct ThrownWeaponVsEnemyLayer : ISystem
     {
         LatiosWorldUnmanaged m_latiosWorldUnmanaged;
+        EntityQuery          m_entityQuery;
+
+        // EntityQuery m_enemyQuery;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             m_latiosWorldUnmanaged = state.GetLatiosWorldUnmanaged();
+            m_entityQuery = state.Fluent()
+                .With<WorldTransform>()
+                .With<ThrownWeaponComponent>()
+                .With<Collider>()
+                .With<ThrownWeaponHitVfx>()
+                .Build();
+            //
+            // m_enemyQuery = state.Fluent()
+            //     .With<EnemyTag>()
+            //     .Without<DeadTag>()
+            //     .Build();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            // Is there any enemy ?
+            // if (!m_latiosWorldUnmanaged.sceneBlackboardEntity.HasCollectionComponent<EnemyCollisionLayer>()
+            //     || m_enemyQuery.IsEmpty)
+            //     return;
+            //
             var enemyCollisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
                 .GetCollectionComponent<EnemyCollisionLayer>().Layer;
 
+
+            if (!enemyCollisionLayer.IsCreated) return;
 
             var icb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer();
 
@@ -38,7 +60,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
                 Icb                 = icb.AsParallelWriter(),
                 VfxQueue = m_latiosWorldUnmanaged.sceneBlackboardEntity
                     .GetCollectionComponent<VfxSpawnQueue>().VfxQueue.AsParallelWriter()
-            }.ScheduleParallel(state.Dependency);
+            }.ScheduleParallel(m_entityQuery, state.Dependency);
         }
 
 

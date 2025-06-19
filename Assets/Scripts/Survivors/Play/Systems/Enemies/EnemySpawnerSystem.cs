@@ -10,9 +10,8 @@ namespace Survivors.Play.Systems.Enemies
     [BurstCompile]
     public partial struct EnemySpawnerSystem : ISystem
     {
-        
         LatiosWorldUnmanaged m_worldUnmanaged;
-        
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
@@ -22,24 +21,24 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-
             var ecb = m_worldUnmanaged.syncPoint.CreateEntityCommandBuffer();
-            
+
             state.Dependency = new SpawnerJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
-                Ecb       = ecb.AsParallelWriter(),
+                Ecb       = ecb.AsParallelWriter()
             }.ScheduleParallel(state.Dependency);
         }
 
-        
+
         [BurstCompile]
         partial struct SpawnerJob : IJobEntity
         {
-            [ReadOnly] public float DeltaTime;
-            public EntityCommandBuffer.ParallelWriter Ecb;
+            [ReadOnly] public float                              DeltaTime;
+            public            EntityCommandBuffer.ParallelWriter Ecb;
 
-            void Execute(Entity entity, [ChunkIndexInQuery] int chunkIndexInQuery, in WorldTransform transform, ref EnemySpawnerComponent spawnerComponent)
+            void Execute(Entity entity, [ChunkIndexInQuery] int chunkIndexInQuery, in WorldTransform transform,
+                ref EnemySpawnerComponent spawnerComponent)
             {
                 spawnerComponent.CurrentTime += DeltaTime;
 
@@ -53,10 +52,8 @@ namespace Survivors.Play.Systems.Enemies
                     worldTransform.position = spawnPosition;
                     Ecb.SetComponent(chunkIndexInQuery, e, new WorldTransform
                     {
-                        worldTransform = worldTransform,
+                        worldTransform = worldTransform
                     });
-
-
                 }
             }
         }

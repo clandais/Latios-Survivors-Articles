@@ -1643,8 +1643,6 @@ GameObject:
   - component: {fileID: 2570394147293951981}
   - component: {fileID: 3891165883131494202}
   - component: {fileID: 6846502376260218929}
-  - component: {fileID: 4429885693167527723}
-  - component: {fileID: 205213004111049329}
   - component: {fileID: 4048573199161245518}
   - component: {fileID: 2143279667087363004}
   - component: {fileID: 2899654680430590103}
@@ -1744,6 +1742,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSettingsData: {fileID: 11400000, guid: 098e84139e54f1943a8ba927d1b243e5, type: 2}
   playerStartingHealth: 100
+  damageDelay: 0.5
+  invincible: 0
 --- !u!136 &6846502376260218929
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1767,47 +1767,6 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &4429885693167527723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7386942831741955095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ecef7b0e4f6a3a438ec389f19d24713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mass: 50
-  coefficientOfFriction: 0
-  coefficientOfRestitution: 0.1
-  lockPositionAxes:
-    x: 0
-    y: 1
-    z: 0
-  lockRotationAxes:
-    x: 1
-    y: 1
-    z: 1
-  forceLockAxesExists: 0
-  initialVelocity:
-    x: 0
-    y: 0
-    z: 0
-  supportExternalForces: 0
---- !u!114 &205213004111049329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7386942831741955095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2e6b5160430481dbf8632d1a1ad279a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4048573199161245518
 MonoBehaviour:
   m_ObjectHideFlags: 0

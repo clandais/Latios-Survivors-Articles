@@ -1,6 +1,5 @@
 ﻿using Latios;
-using Latios.Anna;
-using Survivors.Play.Components;
+using Survivors.Play.Authoring;
 using Unity.Burst;
 using Unity.Entities;
 
@@ -18,7 +17,7 @@ namespace Survivors.Play.Systems.Debug
         {
             m_world = state.GetLatiosWorldUnmanaged();
             m_Query = state.Fluent()
-                .With<EnvironmentCollisionTag>()
+                .With<LevelTag>()
                 .Build();
         }
 
@@ -35,11 +34,11 @@ namespace Survivors.Play.Systems.Debug
             // state.Dependency = PhysicsDebug.DrawLayer(envLayer).ScheduleParallel(state.Dependency);
 
 
-            if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
-            {
-                var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
-                grid.Draw();
-            }
+            // if (m_world.sceneBlackboardEntity.HasCollectionComponent<FloorGrid>())
+            // {
+            //     var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
+            //     grid.Draw();
+            // }
 
 
 

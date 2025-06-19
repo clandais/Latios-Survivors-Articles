@@ -22,6 +22,11 @@ namespace Survivors.Play.Authoring.Enemies
                     Value = float3.zero
                 });
 
+                AddComponent(entity, new CurrentVelocity
+                {
+                    Value = float3.zero
+                });
+
                 AddComponent<HitInfos>(entity);
                 SetComponentEnabled<HitInfos>(entity, false);
             }

@@ -20,9 +20,10 @@ namespace Survivors.Bootstrap.RootSystems.SuperSystems
             GetOrCreateAndAddUnmanagedSystem<EnemiesRequestPathToPlayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<EnemiesPathDebugSystem>();
 
-            // GetOrCreateAndAddUnmanagedSystem<BoidsFollowSystem>();
+            GetOrCreateAndAddUnmanagedSystem<EnemyBoidCollisionAvoidanceSystem>();
             GetOrCreateAndAddUnmanagedSystem<SetBoidAgentsGoalSystem>();
             GetOrCreateAndAddUnmanagedSystem<FollowPlayerSystem>();
+            // GetOrCreateAndAddUnmanagedSystem<CollideAndSlideSystem>();
         }
 
         // public override bool ShouldUpdateSystem() => !m_query.IsEmptyIgnoreFilter;

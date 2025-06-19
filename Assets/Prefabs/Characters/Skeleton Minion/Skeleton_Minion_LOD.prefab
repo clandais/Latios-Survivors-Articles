@@ -386,12 +386,6 @@ PrefabInstance:
       addedObject: {fileID: 7860752982234531987}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6539254154471598188}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1733162882971338743}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4878539464987347033}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a9ea84ade677e3347974486f2d311681, type: 3}
       insertIndex: -1
@@ -962,47 +956,6 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &6539254154471598188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2499177986544258898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ecef7b0e4f6a3a438ec389f19d24713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mass: 50
-  coefficientOfFriction: 0.3
-  coefficientOfRestitution: 0.1
-  lockPositionAxes:
-    x: 0
-    y: 1
-    z: 0
-  lockRotationAxes:
-    x: 1
-    y: 1
-    z: 1
-  forceLockAxesExists: 0
-  initialVelocity:
-    x: 0
-    y: 0
-    z: 0
-  supportExternalForces: 1
---- !u!114 &1733162882971338743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2499177986544258898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2e6b5160430481dbf8632d1a1ad279a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4878539464987347033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1021,7 +974,7 @@ MonoBehaviour:
       speedMultiplier: 1
     down:
       clip: {fileID: -6411013857362534180, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
-      speedMultiplier: 1.5
+      speedMultiplier: 2
     up:
       clip: {fileID: -7800337380646078255, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
       speedMultiplier: 1.2
@@ -1111,7 +1064,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2499177986544258898}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.7
+  m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1137,16 +1090,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boidSettings:
-    agentRadius: 1
-    maxSpeed: 5
-    maxForce: 1
-    centeringRadius: 15
-    centeringStrength: 5
-    avoidanceRadius: 1
-    avoidanceStrength: 8
-    alignmentRadius: 10
-    alignmentStrength: 2
-    followStrength: 10
+    maxSpeed: 3
+    maxForce: 3
+    cohesionRadius: 15
+    cohesionWeight: 0.25
+    separationRadius: 3
+    separationWeight: 1
+    alignmentRadius: 5
+    alignmentWeight: 0.05
+    collisionAvoidanceWeight: 1
+    followStrength: 0.8
+    slowingRadius: 5
+    agentWeight: 1
+  boidEnabled: 1
 --- !u!1 &2629580407731572136 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 725520994148925355, guid: a9ea84ade677e3347974486f2d311681, type: 3}

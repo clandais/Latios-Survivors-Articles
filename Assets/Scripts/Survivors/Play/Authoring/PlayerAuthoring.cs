@@ -16,6 +16,8 @@ namespace Survivors.Play.Authoring
         [SerializeField] int   playerStartingHealth = 100;
         [SerializeField] float damageDelay          = 0.5f;
 
+        [SerializeField] bool invincible;
+
         class PlayerAuthoringBaker : Baker<PlayerAuthoring>
         {
             public override void Bake(PlayerAuthoring authoring)
@@ -28,6 +30,11 @@ namespace Survivors.Play.Authoring
                     Value = float3.zero
                 });
 
+                AddComponent(entity, new CurrentVelocity
+                {
+                    Value = float3.zero
+                });
+
                 AddComponent(entity, new PlayerHealth
                 {
                     CurrentHealth  = authoring.playerStartingHealth,
@@ -35,10 +42,15 @@ namespace Survivors.Play.Authoring
                     DamageDelay    = authoring.damageDelay,
                     LastDamageTime = 0
                 });
+
+
+                if (authoring.invincible) AddComponent<InvincibleTag>(entity);
             }
         }
     }
 
+
+    public struct InvincibleTag : IComponentData { }
 
     [Serializable]
     public struct MovementSettings : IComponentData

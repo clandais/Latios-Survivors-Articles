@@ -1,11 +1,13 @@
 ﻿using Boids.Components;
 using Latios;
+using Latios.Navigator.Components;
 using Latios.Transforms;
-using LatiosNavigation.Authoring;
+using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Survivors.Play.Systems.Enemies
 {
@@ -23,6 +25,7 @@ namespace Survivors.Play.Systems.Enemies
                 .With<NavMeshAgent>()
                 .With<AgentPathPoint>()
                 .With<AgentPath>()
+                .Without<DeadTag>()
                 .Build();
         }
 
@@ -48,6 +51,18 @@ namespace Survivors.Play.Systems.Enemies
                 in DynamicBuffer<AgentPathPoint> pathPoints,
                 in NavMeshAgent navMeshAgent)
             {
+                if (pathPoints.Length > 1)
+                    for (var i = 0; i < pathPoints.Length - 1; i++)
+                    {
+                        var color = Color.blue;
+                        if (i == pathPoints.Length - 2 || i == pathPoints.Length - 3) color = Color.cyan;
+
+                        var p1 = pathPoints[i].Position;
+                        var p2 = pathPoints[i + 1].Position;
+
+                        UnityEngine.Debug.DrawLine(p1, p2, color);
+                    }
+
                 var currentIndex = pathState.PathIndex;
                 var pointCount = pathState.PathLength;
                 if (currentIndex >= pointCount || pointCount == 0)

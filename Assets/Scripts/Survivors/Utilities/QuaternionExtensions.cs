@@ -1,6 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using Latios.Psyshock;
-using Latios.Transforms;
 using Unity.Mathematics;
 
 namespace Survivors.Utilities
@@ -10,10 +8,7 @@ namespace Survivors.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static quaternion RotateTowards(this quaternion from,
             quaternion to,
-            float maxDegreesDelta)
-        {
-            return math.slerp(from, to, math.radians(maxDegreesDelta));
-        }
+            float maxDegreesDelta) => math.slerp(from, to, math.radians(maxDegreesDelta));
     }
 
     public static class Quat
@@ -21,12 +16,8 @@ namespace Survivors.Utilities
         public static quaternion RotateAroundAxis(float3 axis,
             float angle)
         {
-            float sina, cosa;
-            
             axis = math.normalize(axis);
-            
-            math.sincos(0.5f * angle, out sina, out cosa);
-
+            math.sincos(0.5f * angle, out var sina, out var cosa);
             return math.quaternion(
                 axis.x * sina,
                 axis.y * sina,
@@ -34,5 +25,4 @@ namespace Survivors.Utilities
                 cosa);
         }
     }
-    
 }

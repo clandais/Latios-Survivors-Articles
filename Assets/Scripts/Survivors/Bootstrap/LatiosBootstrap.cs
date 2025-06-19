@@ -1,18 +1,14 @@
 using Boids;
 using Latios;
-using Latios.Anna;
 using Latios.Authoring;
-using Latios.Calligraphics;
 using Latios.Kinemation;
 using Latios.Kinemation.Authoring;
 using Latios.LifeFX;
 using Latios.Myri;
+using Latios.Navigator;
 using Latios.Psyshock.Authoring;
 using Latios.Transforms;
 using Latios.Transforms.Authoring;
-using Latios.Unika;
-using Latios.Unika.Authoring;
-using LatiosNavigation;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
@@ -27,8 +23,8 @@ namespace Survivors.Bootstrap
             TransformsBakingBootstrap.InstallLatiosTransformsBakers(ref context);
             PsyshockBakingBootstrap.InstallUnityColliderBakers(ref context);
             KinemationBakingBootstrap.InstallKinemation(ref context);
-            UnikaBakingBootstrap.InstallUnikaEntitySerialization(ref context);
-            NavBakingBootstrap.InstallNavBakers(ref context);
+            // UnikaBakingBootstrap.InstallUnikaEntitySerialization(ref context);
+            NavigatorBakingBootstrap.InstallNavigatorBakers(ref context);
         }
     }
 
@@ -45,7 +41,7 @@ namespace Survivors.Bootstrap
 
             TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
             KinemationBootstrap.InstallKinemation(world);
-            CalligraphicsBootstrap.InstallCalligraphics(world);
+            // CalligraphicsBootstrap.InstallCalligraphics(world);
 
             BootstrapTools.InjectRootSuperSystems(systems, world, world.simulationSystemGroup);
 
@@ -70,14 +66,15 @@ namespace Survivors.Bootstrap
             TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
             MyriBootstrap.InstallMyri(world);
             KinemationBootstrap.InstallKinemation(world);
-            CalligraphicsBootstrap.InstallCalligraphics(world);
-            CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
-            UnikaBootstrap.InstallUnikaEntitySerialization(world);
+            // CalligraphicsBootstrap.InstallCalligraphics(world);
+            // CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
+            // UnikaBootstrap.InstallUnikaEntitySerialization(world);
             LifeFXBootstrap.InstallLifeFX(world);
-            NavBoostrap.InstallNav(world);
+
+            NavigatorBootstrap.InstallNavigator(world);
             StupidBoidsBootstrap.InstallBoids(world);
 
-            AnnaBootstrap.InstallAnna(world);
+            // AnnaBootstrap.InstallAnna(world);
 
             BootstrapTools.InjectRootSuperSystems(systems, world, world.simulationSystemGroup);
 
@@ -85,6 +82,7 @@ namespace Survivors.Bootstrap
             world.simulationSystemGroup.SortSystems();
             world.presentationSystemGroup.SortSystems();
 
+            // BootstrapTools.AddWorldToCurrentPlayerLoopWithDelayedSimulation(world);
             ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(world);
 
             return true;

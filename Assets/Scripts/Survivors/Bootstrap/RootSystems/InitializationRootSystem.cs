@@ -1,5 +1,6 @@
 ﻿using Latios;
 using Survivors.Play.Systems.Initialization;
+using Survivors.Play.Systems.Physics;
 using Unity.Entities;
 
 namespace Survivors.Bootstrap.RootSystems
@@ -10,6 +11,7 @@ namespace Survivors.Bootstrap.RootSystems
         protected override void CreateSystems()
         {
             GetOrCreateAndAddUnmanagedSystem<SceneBlackBoardInitializationSystem>();
+            GetOrCreateAndAddUnmanagedSystem<BuildEnvironmentCollisionLayerSystem>();
         }
     }
 }

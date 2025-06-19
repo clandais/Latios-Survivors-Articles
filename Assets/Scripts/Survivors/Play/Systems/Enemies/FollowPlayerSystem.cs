@@ -1,6 +1,5 @@
 ﻿using Boids.Components;
 using Latios;
-using Latios.Anna;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Enemies;
@@ -27,7 +26,7 @@ namespace Survivors.Play.Systems.Enemies
             m_query = state.Fluent()
                 .WithAspect<TransformAspect>()
                 .WithAspect<BoidAspect>()
-                .With<RigidBody>()
+                .With<CurrentVelocity>()
                 .With<MovementSettings>()
                 .With<SkeletonMinionAttackAnimationState>()
                 .WithDisabled<SkeletonMinionAttackAnimationTag>()
@@ -76,37 +75,33 @@ namespace Survivors.Play.Systems.Enemies
                 TransformAspect transformAspect,
                 BoidAspect boidAspect,
                 in MovementSettings movementSettings,
-                ref RigidBody rigidBody,
+                ref CurrentVelocity currentVelocityComponent,
                 ref PreviousVelocity previousVelocity,
                 ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
-                var newPosition = boidAspect.Update(transformAspect.worldPosition, DeltaTime);
-                var d = newPosition - transformAspect.worldPosition;
+                var steering = boidAspect.GetSteering(DeltaTime);
+                boidAspect.Velocity += steering;
 
-                var currentVelocity = rigidBody.velocity.linear;
-                var desiredVelocity = math.normalizesafe(d) * movementSettings.moveSpeed;
+                currentVelocityComponent.Value = boidAspect.Velocity;
 
-                desiredVelocity.y      = currentVelocity.y;
-                previousVelocity.Value = currentVelocity;
+                var worldTransform = transformAspect.worldTransform;
+                worldTransform.position   += boidAspect.Velocity * DeltaTime;
+                worldTransform.position.y =  0f; // Keep boids on the ground plane
 
-                currentVelocity = currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
 
-                rigidBody.velocity.linear = currentVelocity;
-
-                var lookDirection = math.length(currentVelocity) > math.EPSILON
-                    ? math.normalize(currentVelocity)
-                    : math.normalize(desiredVelocity);
-
+                var lookDirection = math.normalize(boidAspect.Velocity);
                 var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
-                transformAspect.worldRotation =
-                    transformAspect.worldRotation.RotateTowards(lookRotation,
+                worldTransform.rotation =
+                    worldTransform.rotation.RotateTowards(lookRotation,
                         movementSettings.maxAngleDelta * DeltaTime);
 
                 if (math.distance(transformAspect.worldPosition, PlayerPosition.Position) <=
                     attackAnimationState.DistanceToTarget)
-                    // rigidBody.velocity.linear = float3.zero;
                     AttackAnimationTagLookup.SetComponentEnabled(entity, true);
-                // transformAspect.worldRotation = lookRotation;
+
+
+                transformAspect.worldRotation  = lookRotation;
+                transformAspect.worldTransform = worldTransform;
             }
         }
     }
