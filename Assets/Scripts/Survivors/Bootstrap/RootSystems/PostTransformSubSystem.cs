@@ -17,18 +17,10 @@ namespace Survivors.Bootstrap.RootSystems
             m_shouldUpdateQuery = Fluent.With<PauseRequestedTag>()
                 .Build();
 
-            // GetOrCreateAndAddUnmanagedSystem<BuildGridCollisionLayerSystem>();
             GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
-
-            GetOrCreateAndAddUnmanagedSystem<PlayerTakeDamageSystem>();
-
             GetOrCreateAndAddUnmanagedSystem<BuildWeaponCollisionLayerSystem>();
-
-
-
-            // GetOrCreateAndAddUnmanagedSystem<FlowGridSystem>();
-            // GetOrCreateAndAddUnmanagedSystem<FlowFieldSystem>();
             GetOrCreateAndAddUnmanagedSystem<SkeletonHitInfosUpdateSystem>();
+            GetOrCreateAndAddUnmanagedSystem<PlayerTakeDamageSystem>();
         }
 
         public override bool ShouldUpdateSystem() => m_shouldUpdateQuery.IsEmptyIgnoreFilter;

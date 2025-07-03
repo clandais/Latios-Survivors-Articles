@@ -1053,7 +1053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackClipProperty:
     clip: {fileID: -1272215259011234369, guid: 78e8befb38c792d4d866664c37578c07, type: 3}
-    speedMultiplier: 2
+    speedMultiplier: 0.5
   minDistanceToTarget: 4
 --- !u!195 &7566634355277390308
 NavMeshAgent:

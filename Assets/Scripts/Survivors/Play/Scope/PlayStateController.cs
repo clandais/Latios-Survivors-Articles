@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using R3;
 using Survivors.GameScope.Commands;
 using Survivors.GameScope.MonoBehaviours;
@@ -51,14 +53,15 @@ namespace Survivors.Play.Scope
             m_commandSubscribable.Subscribe<MouseScrollChangedCommand>(OnMouseScrollChanged)
                 .AddTo(ref m_disposable);
 
-            m_commandSubscribable.Subscribe<PlayerDeadCommand>(OnPlayerDead)
+            m_commandSubscribable.SubscribeAwait<PlayerDeadCommand>(OnPlayerDead)
                 .AddTo(ref m_disposable);
 
             m_playStateMenu.Hide();
         }
 
-        void OnPlayerDead(PlayerDeadCommand _, PublishContext ctx)
+        async ValueTask OnPlayerDead(PlayerDeadCommand _, PublishContext ctx)
         {
+            await UniTask.Delay(2000);
             m_playStateMenu.ShowDead();
         }
 

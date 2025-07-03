@@ -29,7 +29,6 @@ namespace Survivors.Play.Systems.Enemies
                 .With<CurrentVelocity>()
                 .With<MovementSettings>()
                 .With<SkeletonMinionAttackAnimationState>()
-                .WithDisabled<SkeletonMinionAttackAnimationTag>()
                 .With<PreviousVelocity>()
                 .With<EnemyTag>()
                 .Without<DeadTag>()
@@ -41,16 +40,9 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            // var environmentLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>(true)
-            //     .layer;
-
             var playerPosition = m_world.sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-            //    var grid = m_world.GetCollectionAspect<VectorFieldAspect>(m_world.sceneBlackboardEntity);
-
             state.Dependency = new FollowPlayerJob
             {
-                // EnvironmentLayer         = environmentLayer,
-                // Grid                     = grid,
                 DeltaTime                = SystemAPI.Time.DeltaTime,
                 PlayerPosition           = playerPosition,
                 AttackAnimationTagLookup = SystemAPI.GetComponentLookup<SkeletonMinionAttackAnimationTag>()
@@ -61,8 +53,6 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         partial struct FollowPlayerJob : IJobEntity
         {
-            // [ReadOnly] public CollisionLayer    EnvironmentLayer;
-            // [ReadOnly] public VectorFieldAspect Grid;
             [ReadOnly] public float          DeltaTime;
             [ReadOnly] public PlayerPosition PlayerPosition;
 
@@ -79,28 +69,54 @@ namespace Survivors.Play.Systems.Enemies
                 ref PreviousVelocity previousVelocity,
                 ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
-                var steering = boidAspect.GetSteering(DeltaTime);
-                boidAspect.Velocity += steering;
-
-                currentVelocityComponent.Value = boidAspect.Velocity;
-
                 var worldTransform = transformAspect.worldTransform;
-                worldTransform.position   += boidAspect.Velocity * DeltaTime;
-                worldTransform.position.y =  0f; // Keep boids on the ground plane
+                var lookRotation = transformAspect.worldRotation;
 
-
-                var lookDirection = math.normalize(boidAspect.Velocity);
-                var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
-                worldTransform.rotation =
-                    worldTransform.rotation.RotateTowards(lookRotation,
-                        movementSettings.maxAngleDelta * DeltaTime);
-
-                if (math.distance(transformAspect.worldPosition, PlayerPosition.Position) <=
+                if (math.distance(transformAspect.worldPosition, PlayerPosition.Position) >
                     attackAnimationState.DistanceToTarget)
-                    AttackAnimationTagLookup.SetComponentEnabled(entity, true);
+                {
+                    var steering = boidAspect.GetSteering(DeltaTime);
+                    boidAspect.Velocity += steering;
+
+                    currentVelocityComponent.Value = boidAspect.Velocity;
 
 
-                transformAspect.worldRotation  = lookRotation;
+                    worldTransform.position   += boidAspect.Velocity * DeltaTime;
+                    worldTransform.position.y =  0f; // Keep boids on the ground plane
+
+
+                    var lookDirection = math.normalize(boidAspect.Velocity);
+                    lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
+                    worldTransform.rotation =
+                        worldTransform.rotation.RotateTowards(lookRotation,
+                            movementSettings.maxAngleDelta * DeltaTime);
+                }
+                else
+                {
+                    if (AttackAnimationTagLookup.IsComponentEnabled(entity))
+                    {
+                        var vectorToPlayer = math.normalize(PlayerPosition.Position - transformAspect.worldPosition);
+                        worldTransform.rotation = quaternion.LookRotationSafe(
+                            vectorToPlayer,
+                            math.up());
+
+                        var velocity = vectorToPlayer * boidAspect.Settings.maxSpeed;
+                        currentVelocityComponent.Value = velocity;
+
+                        lookRotation = quaternion.LookRotationSafe(vectorToPlayer, math.up());
+                        worldTransform.rotation =
+                            worldTransform.rotation.RotateTowards(lookRotation,
+                                movementSettings.maxAngleDelta * DeltaTime);
+
+                        worldTransform.position   += velocity * DeltaTime;
+                        worldTransform.position.y =  0f;
+                    }
+                    else
+                    {
+                        AttackAnimationTagLookup.SetComponentEnabled(entity, true);
+                    }
+                }
+
                 transformAspect.worldTransform = worldTransform;
             }
         }
