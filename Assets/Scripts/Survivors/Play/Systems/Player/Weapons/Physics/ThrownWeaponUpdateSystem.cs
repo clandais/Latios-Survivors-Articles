@@ -2,7 +2,7 @@
 using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring.Environment;
-using Survivors.Play.Authoring.Player.Weapons;
+using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Collections;
@@ -45,8 +45,8 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
     [BurstCompile]
     internal partial struct ThrownWeaponUpdateJob : IJobEntity
     {
-        public            DestroyCommandBuffer.ParallelWriter DestroyCommandBuffer;
-        [ReadOnly] public CollisionLayer                      EnvironmentLayer;
+        public DestroyCommandBuffer.ParallelWriter DestroyCommandBuffer;
+        [ReadOnly] public CollisionLayer EnvironmentLayer;
 
         [ReadOnly] public float DeltaTime;
 
@@ -61,12 +61,12 @@ namespace Survivors.Play.Systems.Player.Weapons.Physics
             var transformQvs = transform.worldTransform;
             var stepCount = 4;
 
-            var steppedSpeed = thrownWeapon.Speed / stepCount;
-            var steppedRotation = thrownWeapon.RotationSpeed / stepCount;
+            float steppedSpeed = thrownWeapon.Speed / stepCount;
+            float steppedRotation = thrownWeapon.RotationSpeed / stepCount;
 
             for (float i = 0; i < stepCount; i++)
             {
-                var collision = Latios.Psyshock.Physics.ColliderCast(
+                bool collision = Latios.Psyshock.Physics.ColliderCast(
                     in collider,
                     in transformQvs,
                     transformQvs.position + thrownWeapon.Direction * thrownWeapon.Speed * DeltaTime,

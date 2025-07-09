@@ -1,26 +1,32 @@
 ﻿using Latios;
 using Latios.Psyshock;
 using Survivors.Play.Authoring.Environment;
-using UnityEngine;
 
 namespace Survivors.Utilities
 {
     public static class CoreExtensions
     {
-        public static PhysicsSettings GetPhysicsSettings(this LatiosWorldUnmanaged latiosWorld)
+        public static bool GetPhysicsSettings(this LatiosWorldUnmanaged latiosWorld,
+            out PhysicsSettings physicsSettings)
         {
             if (latiosWorld.sceneBlackboardEntity.HasComponent<PhysicsSettings>())
-                return latiosWorld.sceneBlackboardEntity.GetComponentData<PhysicsSettings>();
+            {
+                physicsSettings = latiosWorld.sceneBlackboardEntity.GetComponentData<PhysicsSettings>();
+                return true;
+            }
 
             if (latiosWorld.worldBlackboardEntity.HasComponent<PhysicsSettings>())
-                return latiosWorld.worldBlackboardEntity.GetComponentData<PhysicsSettings>();
+            {
+                physicsSettings = latiosWorld.worldBlackboardEntity.GetComponentData<PhysicsSettings>();
+                return true;
+            }
 
-            Debug.LogWarning("PhysicsSettings not found in either scene or world blackboard. Using default settings.");
-
-            return new PhysicsSettings
+            physicsSettings = new PhysicsSettings
             {
                 CollisionLayerSettings = CollisionLayerSettings.kDefault
             };
+
+            return false;
         }
     }
 }

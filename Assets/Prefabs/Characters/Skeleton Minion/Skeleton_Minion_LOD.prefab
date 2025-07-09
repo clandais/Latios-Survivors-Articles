@@ -999,6 +999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSettings: {fileID: 11400000, guid: 90bebdf1b97e8a94fbf8f877870f251c, type: 2}
+  xpDropPrefab: {fileID: 7087476926136531777, guid: 935b20b1e5d27404fb509bf35886b32a, type: 3}
 --- !u!114 &4322368749244979
 MonoBehaviour:
   m_ObjectHideFlags: 0

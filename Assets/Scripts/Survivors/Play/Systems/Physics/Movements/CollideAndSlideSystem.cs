@@ -1,5 +1,4 @@
-﻿using Boids.Components;
-using Latios;
+﻿using Latios;
 using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
@@ -25,11 +24,10 @@ namespace Survivors.Play.Systems.Physics.Movements
             m_world = state.GetLatiosWorldUnmanaged();
             m_query = state.Fluent()
                 .WithAspect<TransformAspect>()
-                .WithAspect<BoidAspect>()
-                .With<CurrentVelocity>()
+                .With<Velocity>()
                 .With<Collider>()
                 .With<MovementSettings>()
-                .With<EnemyTag>()
+                .With<PlayerTag>()
                 .Without<DeadTag>()
                 .Build();
         }
@@ -54,19 +52,20 @@ namespace Survivors.Play.Systems.Physics.Movements
             [ReadOnly] public float          DeltaTime;
 
             void Execute(TransformAspect transform,
-                BoidAspect boidAspect,
-                ref CurrentVelocity currentVelocity,
+                ref Velocity currentVelocity,
                 in Collider collider,
                 in MovementSettings movementSettings)
             {
-                var steering = boidAspect.GetSteering(DeltaTime);
-                boidAspect.Velocity += steering;
+                // var steering = boidAspect.GetSteering(DeltaTime);
+                // boidAspect.Velocity += steering;
 
                 // see https://github.com/Dreaming381/Hack-Labs/blob/main/Hack%20Lab%20-%20A1/Assets/_Code/Systems/FirstPersonCharacter/FirstPersonControllerSystem.cs#L251
                 var startPosition = transform.worldPosition;
 
 
-                var moveVector = (boidAspect.Velocity + steering) * DeltaTime;
+
+
+                var moveVector = currentVelocity.Value * DeltaTime * movementSettings.speedMultiplier;
                 var distanceRemaining = math.length(moveVector);
                 var currentTransform = new TransformQvvs(startPosition, quaternion.identity);
                 var moveDirection = math.normalize(moveVector);
@@ -119,13 +118,13 @@ namespace Survivors.Play.Systems.Physics.Movements
 
                 collisionAvoidanceForce *= 10f;
                 var newForce = collisionAvoidanceForce;
+                //
+                // newForce = math.length(newForce) > boidAspect.Settings.maxForce
+                //     ? math.normalize(newForce) * boidAspect.Settings.maxForce
+                //     : newForce;
 
-                newForce = math.length(newForce) > boidAspect.Settings.maxForce
-                    ? math.normalize(newForce) * boidAspect.Settings.maxForce
-                    : newForce;
-
-                boidAspect.Velocity   += newForce;
-                currentVelocity.Value =  boidAspect.Velocity;
+                // boidAspect.Velocity   += newForce;
+                currentVelocity.Value += newForce; //boidAspect.Velocity;
 
                 var newPosition = startPosition + currentVelocity.Value * DeltaTime;
                 newPosition.y = 0.1f; // Keep boids on the ground plane

@@ -82,8 +82,7 @@ namespace Survivors.Bootstrap
             world.simulationSystemGroup.SortSystems();
             world.presentationSystemGroup.SortSystems();
 
-            // BootstrapTools.AddWorldToCurrentPlayerLoopWithDelayedSimulation(world);
-            ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(world);
+            BootstrapTools.AddWorldToCurrentPlayerLoopWithDelayedSimulation(world);
 
             return true;
         }

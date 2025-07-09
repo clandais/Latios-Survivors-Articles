@@ -2042,8 +2042,8 @@
     "m_ObjectId": "8b2085c7c1a34f8da808d1e4de6ed187",
     "m_Title": "Disolve",
     "m_Position": {
-        "x": -569.5999145507813,
-        "y": 796.7999877929688
+        "x": -569.0000610351563,
+        "y": 798.0
     }
 }
 
@@ -2431,6 +2431,7 @@
     },
     "isMainTexture": false,
     "useTilingAndOffset": false,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }

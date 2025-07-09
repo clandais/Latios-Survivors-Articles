@@ -30,7 +30,7 @@ namespace Survivors.Play.Authoring
                     Value = float3.zero
                 });
 
-                AddComponent(entity, new CurrentVelocity
+                AddComponent(entity, new Velocity
                 {
                     Value = float3.zero
                 });
@@ -58,5 +58,6 @@ namespace Survivors.Play.Authoring
         public float moveSpeed;
         public float maxAngleDelta;
         public float speedChangeRate;
+        public float speedMultiplier;
     }
 }

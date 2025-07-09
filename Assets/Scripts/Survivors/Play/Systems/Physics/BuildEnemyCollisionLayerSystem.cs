@@ -33,9 +33,8 @@ namespace Survivors.Play.Systems.Physics
             m_typeHandles.Update(ref state);
 
 
-            var physicsSettings =
-                m_latiosWorldUnmanaged.GetPhysicsSettings();
-
+            if (!m_latiosWorldUnmanaged.GetPhysicsSettings(out var physicsSettings))
+                return;
 
             var settings = new CollisionLayerSettings
             {

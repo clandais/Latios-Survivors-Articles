@@ -45,14 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: 9fb1a2089339e4547a6209dbc92dcb2e, type: 3}
-  looping: 0
-  autoDestroyOnFinish: 1
   volume: 0.5
-  innerRange: 10
-  outerRange: 200
-  rangeFadeMargin: 1
+  looping: 0
   playFromBeginningAtSpawn: 0
   voices: 0
+  autoDestroyOnFinish: 1
+  audioChannel: {fileID: 0}
+  useFalloff: 1
+  innerRange: 20
+  outerRange: 200
+  rangeFadeMargin: 1
   useCone: 0
   innerAngle: 30
   outerAngle: 60

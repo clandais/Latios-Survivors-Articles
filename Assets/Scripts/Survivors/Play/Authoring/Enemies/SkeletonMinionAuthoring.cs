@@ -9,6 +9,7 @@ namespace Survivors.Play.Authoring.Enemies
     public class SkeletonMinionAuthoring : MonoBehaviour
     {
         [SerializeField] MovementSettingsData movementSettings;
+        [SerializeField] GameObject           xpDropPrefab;
 
         class SkeletonMinionAuthoringBaker : Baker<SkeletonMinionAuthoring>
         {
@@ -22,13 +23,18 @@ namespace Survivors.Play.Authoring.Enemies
                     Value = float3.zero
                 });
 
-                AddComponent(entity, new CurrentVelocity
+                AddComponent(entity, new Velocity
                 {
                     Value = float3.zero
                 });
 
                 AddComponent<HitInfos>(entity);
                 SetComponentEnabled<HitInfos>(entity, false);
+
+                AddComponent(entity, new XpDropPrefab
+                {
+                    Prefab = GetEntity(authoring.xpDropPrefab, TransformUsageFlags.Dynamic)
+                });
             }
         }
     }

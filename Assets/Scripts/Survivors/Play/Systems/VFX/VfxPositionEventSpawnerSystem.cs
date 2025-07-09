@@ -10,11 +10,16 @@ namespace Survivors.Play.Systems.VFX
     public partial struct VfxPositionEventSpawnerSystem : ISystem
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
+        EntityQuery m_query;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             m_worldUnmanaged = state.GetLatiosWorldUnmanaged();
+            m_query = state.Fluent()
+                .With<WorldTransform>()
+                .With<OneShotPositionEventSpawner>()
+                .Build();
         }
 
         [BurstCompile]
@@ -27,7 +32,7 @@ namespace Survivors.Play.Systems.VFX
             {
                 Dcb     = dcb.AsParallelWriter(),
                 MailBox = mailBox
-            }.ScheduleParallel(state.Dependency);
+            }.ScheduleParallel(m_query, state.Dependency);
         }
     }
 

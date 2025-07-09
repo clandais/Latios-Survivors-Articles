@@ -1,9 +1,8 @@
-﻿using Latios;
-using Survivors.Play.Components;
-using Survivors.VfxTunnels;
+﻿using Survivors.Play.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Survivors.Play.Authoring.Player.Weapons
 {
@@ -12,19 +11,11 @@ namespace Survivors.Play.Authoring.Player.Weapons
         [Header("Axe Config")] [SerializeField]
         float speed;
 
-        [SerializeField] float  rotationSpeed;
+        [SerializeField] float rotationSpeed;
         [SerializeField] float3 rotationAxis;
 
-        [SerializeField] AxeSlashVfxAuthoring axeSlashVfxPrefab;
-
-        [SerializeField] Vector3                     trailEmitterOffset;
-        [SerializeField] PositionGraphicsEventTunnel positionGraphicsEventTunnel;
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position + trailEmitterOffset, 0.1f);
-        }
+        [FormerlySerializedAs("axeSlashVfxPrefab")] [SerializeField]
+        OneShotVfxSpawnerAuthoring oneShotVfxSpawnerPrefab;
 
         class AxeAuthoringBaker : Baker<AxeAuthoring>
         {
@@ -43,61 +34,9 @@ namespace Survivors.Play.Authoring.Player.Weapons
 
                 AddComponent(entity, new ThrownWeaponHitVfx
                 {
-                    Prefab = GetEntity(authoring.axeSlashVfxPrefab, TransformUsageFlags.Dynamic)
-                });
-
-                AddComponent(entity, new AxeTrailEmitter
-                {
-                    Offset = authoring.trailEmitterOffset
-                });
-
-                AddComponent(entity, new PersistentPositionEventSpawner
-                {
-                    PositionGraphicsEventTunnel = new UnityObjectRef<PositionGraphicsEventTunnel>
-                    {
-                        Value = authoring.positionGraphicsEventTunnel
-                    }
+                    Prefab = GetEntity(authoring.oneShotVfxSpawnerPrefab, TransformUsageFlags.Dynamic)
                 });
             }
         }
-    }
-
-    public struct ThrownWeaponComponent : IComponentData
-    {
-        public float  Speed;
-        public float  RotationSpeed;
-        public float3 RotationAxis;
-        public float3 Direction;
-    }
-
-    public struct ThrownWeaponConfigComponent : IComponentData
-    {
-        public readonly float  Speed;
-        public readonly float  RotationSpeed;
-        public readonly float3 RotationAxis;
-
-        public ThrownWeaponConfigComponent(float speed,
-            float rotationSpeed,
-            float3 rotationAxis)
-        {
-            Speed         = speed;
-            RotationSpeed = rotationSpeed;
-            RotationAxis  = rotationAxis;
-        }
-    }
-
-    public struct ThrownWeaponHitVfx : IComponentData
-    {
-        public EntityWith<Prefab> Prefab;
-    }
-
-    public struct AxeTrailEmitter : IComponentData
-    {
-        public float3 Offset;
-    }
-
-    public struct PersistentPositionEventSpawner : IComponentData
-    {
-        public UnityObjectRef<PositionGraphicsEventTunnel> PositionGraphicsEventTunnel;
     }
 }

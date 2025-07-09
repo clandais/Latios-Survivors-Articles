@@ -13,4 +13,9 @@ namespace Survivors.Play.Components
 
         public JobHandle TryDispose(JobHandle inputDeps) => inputDeps; // Uses WorldUpdateAllocator
     }
+
+    public struct XpDropPrefab : IComponentData
+    {
+        public EntityWith<Prefab> Prefab;
+    }
 }

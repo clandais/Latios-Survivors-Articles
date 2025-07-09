@@ -9,11 +9,6 @@ namespace Survivors.Play.Components
     public struct PlayerTag : IComponentData { }
 
 
-    public struct CurrentVelocity : IComponentData
-    {
-        public float3 Value;
-    }
-
     public struct PreviousVelocity : IComponentData
     {
         public float3 Value;

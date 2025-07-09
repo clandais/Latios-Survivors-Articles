@@ -19,7 +19,11 @@ namespace Survivors.Play.Systems.Physics
         {
             m_latiosWorldUnmanaged = state.GetLatiosWorldUnmanaged();
             m_typeHandles          = new BuildCollisionLayerTypeHandles(ref state);
-            m_query                = state.Fluent().With<PlayerTag>(true).PatchQueryForBuildingCollisionLayer().Build();
+            m_query = state.Fluent()
+                .With<PlayerTag>(true)
+                .Without<DeadTag>()
+                .PatchQueryForBuildingCollisionLayer()
+                .Build();
         }
 
         [BurstCompile]
@@ -27,17 +31,12 @@ namespace Survivors.Play.Systems.Physics
         {
             m_typeHandles.Update(ref state);
 
-            var physicsSettings = m_latiosWorldUnmanaged.GetPhysicsSettings();
-            ;
+            if (!m_latiosWorldUnmanaged.GetPhysicsSettings(out var physicsSettings))
+                return;
 
-            var settings = new CollisionLayerSettings
-            {
-                worldAabb                = physicsSettings.CollisionLayerSettings.worldAabb,
-                worldSubdivisionsPerAxis = physicsSettings.CollisionLayerSettings.worldSubdivisionsPerAxis
-            };
 
             state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query,
-                    in m_typeHandles).WithSettings(settings)
+                    in m_typeHandles).WithSettings(physicsSettings.CollisionLayerSettings)
                 .ScheduleParallel(out var playerCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
 
             m_latiosWorldUnmanaged.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(new PlayerCollisionLayer

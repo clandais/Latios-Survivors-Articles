@@ -26,7 +26,7 @@ namespace Survivors.Play.Systems.Enemies
             m_query = state.Fluent()
                 .WithAspect<TransformAspect>()
                 .WithAspect<BoidAspect>()
-                .With<CurrentVelocity>()
+                .With<Velocity>()
                 .With<MovementSettings>()
                 .With<SkeletonMinionAttackAnimationState>()
                 .With<PreviousVelocity>()
@@ -65,7 +65,7 @@ namespace Survivors.Play.Systems.Enemies
                 TransformAspect transformAspect,
                 BoidAspect boidAspect,
                 in MovementSettings movementSettings,
-                ref CurrentVelocity currentVelocityComponent,
+                ref Velocity currentVelocityComponent,
                 ref PreviousVelocity previousVelocity,
                 ref SkeletonMinionAttackAnimationState attackAnimationState)
             {
@@ -81,7 +81,7 @@ namespace Survivors.Play.Systems.Enemies
                     currentVelocityComponent.Value = boidAspect.Velocity;
 
 
-                    worldTransform.position   += boidAspect.Velocity * DeltaTime;
+                    worldTransform.position   += boidAspect.Velocity * DeltaTime * movementSettings.speedMultiplier;
                     worldTransform.position.y =  0f; // Keep boids on the ground plane
 
 
@@ -108,7 +108,7 @@ namespace Survivors.Play.Systems.Enemies
                             worldTransform.rotation.RotateTowards(lookRotation,
                                 movementSettings.maxAngleDelta * DeltaTime);
 
-                        worldTransform.position   += velocity * DeltaTime;
+                        worldTransform.position   += velocity * DeltaTime * movementSettings.speedMultiplier;
                         worldTransform.position.y =  0f;
                     }
                     else

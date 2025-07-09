@@ -31,7 +31,9 @@ namespace Survivors.Play.Systems.Physics
         public void OnUpdate(ref SystemState state)
         {
             m_handles.Update(ref state);
-            var physicsSettings = latiosWorld.GetPhysicsSettings();
+
+            if (!latiosWorld.GetPhysicsSettings(out var physicsSettings))
+                return;
 
             state.Dependency = Latios.Psyshock.Physics.BuildCollisionLayer(m_query, in m_handles)
                 .WithSettings(physicsSettings.CollisionLayerSettings)

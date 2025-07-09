@@ -1,7 +1,7 @@
 ﻿using Latios;
 using Latios.Transforms;
-using Survivors.Play.Authoring.Player.Weapons;
 using Survivors.Play.Authoring.SceneBlackBoard;
+using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -23,11 +23,14 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var spawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<WeaponSpawnQueue>().WeaponQueue;
+            NativeQueue<WeaponSpawnQueue.WeaponSpawnData> spawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<WeaponSpawnQueue>().WeaponQueue;
 
-            if (spawnQueue.IsEmpty()) return;
+            if (spawnQueue.IsEmpty())
+            {
+                return;
+            }
 
-            var icb = m_worldUnmanaged.syncPoint
+            InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform> icb = m_worldUnmanaged.syncPoint
                 .CreateInstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>();
 
             state.Dependency = new WeaponSpawnJob
@@ -46,15 +49,16 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
     [BurstCompile]
     internal struct WeaponSpawnJob : IJob
     {
-        public            NativeQueue<WeaponSpawnQueue.WeaponSpawnData>                                  SpawnQueue;
-        [ReadOnly] public ComponentLookup<ThrownWeaponConfigComponent>                                   WeaponComponentLookup;
-        public            InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>.ParallelWriter SpawnQueueWriter;
+        public NativeQueue<WeaponSpawnQueue.WeaponSpawnData> SpawnQueue;
+        [ReadOnly] public ComponentLookup<ThrownWeaponConfigComponent> WeaponComponentLookup;
+        public InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>.ParallelWriter SpawnQueueWriter;
 
         public void Execute()
         {
             var sortKey = 0;
 
             while (!SpawnQueue.IsEmpty())
+            {
                 if (SpawnQueue.TryDequeue(out var weapon))
                 {
                     var transform = new WorldTransform
@@ -77,6 +81,7 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
                         }, transform,
                         ++sortKey);
                 }
+            }
         }
     }
 }

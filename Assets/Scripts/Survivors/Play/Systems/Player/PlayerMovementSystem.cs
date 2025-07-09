@@ -30,7 +30,7 @@ namespace Survivors.Play.Systems.Player
             m_jobQuery = state.Fluent()
                 .WithAspect<TransformAspect>()
                 .With<MovementSettings>()
-                .With<CurrentVelocity>()
+                .With<Velocity>()
                 .With<PreviousVelocity>()
                 .With<PlayerTag>()
                 .Without<DeadTag>()
@@ -61,7 +61,7 @@ namespace Survivors.Play.Systems.Player
 
         void Execute(TransformAspect transformAspect,
             in MovementSettings movementSettings,
-            ref CurrentVelocity currentVelocityComponent,
+            ref Velocity currentVelocityComponent,
             ref PreviousVelocity previousVelocity)
         {
             var move = PlayerInputState.Direction;
@@ -76,7 +76,7 @@ namespace Survivors.Play.Systems.Player
             currentVelocityComponent.Value =
                 currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
 
-            transformAspect.worldPosition += currentVelocity * DeltaTime;
+            transformAspect.worldPosition += currentVelocity * DeltaTime * movementSettings.speedMultiplier;
 
             var lookDir = PlayerInputState.MousePosition - transformAspect.worldPosition;
             var lookRotation = quaternion.LookRotationSafe(lookDir, math.up());

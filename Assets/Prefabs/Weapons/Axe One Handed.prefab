@@ -55,7 +55,7 @@ MonoBehaviour:
     z: 0
   axeSlashVfxPrefab: {fileID: 2629287540233105421, guid: a11387585c20d8f44a7a476bd114ea7e, type: 3}
   trailEmitterOffset: {x: 0.91, y: 0, z: 1.18}
-  positionGraphicsEventTunnel: {fileID: 11400000, guid: bca6e72b04d029442b6aa03590d2df24, type: 2}
+  positionGraphicsEventTunnel: {fileID: 11400000, guid: 1a901f0926452c248be554e51affdeb5, type: 2}
 --- !u!136 &4681654922069636882
 CapsuleCollider:
   m_ObjectHideFlags: 0

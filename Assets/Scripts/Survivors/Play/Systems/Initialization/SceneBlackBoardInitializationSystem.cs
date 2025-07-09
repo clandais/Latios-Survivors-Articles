@@ -18,12 +18,8 @@ namespace Survivors.Play.Systems.Initialization
             m_worldUnmanaged = state.GetLatiosWorldUnmanaged();
         }
 
-        [BurstCompile]
-        public void OnUpdate(ref SystemState state) { }
 
         [BurstCompile]
-        public void OnDestroy(ref SystemState state) { }
-
         public void OnNewScene(ref SystemState state)
         {
             m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new WeaponSpawnQueue
@@ -39,6 +35,11 @@ namespace Survivors.Play.Systems.Initialization
             m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new VfxSpawnQueue
             {
                 VfxQueue = new NativeQueue<VfxSpawnQueue.VfxSpawnData>(Allocator.Persistent)
+            });
+
+            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new XpSpawnQueue
+            {
+                XpQueue = new NativeQueue<XpSpawnQueue.XpSpawnData>(Allocator.Persistent)
             });
         }
     }
