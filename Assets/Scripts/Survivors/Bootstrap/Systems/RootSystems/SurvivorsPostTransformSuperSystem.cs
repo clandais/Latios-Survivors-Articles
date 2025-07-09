@@ -6,6 +6,7 @@ using Survivors.Play.Components;
 using Survivors.Play.Systems.BlackBoard;
 using Survivors.Play.Systems.Camera;
 using Survivors.Play.Systems.Debug;
+using Survivors.Play.Systems.Lifecycle;
 using Survivors.Play.Systems.UI;
 using Unity.Entities;
 
@@ -30,6 +31,8 @@ namespace Survivors.Bootstrap.Systems.RootSystems
             GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
             GetOrCreateAndAddManagedSystem<EnemyCounterSystem>();
             GetOrCreateAndAddManagedSystem<PlayerHudSystem>();
+
+            GetOrCreateAndAddUnmanagedSystem<DestroyTaggedEntitiesSystem>();
         }
 
         public override bool ShouldUpdateSystem() => m_shouldUpdateQuery.IsEmptyIgnoreFilter;

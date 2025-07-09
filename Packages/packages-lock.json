@@ -48,7 +48,7 @@
       "hash": "7e7db72b4d9abc1f598f90e00968582e9185cef3"
     },
     "com.latios.latiosframework": {
-      "version": "https://github.com/Dreaming381/Latios-Framework.git#prerelease/0.13.0",
+      "version": "https://github.com/Dreaming381/Latios-Framework.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -57,14 +57,14 @@
         "com.unity.entities.graphics": "1.4.12",
         "com.unity.burst": "1.8.19"
       },
-      "hash": "3dcce773e9434749af4a7f11fd96c1643f46b175"
+      "hash": "8f3807da18bac2684147bc751b1b24b8707b346b"
     },
     "com.latios.latiosframework.addons": {
-      "version": "https://github.com/Dreaming381/Latios-Framework-Add-Ons.git#prerelease/framework_0.13.0",
+      "version": "https://github.com/Dreaming381/Latios-Framework-Add-Ons.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "e85b37ec6aac361594bd0a77fb2b099c78c1ff6c"
+      "hash": "498fa4b1988e0abb049041d6f7a920be7bff9d6a"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

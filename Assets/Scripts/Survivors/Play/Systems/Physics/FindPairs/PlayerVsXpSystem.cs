@@ -41,38 +41,38 @@ namespace Survivors.Play.Systems.Physics.FindPairs
             m_typeHandles.Update(ref state);
 
             if (!m_world.GetPhysicsSettings(out var physicsSettings))
-            {
                 return;
-            }
 
-            // var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
-            //     .Layer;
-
-            var playerLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_playerQuery, in m_typeHandles)
-                .WithSettings(physicsSettings.CollisionLayerSettings)
-                .ScheduleParallel(out var playerCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
-
+            var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
+                .Layer;
             var xpLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_xpQuery, in m_typeHandles)
                 .WithSettings(physicsSettings.CollisionLayerSettings)
                 .ScheduleParallel(out var xpLayer, state.WorldUpdateAllocator, state.Dependency);
 
 
-            state.Dependency = JobHandle.CombineDependencies(playerLayerJh, xpLayerJh);
+            // state.Dependency = JobHandle.CombineDependencies(playerLayerJh, xpLayerJh);
             //
             // // var dcb = m_world.syncPoint.CreateDestroyCommandBuffer();
             // // var destroyList = new NativeList<Entity>(Allocator.TempJob);
             // //
-            // var playerVsXpFindPairs = new PlayerVsXpFindPairs
-            // {
-            //     XpCubeVfxLookup = SystemAPI.GetComponentLookup<XpCubeVfx>(),
-            //     VfxQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<VfxSpawnQueue>()
-            //         .VfxQueue.AsParallelWriter()
-            // };
-            //
-            // state.Dependency = Latios.Psyshock.Physics
-            //     .FindPairs(playerCollisionLayer, xpLayer, playerVsXpFindPairs)
-            //     .ScheduleParallelByA(JobHandle.CombineDependencies(playerLayerJh, xpLayerJh));
-            //
+
+            var acb = m_world.syncPoint.CreateEntityCommandBuffer();
+            
+            var playerVsXpFindPairs = new PlayerVsXpFindPairs
+            {
+                XpCubeVfxLookup = SystemAPI.GetComponentLookup<XpCubeVfx>(),
+                VfxQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<VfxSpawnQueue>()
+                    .VfxQueue.AsParallelWriter(),
+                CommandBuffer = acb.AsParallelWriter(),
+            };
+            
+            state.Dependency = Latios.Psyshock.Physics
+                .FindPairs(playerCollisionLayer, xpLayer, playerVsXpFindPairs)
+                .ScheduleParallel( xpLayerJh);
+
+            state.Dependency = xpLayer.Dispose(state.Dependency);
+            
+
             // state.Dependency = new DestroyJob
             // {
             //     EntitiesToDestroy = destroyList,
@@ -87,7 +87,7 @@ namespace Survivors.Play.Systems.Physics.FindPairs
         {
             public PhysicsComponentLookup<XpCubeVfx> XpCubeVfxLookup;
             public NativeQueue<VfxSpawnQueue.VfxSpawnData>.ParallelWriter VfxQueue;
-
+            public EntityCommandBuffer.ParallelWriter CommandBuffer;
             public void Execute(in FindPairsResult result)
             {
                 // var playerEntity = result.entityA;
@@ -99,9 +99,8 @@ namespace Survivors.Play.Systems.Physics.FindPairs
                     Position  = result.transformB.position,
                     VfxPrefab = xpVfx.Prefab
                 });
-
-                //  PairStream.AddPairRaw(result.pairStreamKey, true, false, default, default, out _);
-
+                
+                CommandBuffer.AddComponent<ShouldDestroyTag>(result.bodyIndexB, result.entityB);
             }
         }
 
