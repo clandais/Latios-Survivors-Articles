@@ -9,14 +9,17 @@ namespace Survivors.Play.Authoring.Environment
 {
     public class EnvironmentSettings : MonoBehaviour
     {
-        [SerializeField] Bounds worldBounds         = new(float3.zero, new float3(1f));
+        [SerializeField] Aabb worldBounds         = new(float3.zero, new float3(1f));
         [SerializeField] int3   subdivisionsPerAxis = new(2, 2, 2);
 
 
         void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(worldBounds.center, worldBounds.size);
+            
+            var size = worldBounds.max - worldBounds.min;
+            var center = worldBounds.min + size * 0.5f;
+            Gizmos.DrawWireCube(center, size);
         }
 
         class EnvironmentSettingsBaker : Baker<EnvironmentSettings>

@@ -42,6 +42,11 @@ namespace Survivors.Play.Authoring
                     DamageDelay    = authoring.damageDelay,
                     LastDamageTime = 0
                 });
+                
+                AddComponent(entity, new PlayerExperience
+                {
+                    CurrentExperience = 0,
+                });
 
 
                 if (authoring.invincible) AddComponent<InvincibleTag>(entity);

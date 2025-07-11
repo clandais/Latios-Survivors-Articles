@@ -35,5 +35,18 @@ namespace Survivors.Utilities
             float num = (float) math.sqrt((double)  math.lengthsq( from) * math.lengthsq(to));
             return num < 1.0000000036274937E-15 ? 0.0f : (float) math.acos((double) math.clamp(math.dot(from, to) / num, -1f, 1f)) * 57.29578f;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float3 X_Y(this float3 v)
+        {
+            return new float3( v.x, 0f, v.y);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float2 XY(this float3 v)
+        {
+            return new float2(v.x, v.y);
+        }
+        
     }
 }

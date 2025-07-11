@@ -1,4 +1,5 @@
 ﻿using Latios;
+using Survivors.Bootstrap.Systems.SuperSystems.PostTransformSubSystems;
 using Survivors.Play.Components;
 using Survivors.Play.Systems.Enemies;
 using Survivors.Play.Systems.Physics;
@@ -27,8 +28,8 @@ namespace Survivors.Bootstrap.Systems.SuperSystems
             // GetOrCreateAndAddUnmanagedSystem<CollideAndSlideSystem>();
 
             GetOrCreateAndAddUnmanagedSystem<SkeletonHitInfosUpdateSystem>();
-            GetOrCreateAndAddUnmanagedSystem<PlayerTakeDamageSystem>();
-            GetOrCreateAndAddUnmanagedSystem<PlayerVsXpSystem>();
+
+            GetOrCreateAndAddManagedSystem<FindPairsSubSystem>();
         }
 
         public override bool ShouldUpdateSystem() => m_shouldUpdateQuery.IsEmptyIgnoreFilter;

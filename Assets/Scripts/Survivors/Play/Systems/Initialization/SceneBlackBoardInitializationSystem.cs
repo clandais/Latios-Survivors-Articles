@@ -41,6 +41,11 @@ namespace Survivors.Play.Systems.Initialization
             {
                 XpQueue = new NativeQueue<XpSpawnQueue.XpSpawnData>(Allocator.Persistent)
             });
+            
+            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new PlayerExpQueue
+            {
+                ExpQueue = new NativeQueue<int>(Allocator.Persistent)
+            });
         }
     }
 }

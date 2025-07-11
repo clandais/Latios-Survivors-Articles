@@ -48,22 +48,21 @@ namespace Survivors.Play.Systems.Physics.FindPairs
             var xpLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_xpQuery, in m_typeHandles)
                 .WithSettings(physicsSettings.CollisionLayerSettings)
                 .ScheduleParallel(out var xpLayer, state.WorldUpdateAllocator, state.Dependency);
-
-
-            // state.Dependency = JobHandle.CombineDependencies(playerLayerJh, xpLayerJh);
-            //
-            // // var dcb = m_world.syncPoint.CreateDestroyCommandBuffer();
-            // // var destroyList = new NativeList<Entity>(Allocator.TempJob);
-            // //
-
+            
             var acb = m_world.syncPoint.CreateEntityCommandBuffer();
+
+
+            var expQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerExpQueue>()
+                .ExpQueue;
             
             var playerVsXpFindPairs = new PlayerVsXpFindPairs
             {
+                XpItemLookup = SystemAPI.GetComponentLookup<XpItem>(),
                 XpCubeVfxLookup = SystemAPI.GetComponentLookup<XpCubeVfx>(),
                 VfxQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<VfxSpawnQueue>()
                     .VfxQueue.AsParallelWriter(),
                 CommandBuffer = acb.AsParallelWriter(),
+                ExpQueue = expQueue.AsParallelWriter()
             };
             
             state.Dependency = Latios.Psyshock.Physics
@@ -72,26 +71,22 @@ namespace Survivors.Play.Systems.Physics.FindPairs
 
             state.Dependency = xpLayer.Dispose(state.Dependency);
             
-
-            // state.Dependency = new DestroyJob
-            // {
-            //     EntitiesToDestroy = destroyList,
-            //     CommandBuffer     = dcb.AsParallelWriter()
-            // }.Schedule(destroyList.Length, 128, findPairJh);
-            //
-            // destroyList.Dispose(state.Dependency);
         }
 
 
         struct PlayerVsXpFindPairs : IFindPairsProcessor
         {
+            public PhysicsComponentLookup<XpItem> XpItemLookup;
             public PhysicsComponentLookup<XpCubeVfx> XpCubeVfxLookup;
             public NativeQueue<VfxSpawnQueue.VfxSpawnData>.ParallelWriter VfxQueue;
             public EntityCommandBuffer.ParallelWriter CommandBuffer;
+            public NativeQueue<int>.ParallelWriter ExpQueue;
+            
             public void Execute(in FindPairsResult result)
             {
                 // var playerEntity = result.entityA;
                 var xpEntity = result.entityB;
+                var xpItem = XpItemLookup.GetRW(xpEntity).ValueRO;
                 var xpVfx = XpCubeVfxLookup.GetRW(xpEntity).ValueRO;
 
                 VfxQueue.Enqueue(new VfxSpawnQueue.VfxSpawnData
@@ -99,6 +94,8 @@ namespace Survivors.Play.Systems.Physics.FindPairs
                     Position  = result.transformB.position,
                     VfxPrefab = xpVfx.Prefab
                 });
+                
+                ExpQueue.Enqueue(xpItem.Value);
                 
                 CommandBuffer.AddComponent<ShouldDestroyTag>(result.bodyIndexB, result.entityB);
             }

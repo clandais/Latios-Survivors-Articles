@@ -26,11 +26,19 @@ namespace Survivors.Play.Scope
 
             m_commandSubscribable.Subscribe<PlayerHealthCommand>(OnPlayerHealthChanged)
                 .AddTo(ref m_disposable);
+            
+            m_commandSubscribable.Subscribe<PlayerExperienceCommand>(OnPlayerExperienceChanged)
+                .AddTo(ref m_disposable);
         }
 
         void OnPlayerHealthChanged(PlayerHealthCommand cmd, PublishContext ctx)
         {
             m_playerHud.SetHealth(cmd.CurrentHealth, cmd.MaxHealth);
+        }
+
+        void OnPlayerExperienceChanged(PlayerExperienceCommand cmd, PublishContext ctx)
+        {
+            m_playerHud.SetExperience(cmd.CurrentExperience);
         }
     }
 }

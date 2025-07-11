@@ -8,6 +8,7 @@ using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Jobs;
 
 namespace Survivors.Play.Systems.Physics.FindPairs
 {
@@ -48,8 +49,12 @@ namespace Survivors.Play.Systems.Physics.FindPairs
             if (!m_world.GetPhysicsSettings(out var physicsSettings))
                 return;
 
-            var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
-                .Layer;
+            var playerLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_playerQuery, m_handles)
+                .WithSettings(physicsSettings.CollisionLayerSettings)
+                .ScheduleParallel(out var playerCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
+            
+            // var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
+            //     .Layer;
 
             var enemyLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_enemyAttackingQuery, m_handles)
                 .WithSettings(physicsSettings.CollisionLayerSettings)
@@ -70,7 +75,7 @@ namespace Survivors.Play.Systems.Physics.FindPairs
 
             state.Dependency = Latios.Psyshock.Physics
                 .FindPairs(playerCollisionLayer, attackingEnemyLayer, findPairProcessor)
-                .ScheduleParallelByA(enemyLayerJh);
+                .ScheduleParallelByA(JobHandle.CombineDependencies(playerLayerJh, enemyLayerJh));
         }
 
 

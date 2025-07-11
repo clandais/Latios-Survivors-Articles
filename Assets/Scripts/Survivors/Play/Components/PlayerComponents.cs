@@ -1,5 +1,6 @@
 ﻿using Latios;
 using Latios.Psyshock;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -22,10 +23,30 @@ namespace Survivors.Play.Components
         public float LastDamageTime;
     }
 
+    public struct PlayerExperience : IComponentData
+    {
+        public int   CurrentExperience;
+    }
+
+    public partial struct PlayerExpQueue : ICollectionComponent
+    {
+        public NativeQueue<int> ExpQueue;
+
+        public JobHandle TryDispose(JobHandle inputDeps)
+        {
+            if (!ExpQueue.IsCreated)
+                return inputDeps;
+            
+            return ExpQueue.Dispose(inputDeps);
+        }
+    }
+    
     public partial struct PlayerCollisionLayer : ICollectionComponent
     {
         public CollisionLayer Layer;
 
         public JobHandle TryDispose(JobHandle inputDeps) => inputDeps;
     }
+    
+    
 }
