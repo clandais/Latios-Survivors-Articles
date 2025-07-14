@@ -23,7 +23,7 @@ namespace Survivors.Bootstrap.Systems.RootSystems
             GetOrCreateAndAddUnmanagedSystem<WeaponSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<SfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<VfxSpawnQueueSystem>();
-            GetOrCreateAndAddUnmanagedSystem<EnemyXpSpawnQueueSystem>();
+            GetOrCreateAndAddUnmanagedSystem<EnemyCollectibleSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<EnemyKilledSystem>();
         }
 

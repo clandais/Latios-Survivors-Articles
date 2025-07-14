@@ -39,8 +39,7 @@ namespace Survivors.Play.Systems.UI
 
             if (playerHealth.CurrentHealth == 0)
                 m_commandPublisher.PublishAsync(new PlayerDeadCommand());
-            
-            UnityEngine.Debug.Log($"Player Health Changed: {playerHealth.CurrentHealth}/{playerHealth.MaxHealth}");
+
         }
 
         void OnExpChanged(PlayerExperience playerExperience)
@@ -50,7 +49,6 @@ namespace Survivors.Play.Systems.UI
                 CurrentExperience = playerExperience.CurrentExperience
             });
             
-            UnityEngine.Debug.Log($"Player Experience Changed: {playerExperience.CurrentExperience}");
         }
         
         protected override void OnUpdate()

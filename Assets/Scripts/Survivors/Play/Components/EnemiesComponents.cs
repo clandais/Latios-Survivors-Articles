@@ -18,4 +18,15 @@ namespace Survivors.Play.Components
     {
         public EntityWith<Prefab> Prefab;
     }
+    
+    public struct HpDropPrefab : IComponentData
+    {
+        public EntityWith<Prefab> Prefab;
+    }
+    
+    public struct ItemDropChance : IComponentData
+    {
+        public int HpDropChance;
+        public int XpDropChance;
+    }
 }

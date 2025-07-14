@@ -10,7 +10,12 @@ namespace Survivors.Play.Authoring.Enemies
     {
         [SerializeField] MovementSettingsData movementSettings;
         [SerializeField] GameObject           xpDropPrefab;
-
+        [SerializeField] GameObject hpDropPrefab;
+        
+        [Header("Drops")]
+        [Tooltip("Drop chances for XP and HP items. The first value is the HP weight, the second is the XP weight.")]
+        [SerializeField] Vector2Int hpXpDropRange = new Vector2Int(1, 3);
+        
         class SkeletonMinionAuthoringBaker : Baker<SkeletonMinionAuthoring>
         {
             public override void Bake(SkeletonMinionAuthoring authoring)
@@ -34,6 +39,17 @@ namespace Survivors.Play.Authoring.Enemies
                 AddComponent(entity, new XpDropPrefab
                 {
                     Prefab = GetEntity(authoring.xpDropPrefab, TransformUsageFlags.Dynamic)
+                });
+                
+                AddComponent(entity, new HpDropPrefab
+                {
+                    Prefab = GetEntity(authoring.hpDropPrefab, TransformUsageFlags.Dynamic)
+                });
+                
+                AddComponent(entity, new ItemDropChance
+                {
+                    HpDropChance = authoring.hpXpDropRange.x,
+                    XpDropChance = authoring.hpXpDropRange.y
                 });
             }
         }

@@ -6,26 +6,26 @@ using Survivors.Utilities;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 
 namespace Survivors.Play.Systems.Physics.FindPairs
 {
     [RequireMatchingQueriesForUpdate]
-    public partial struct PlayerVsXpSystem : ISystem
+    public partial struct PlayerVsHpSystem : ISystem
     {
         BuildCollisionLayerTypeHandles m_typeHandles;
-        LatiosWorldUnmanaged m_world;
-        EntityQuery m_xpQuery;
-        EntityQuery m_playerQuery;
+        LatiosWorldUnmanaged           m_world;
+        EntityQuery                    m_hpQuery;
+        EntityQuery                    m_playerQuery;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             m_world       = state.GetLatiosWorldUnmanaged();
             m_typeHandles = new BuildCollisionLayerTypeHandles(ref state);
+            
 
-            m_xpQuery = state.Fluent()
-                .With<XpItem>(true)
+            m_hpQuery = state.Fluent()
+                .With<HpItem>(true)
                 .PatchQueryForBuildingCollisionLayer()
                 .Build();
             
@@ -39,71 +39,65 @@ namespace Survivors.Play.Systems.Physics.FindPairs
         public void OnUpdate(ref SystemState state)
         {
             m_typeHandles.Update(ref state);
-
+            
             if (!m_world.GetPhysicsSettings(out var physicsSettings))
                 return;
-
+            
             var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
                 .Layer;
-            var xpLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_xpQuery, in m_typeHandles)
-                .WithSettings(physicsSettings.CollisionLayerSettings)
-                .ScheduleParallel(out var xpLayer, state.WorldUpdateAllocator, state.Dependency);
             
+            var hpLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_hpQuery, in m_typeHandles)
+                .WithSettings(physicsSettings.CollisionLayerSettings)
+                .ScheduleParallel(out var hpLayer, state.WorldUpdateAllocator, state.Dependency);
 
             var acb = m_world.syncPoint.CreateEntityCommandBuffer();
-
-
-            var expQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerExpQueue>()
-                .ExpQueue;
             
-            var playerVsXpFindPairs = new PlayerVsXpFindPairs
+            var hpQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerHpQueue>()
+                .HpQueue;
+            
+            var playerVsHpFindPairs = new PlayerVsHpFindPairs
             {
-                XpItemLookup = SystemAPI.GetComponentLookup<XpItem>(),
-                XpCubeVfxLookup = SystemAPI.GetComponentLookup<XpCubeVfx>(),
+                HpItemLookup    = SystemAPI.GetComponentLookup<HpItem>(),
+                HpCubeVfxLookup = SystemAPI.GetComponentLookup<HpSphereVfx>(),
                 VfxQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<VfxSpawnQueue>()
                     .VfxQueue.AsParallelWriter(),
                 CommandBuffer = acb.AsParallelWriter(),
-                ExpQueue = expQueue.AsParallelWriter()
+                HpQueue       = hpQueue.AsParallelWriter()
             };
             
             state.Dependency = Latios.Psyshock.Physics
-                .FindPairs(playerCollisionLayer, xpLayer, playerVsXpFindPairs)
-                .ScheduleParallel( xpLayerJh);
+                .FindPairs(playerCollisionLayer, hpLayer, playerVsHpFindPairs)
+                .ScheduleParallel( hpLayerJh);
             
-            state.Dependency = xpLayer.Dispose(state.Dependency);
-
-            
+            state.Dependency = hpLayer.Dispose(state.Dependency);
         }
-
-
-        struct PlayerVsXpFindPairs : IFindPairsProcessor
+        
+        
+        struct PlayerVsHpFindPairs : IFindPairsProcessor
         {
-            public PhysicsComponentLookup<XpItem> XpItemLookup;
-            public PhysicsComponentLookup<XpCubeVfx> XpCubeVfxLookup;
+            public PhysicsComponentLookup<HpItem>                         HpItemLookup;
+            public PhysicsComponentLookup<HpSphereVfx>                    HpCubeVfxLookup;
             public NativeQueue<VfxSpawnQueue.VfxSpawnData>.ParallelWriter VfxQueue;
-            public EntityCommandBuffer.ParallelWriter CommandBuffer;
-            public NativeQueue<int>.ParallelWriter ExpQueue;
+            public EntityCommandBuffer.ParallelWriter                     CommandBuffer;
+            public NativeQueue<int>.ParallelWriter                        HpQueue;
             
             public void Execute(in FindPairsResult result)
             {
                 // var playerEntity = result.entityA;
-                var xpEntity = result.entityB;
-                var xpItem = XpItemLookup.GetRW(xpEntity).ValueRO;
-                var xpVfx = XpCubeVfxLookup.GetRW(xpEntity).ValueRO;
+                var hpEntity = result.entityB;
+                var hpItem = HpItemLookup.GetRW(hpEntity).ValueRO;
+                var hpVfx = HpCubeVfxLookup.GetRW(hpEntity).ValueRO;
 
                 VfxQueue.Enqueue(new VfxSpawnQueue.VfxSpawnData
                 {
                     Position  = result.transformB.position,
-                    VfxPrefab = xpVfx.Prefab
+                    VfxPrefab = hpVfx.Prefab
                 });
                 
-                ExpQueue.Enqueue(xpItem.Value);
-                
+                HpQueue.Enqueue(hpItem.Value);
+
                 CommandBuffer.AddComponent<ShouldDestroyTag>(result.bodyIndexB, result.entityB);
             }
         }
-
-
-        
     }
 }

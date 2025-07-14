@@ -24,6 +24,7 @@ namespace Survivors.Bootstrap.Systems.SuperSystems.PostTransformSubSystems
 
             GetOrCreateAndAddUnmanagedSystem<PlayerTakeDamageSystem>();
             GetOrCreateAndAddUnmanagedSystem<PlayerVsXpSystem>();
+            GetOrCreateAndAddUnmanagedSystem<PlayerVsHpSystem>();
         }
 
         public override bool ShouldUpdateSystem() =>

@@ -30,6 +30,7 @@ namespace Survivors.Bootstrap.Systems.RootSystems
 
             GetOrCreateAndAddUnmanagedSystem<PlayerPositionUpdater>();
             GetOrCreateAndAddUnmanagedSystem<PlayerProcessExpSystem>();
+            GetOrCreateAndAddUnmanagedSystem<PlayerProcessHpSystem>();
             
             GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
             GetOrCreateAndAddManagedSystem<EnemyCounterSystem>();

@@ -1000,6 +1000,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSettings: {fileID: 11400000, guid: 90bebdf1b97e8a94fbf8f877870f251c, type: 2}
   xpDropPrefab: {fileID: 7087476926136531777, guid: 935b20b1e5d27404fb509bf35886b32a, type: 3}
+  hpDropPrefab: {fileID: 8382462859134374810, guid: 154b84a60b3a04b47a8a62e75fdfc4a0, type: 3}
+  hpXpDropRange: {x: 1, y: 5}
 --- !u!114 &4322368749244979
 MonoBehaviour:
   m_ObjectHideFlags: 0

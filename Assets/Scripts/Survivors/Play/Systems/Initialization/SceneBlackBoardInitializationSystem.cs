@@ -37,14 +37,19 @@ namespace Survivors.Play.Systems.Initialization
                 VfxQueue = new NativeQueue<VfxSpawnQueue.VfxSpawnData>(Allocator.Persistent)
             });
 
-            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new XpSpawnQueue
+            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new CollectibleSpawnQueue
             {
-                XpQueue = new NativeQueue<XpSpawnQueue.XpSpawnData>(Allocator.Persistent)
+                XpQueue = new NativeQueue<CollectibleSpawnQueue.CollectibleSpawnData>(Allocator.Persistent)
             });
             
             m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new PlayerExpQueue
             {
                 ExpQueue = new NativeQueue<int>(Allocator.Persistent)
+            });
+            
+            m_worldUnmanaged.sceneBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new PlayerHpQueue
+            {
+                HpQueue = new NativeQueue<int>(Allocator.Persistent),
             });
         }
     }

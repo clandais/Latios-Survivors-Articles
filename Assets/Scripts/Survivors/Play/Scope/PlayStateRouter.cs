@@ -1,7 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 using Survivors.GameScope.Commands;
 using Unity.Mathematics;
+using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using VContainer;
 using VitalRouter;
 
@@ -66,8 +69,10 @@ namespace Survivors.Play.Scope
             // pretty handy when you want to stop the game in the editor
             EditorApplication.ExitPlaymode();
 #else
-			Application.Quit(0)	;
+			Application.Quit(0);
 #endif
+            
+
         }
     }
 }

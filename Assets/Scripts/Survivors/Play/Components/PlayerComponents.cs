@@ -41,6 +41,20 @@ namespace Survivors.Play.Components
         }
     }
     
+    public partial struct PlayerHpQueue : ICollectionComponent
+    {
+        public NativeQueue<int> HpQueue;
+
+        public JobHandle TryDispose(JobHandle inputDeps)
+        {
+            if (!HpQueue.IsCreated)
+                return inputDeps;
+            
+            return HpQueue.Dispose(inputDeps);
+        }
+    }
+    
+    
     public partial struct PlayerCollisionLayer : ICollectionComponent
     {
         public CollisionLayer Layer;

@@ -64,15 +64,15 @@ namespace Survivors.Play.Components
         }
     }
 
-    public partial struct XpSpawnQueue : ICollectionComponent
+    public partial struct CollectibleSpawnQueue : ICollectionComponent
     {
-        public struct XpSpawnData
+        public struct CollectibleSpawnData
         {
-            public EntityWith<Prefab> XpPrefab;
+            public EntityWith<Prefab> Prefab;
             public float3 Position;
         }
 
-        public NativeQueue<XpSpawnData> XpQueue;
+        public NativeQueue<CollectibleSpawnData> XpQueue;
 
         public JobHandle TryDispose(JobHandle inputDeps)
         {

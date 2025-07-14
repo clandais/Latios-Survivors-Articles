@@ -9,7 +9,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Enemies
 {
-    public partial struct EnemyXpSpawnQueueSystem : ISystem
+    public partial struct EnemyCollectibleSpawnQueueSystem : ISystem
     {
         LatiosWorldUnmanaged m_worldUnmanaged;
 
@@ -22,7 +22,7 @@ namespace Survivors.Play.Systems.Enemies
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var xpSpawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<XpSpawnQueue>().XpQueue;
+            var xpSpawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<CollectibleSpawnQueue>().XpQueue;
             var qToArray = xpSpawnQueue.ToArray(Allocator.TempJob);
 
 
@@ -30,7 +30,7 @@ namespace Survivors.Play.Systems.Enemies
             var icb = m_worldUnmanaged.syncPoint
                 .CreateInstantiateCommandBuffer<WorldTransform>();
 
-            state.Dependency = new SpawnXpJob
+            state.Dependency = new CollectibleSpawnJob
             {
                 XpSpawnQueue     = qToArray,
                 SpawnQueueWriter = icb.AsParallelWriter()
@@ -42,25 +42,25 @@ namespace Survivors.Play.Systems.Enemies
 
 
         [BurstCompile]
-        struct SpawnXpJob : IJobParallelFor
+        struct CollectibleSpawnJob : IJobParallelFor
         {
-            [NativeDisableParallelForRestriction] public NativeArray<XpSpawnQueue.XpSpawnData> XpSpawnQueue;
+            [NativeDisableParallelForRestriction] public NativeArray<CollectibleSpawnQueue.CollectibleSpawnData> XpSpawnQueue;
             public InstantiateCommandBuffer<WorldTransform>.ParallelWriter SpawnQueueWriter;
 
             public void Execute(int index)
             {
                 if (index >= XpSpawnQueue.Length) return;
 
-                var xpDrop = XpSpawnQueue[index];
+                var drop = XpSpawnQueue[index];
                 var transform = new WorldTransform
                 {
                     worldTransform = TransformQvvs.identity
                 };
 
-                transform.worldTransform.position = xpDrop.Position + math.up();
+                transform.worldTransform.position = drop.Position + math.up();
 
                 SpawnQueueWriter.Add(
-                    xpDrop.XpPrefab,
+                    drop.Prefab,
                     transform,
                     index
                 );

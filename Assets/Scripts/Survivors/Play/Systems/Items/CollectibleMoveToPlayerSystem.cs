@@ -12,7 +12,7 @@ using Unity.Mathematics;
 namespace Survivors.Play.Systems.Items
 {
     [RequireMatchingQueriesForUpdate]
-    public partial struct XpMoveToPlayerSystem : ISystem
+    public partial struct CollectibleMoveToPlayerSystem : ISystem
     {
         LatiosWorldUnmanaged m_world;
         EntityQuery          m_xpQuery;
@@ -23,7 +23,7 @@ namespace Survivors.Play.Systems.Items
             m_world = state.GetLatiosWorldUnmanaged();
             m_xpQuery = state.Fluent()
                 .WithAspect<TransformAspect>()
-                .With<XpItem>()
+                .With<CollectibleTag>()
                 .With<Velocity>()
                 .With<MaxSpeed>()
                 .With<MaxForce>()
