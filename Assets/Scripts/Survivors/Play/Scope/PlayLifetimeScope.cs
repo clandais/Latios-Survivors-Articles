@@ -2,6 +2,7 @@
 using Survivors.Play.Systems.Camera;
 using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Input;
+using Survivors.Play.Systems.Player;
 using Survivors.Play.Systems.SFX;
 using Survivors.Play.Systems.UI;
 using UnityEngine;
@@ -15,14 +16,16 @@ namespace Survivors.Play.Scope
 {
     public class PlayLifetimeScope : LifetimeScope
     {
-        [SerializeField] PlayStateMenu playStateMenu;
-        [SerializeField] Image         crosshair;
-        [SerializeField] DebugCanvas   debugCanvas;
-        [SerializeField] PlayerHud     playerHud;
+        [SerializeField] PlayStateMenu        playStateMenu;
+        [SerializeField] PlayStateLevelUpMenu playStateLevelUpMenu;
+        [SerializeField] Image                crosshair;
+        [SerializeField] DebugCanvas          debugCanvas;
+        [SerializeField] PlayerHud            playerHud;
 
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(playStateMenu);
+            builder.RegisterInstance(playStateLevelUpMenu);
             builder.RegisterInstance(crosshair);
             builder.RegisterInstance(playerHud);
             builder.RegisterInstance(debugCanvas);
@@ -43,6 +46,7 @@ namespace Survivors.Play.Scope
 
 
             builder.RegisterSystemFromDefaultWorld<EscapeKeySystem>();
+            builder.RegisterSystemFromDefaultWorld<PlayerApplyPerkSystem>();
             builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
             builder.RegisterSystemFromDefaultWorld<PlayerInputSystem>();
             builder.RegisterSystemFromDefaultWorld<PlayerHudSystem>();

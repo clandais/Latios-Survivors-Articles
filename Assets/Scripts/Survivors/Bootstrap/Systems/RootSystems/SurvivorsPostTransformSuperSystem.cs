@@ -34,7 +34,6 @@ namespace Survivors.Bootstrap.Systems.RootSystems
             
             GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
             GetOrCreateAndAddManagedSystem<EnemyCounterSystem>();
-            GetOrCreateAndAddManagedSystem<PlayerHudSystem>();
 
             GetOrCreateAndAddUnmanagedSystem<DestroyTaggedEntitiesSystem>();
 

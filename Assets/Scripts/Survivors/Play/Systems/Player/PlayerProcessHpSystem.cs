@@ -16,11 +16,11 @@ namespace Survivors.Play.Systems.Player
         public void OnCreate(ref SystemState state)
         {
             m_latiosWorld = state.GetLatiosWorldUnmanaged();
-            m_playerQuery = state.Fluent()
-                .With<PlayerTag>()
-                .With<PlayerHealth>()
-                .Without<DeadTag>()
-                .Build();
+            // m_playerQuery = state.Fluent()
+            //     .With<PlayerTag>()
+            //     // .With<PlayerHealth>()
+            //     // .Without<DeadTag>()
+            //     .Build();
         }
 
 
@@ -33,27 +33,41 @@ namespace Survivors.Play.Systems.Player
             if (hpQueue.IsEmpty())
                 return;
             
-            state.Dependency = new ProcessHpJob
+            var playerHealth = m_latiosWorld.sceneBlackboardEntity.GetComponentData<PlayerHealth>();
+            // Process the HP queue
+            while (hpQueue.TryDequeue(out int hp))
             {
-                HpQueue = hpQueue
-            }.ScheduleParallel(m_playerQuery, state.Dependency);
+                if (hp < 0)
+                {
+                    playerHealth.LastDamageTime = (float)SystemAPI.Time.ElapsedTime;
+                }
+                playerHealth.CurrentHealth += hp;
+                playerHealth.CurrentHealth = math.clamp(playerHealth.CurrentHealth, 0, playerHealth.MaxHealth);
+            }
+            
+            m_latiosWorld.sceneBlackboardEntity.SetComponentData(playerHealth);
+            
+            // state.Dependency = new ProcessHpJob
+            // {
+            //     HpQueue = hpQueue
+            // }.ScheduleParallel(m_playerQuery, state.Dependency);
         }
 
         
-        [BurstCompile]
-        partial struct ProcessHpJob : IJobEntity
-        {
-            [NativeDisableParallelForRestriction] public NativeQueue<int> HpQueue;
-
-            void Execute(ref PlayerHealth playerHealth)
-            {
-                if (HpQueue.TryDequeue(out int hp))
-                {
-                    playerHealth.CurrentHealth += hp;
-                    playerHealth.CurrentHealth = math.clamp(playerHealth.CurrentHealth, 0, playerHealth.MaxHealth);
-                }
-            }
-        }
+        // [BurstCompile]
+        // partial struct ProcessHpJob : IJobEntity
+        // {
+        //     [NativeDisableParallelForRestriction] public NativeQueue<int> HpQueue;
+        //
+        //     void Execute(ref PlayerHealth playerHealth)
+        //     {
+        //         if (HpQueue.TryDequeue(out int hp))
+        //         {
+        //             playerHealth.CurrentHealth += hp;
+        //             playerHealth.CurrentHealth = math.clamp(playerHealth.CurrentHealth, 0, playerHealth.MaxHealth);
+        //         }
+        //     }
+        // }
         
     }
 }

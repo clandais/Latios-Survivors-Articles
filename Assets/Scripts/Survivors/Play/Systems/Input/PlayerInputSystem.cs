@@ -14,7 +14,7 @@ namespace Survivors.Play.Systems.Input
     [RequireMatchingQueriesForUpdate]
     public partial class PlayerInputSystem : SubSystem
     {
-        bool _attackTriggered;
+        bool m_attackTriggered;
 
         ICommandPublisher m_commandPublisher;
         InputSystem_Actions m_inputActions;
@@ -47,7 +47,7 @@ namespace Survivors.Play.Systems.Input
 
         void AttackPerformed(InputAction.CallbackContext _)
         {
-            _attackTriggered = true;
+            m_attackTriggered = true;
         }
 
 
@@ -106,11 +106,11 @@ namespace Survivors.Play.Systems.Input
             }
 
 
-            inputState.AttackTriggered = _attackTriggered;
+            inputState.AttackTriggered = m_attackTriggered;
 
             sceneBlackboardEntity.SetComponentData(inputState);
 
-            _attackTriggered = false;
+            m_attackTriggered = false;
         }
     }
 }

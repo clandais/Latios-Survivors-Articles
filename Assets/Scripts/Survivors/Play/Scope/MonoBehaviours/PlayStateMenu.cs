@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Survivors.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,26 +38,21 @@ namespace Survivors.Play.Scope.MonoBehaviours
 
         public void Show()
         {
-            Cursor.visible               = true;
-            m_canvasGroup.alpha          = 1;
-            m_canvasGroup.blocksRaycasts = true;
-            m_canvasGroup.interactable   = true;
+
+            Cursor.visible = true;
+            m_canvasGroup.Show();
         }
 
         public void Hide()
         {
             Cursor.visible               = false;
-            m_canvasGroup.alpha          = 0;
-            m_canvasGroup.blocksRaycasts = false;
-            m_canvasGroup.interactable   = false;
+            m_canvasGroup.Hide();
         }
 
         public void ShowDead()
         {
             Cursor.visible               = true;
-            m_canvasGroup.alpha          = 1;
-            m_canvasGroup.blocksRaycasts = true;
-            m_canvasGroup.interactable   = true;
+            m_canvasGroup.Show();
 
             resumeButton.gameObject.SetActive(false);
             deadText.gameObject.SetActive(true);

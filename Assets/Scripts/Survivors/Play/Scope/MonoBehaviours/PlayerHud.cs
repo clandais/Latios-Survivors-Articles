@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Survivors.Play.Scope.Commands;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ namespace Survivors.Play.Scope.MonoBehaviours
         [SerializeField] Image    healthBar;
         [SerializeField] TMP_Text healthText;
 
+        [SerializeField] Image experienceBar;
         [SerializeField] TMP_Text experienceText;
 
         public void SetHealth(float health, float maxHealth)
@@ -17,9 +19,10 @@ namespace Survivors.Play.Scope.MonoBehaviours
             healthText.text      = $"{health}/{maxHealth}";
         }
 
-        public void SetExperience(int expAmount)
+        public void SetExperience(PlayerExperienceCommand cmd)
         {
-            experienceText.text = $"XP: {expAmount}";
+            experienceBar.fillAmount = (float)cmd.CurrentExperience / cmd.ExperienceToNextLevel;
+            experienceText.text = $"Lvl : {cmd.CurrentLevel} | Exp : {cmd.CurrentExperience}/{cmd.ExperienceToNextLevel}";
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Survivors.Play.Systems.Input
 {
     public partial class EscapeKeySystem : SubSystem
     {
-        readonly ReactiveProperty<bool> m_isEscapePressed = new ReactiveProperty<bool>();
+        readonly ReactiveProperty<bool> m_isEscapePressed = new();
         ICommandPublisher               m_commandPublisher;
         ICommandSubscribable            m_commandSubscriber;
         DisposableBag                   m_disposableBag;
@@ -41,7 +41,7 @@ namespace Survivors.Play.Systems.Input
 
         void OnEscapePressed(bool isEscapePressed)
         {
-            if (!isEscapePressed) return;
+            if (!isEscapePressed || sceneBlackboardEntity.HasComponent<PlayerLevelUpScreenRequestedTag>()) return;
 
             if (sceneBlackboardEntity.HasComponent<PauseRequestedTag>())
                 m_commandPublisher.PublishAsync(new RequestResumeStateCommand());

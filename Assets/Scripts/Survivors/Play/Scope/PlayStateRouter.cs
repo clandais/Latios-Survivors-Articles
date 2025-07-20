@@ -1,24 +1,31 @@
 ﻿using Cysharp.Threading.Tasks;
 using Survivors.GameScope.Commands;
+using Survivors.Play.Scope.Perks;
 using Unity.Mathematics;
-using UnityEngine;
+using VContainer;
+using VitalRouter;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using VContainer;
-using VitalRouter;
 
 namespace Survivors.Play.Scope
 {
-    public struct ResumeButtonClicked : ICommand { }
+    public struct MenuClosedCommand : ICommand { }
+
     public struct BackToMainMenuClicked : ICommand { }
+
     public struct ExitGameClicked : ICommand { }
+
+    public struct PerkSelectedCommand : ICommand
+    {
+        public Perk Perk;
+    }
 
     public struct MousePositionChangedCommand : ICommand
     {
         public float2 Position;
     }
-    
+
     public struct MouseScrollChangedCommand : ICommand
     {
         public float ScrollDelta;
@@ -32,7 +39,7 @@ namespace Survivors.Play.Scope
         public ICommandPublisher ParentPublisher { get; set; }
 
         [Route]
-        async UniTask On(ResumeButtonClicked _)
+        async UniTask On(MenuClosedCommand _)
         {
             await commandPublisher.PublishAsync(new RequestResumeStateCommand());
         }
@@ -51,7 +58,7 @@ namespace Survivors.Play.Scope
                 Position = cmd.MousePosition
             });
         }
-        
+
         [Route]
         async UniTask On(MouseScrollCommand cmd)
         {
@@ -71,8 +78,6 @@ namespace Survivors.Play.Scope
 #else
 			Application.Quit(0);
 #endif
-            
-
         }
     }
 }

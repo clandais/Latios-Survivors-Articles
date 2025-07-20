@@ -6,13 +6,11 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Components
 {
-    public struct PauseRequestedTag : IComponentData
-    {
-    }
+    public struct PauseRequestedTag : IComponentData { }
 
-    public struct DeadTag : IComponentData
-    {
-    }
+    public struct PlayerLevelUpScreenRequestedTag : IComponentData { }
+
+    public struct DeadTag : IComponentData { }
 
 
     public struct HitInfos : IComponentData, IEnableableComponent
@@ -25,19 +23,16 @@ namespace Survivors.Play.Components
     {
         public struct SfxSpawnData
         {
-            public int EventHash;
+            public int                EventHash;
             public EntityWith<Prefab> SfxPrefab;
-            public float3 Position;
+            public float3             Position;
         }
 
         public NativeQueue<SfxSpawnData> SfxQueue;
 
         public JobHandle TryDispose(JobHandle inputDeps)
         {
-            if (!SfxQueue.IsCreated)
-            {
-                return inputDeps;
-            }
+            if (!SfxQueue.IsCreated) return inputDeps;
 
             return SfxQueue.Dispose(inputDeps);
         }
@@ -48,17 +43,14 @@ namespace Survivors.Play.Components
         public struct VfxSpawnData
         {
             public EntityWith<Prefab> VfxPrefab;
-            public float3 Position;
+            public float3             Position;
         }
 
         public NativeQueue<VfxSpawnData> VfxQueue;
 
         public JobHandle TryDispose(JobHandle inputDeps)
         {
-            if (!VfxQueue.IsCreated)
-            {
-                return inputDeps;
-            }
+            if (!VfxQueue.IsCreated) return inputDeps;
 
             return VfxQueue.Dispose(inputDeps);
         }
@@ -69,28 +61,24 @@ namespace Survivors.Play.Components
         public struct CollectibleSpawnData
         {
             public EntityWith<Prefab> Prefab;
-            public float3 Position;
+            public float3             Position;
         }
 
         public NativeQueue<CollectibleSpawnData> XpQueue;
 
         public JobHandle TryDispose(JobHandle inputDeps)
         {
-            if (!XpQueue.IsCreated)
-            {
-                return inputDeps;
-            }
+            if (!XpQueue.IsCreated) return inputDeps;
 
             return XpQueue.Dispose(inputDeps);
         }
     }
 
-    public struct ShouldDestroyTag : IComponentData
-    {
-    }
+    public struct ShouldDestroyTag : IComponentData { }
 
 
     #region Steering
+
     public struct Velocity : IComponentData
     {
         public float3 Value;
@@ -110,5 +98,6 @@ namespace Survivors.Play.Components
     {
         public float Value;
     }
+
     #endregion
 }

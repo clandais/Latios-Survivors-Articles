@@ -10,17 +10,17 @@ namespace Survivors.Play.Systems.Player
     {
 
         LatiosWorldUnmanaged m_latiosWorld;
-        EntityQuery m_playerQuery;
+        // EntityQuery m_playerQuery;
         
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             m_latiosWorld = state.GetLatiosWorldUnmanaged();
-            m_playerQuery = state.Fluent()
-                .With<PlayerTag>()
-                .With<PlayerExperience>()
-                .Without<DeadTag>()
-                .Build();
+            // m_playerQuery = state.Fluent()
+            //     .With<PlayerTag>()
+            //     .With<PlayerExperience>()
+            //     .Without<DeadTag>()
+            //     .Build();
         }
 
         [BurstCompile]
@@ -32,28 +32,49 @@ namespace Survivors.Play.Systems.Player
             
             if (expQueue.IsEmpty())
                 return;
-            
-            state.Dependency = new ProcessXepJob
-            {
-                ExpQueue = expQueue
-            }.ScheduleParallel(m_playerQuery, state.Dependency);
-            
-            
-        }
 
-        [BurstCompile]
-        partial struct ProcessXepJob : IJobEntity
-        {
-            [NativeDisableParallelForRestriction] public NativeQueue<int> ExpQueue;
-
-            void Execute(ref PlayerExperience playerExperience)
+            var playerExperience = m_latiosWorld.sceneBlackboardEntity.GetComponentData<PlayerExperience>();
+            // Process the experience queue
+            while (expQueue.TryDequeue(out int xp))
             {
-                if (ExpQueue.TryDequeue(out int xp))
+                playerExperience.CurrentExperience += xp;
+
+                if (playerExperience.CurrentExperience >= playerExperience.ExperienceToNextLevel)
                 {
-                    playerExperience.CurrentExperience += xp;
+                    playerExperience.CurrentExperience -= playerExperience.ExperienceToNextLevel;
+                    playerExperience.CurrentLevel++;
                 }
             }
+            
+            m_latiosWorld.sceneBlackboardEntity.SetComponentData(playerExperience);
+            
+            // state.Dependency = new ProcessXepJob
+            // {
+            //     ExpQueue = expQueue
+            // }.ScheduleParallel(m_playerQuery, state.Dependency);
+            
+            
         }
+
+        // [BurstCompile]
+        // partial struct ProcessXepJob : IJobEntity
+        // {
+        //     [NativeDisableParallelForRestriction] public NativeQueue<int> ExpQueue;
+        //
+        //     void Execute(ref PlayerExperience playerExperience)
+        //     {
+        //         if (ExpQueue.TryDequeue(out int xp))
+        //         {
+        //             playerExperience.CurrentExperience += xp;
+        //
+        //             if (playerExperience.CurrentExperience >= playerExperience.ExperienceToNextLevel)
+        //             {
+        //                 playerExperience.CurrentExperience -= playerExperience.ExperienceToNextLevel;
+        //                 playerExperience.CurrentLevel++;
+        //             }
+        //         }
+        //     }
+        // }
         
     }
 }

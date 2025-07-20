@@ -26,6 +26,8 @@ namespace Survivors.Play.Components
     public struct PlayerExperience : IComponentData
     {
         public int   CurrentExperience;
+        public int  CurrentLevel;
+        public int ExperienceToNextLevel => (int)(CurrentLevel * 100 * 1.5f);
     }
 
     public partial struct PlayerExpQueue : ICollectionComponent

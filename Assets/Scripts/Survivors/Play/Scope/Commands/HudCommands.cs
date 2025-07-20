@@ -11,5 +11,13 @@ namespace Survivors.Play.Scope.Commands
     public struct PlayerExperienceCommand : ICommand
     {
         public int CurrentExperience;
+        public int ExperienceToNextLevel;
+        public int CurrentLevel;
+        
+    }
+    
+    public struct PlayerLevelUpCommand : ICommand
+    {
+        public int Level;
     }
 }

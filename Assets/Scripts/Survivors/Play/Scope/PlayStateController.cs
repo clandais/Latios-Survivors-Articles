@@ -4,7 +4,9 @@ using Cysharp.Threading.Tasks;
 using R3;
 using Survivors.GameScope.Commands;
 using Survivors.GameScope.MonoBehaviours;
+using Survivors.Play.Scope.Commands;
 using Survivors.Play.Scope.MonoBehaviours;
+using Survivors.Play.Scope.Perks;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -20,8 +22,9 @@ namespace Survivors.Play.Scope
         [Inject] ICommandSubscribable m_commandSubscribable;
         [Inject] Image                m_crosshair;
 
-        DisposableBag          m_disposable;
-        [Inject] PlayStateMenu m_playStateMenu;
+        DisposableBag                 m_disposable;
+        [Inject] PlayStateLevelUpMenu m_playStateLevelUpMenu;
+        [Inject] PlayStateMenu        m_playStateMenu;
 
         public void Dispose()
         {
@@ -53,8 +56,15 @@ namespace Survivors.Play.Scope
             m_commandSubscribable.Subscribe<MouseScrollChangedCommand>(OnMouseScrollChanged)
                 .AddTo(ref m_disposable);
 
+            m_commandSubscribable.Subscribe<PlayerLevelUpCommand>(OnPlayerLevelUp)
+                .AddTo(ref m_disposable);
+
             m_commandSubscribable.SubscribeAwait<PlayerDeadCommand>(OnPlayerDead)
                 .AddTo(ref m_disposable);
+
+            m_playStateLevelUpMenu.OnPerkSelected.AsObservable().Subscribe(OnPerkSelected)
+                .AddTo(ref m_disposable);
+
 
             m_playStateMenu.Hide();
         }
@@ -66,16 +76,32 @@ namespace Survivors.Play.Scope
         }
 
 
+        void OnPerkSelected(Perk perk)
+        {
+            // m_playStateLevelUpMenu.Hide(); 
+            m_commandPublisher.PublishAsync(new MenuClosedCommand());
+            m_commandPublisher.PublishAsync(new PerkSelectedCommand
+            {
+                Perk = perk
+            });
+        }
+
+        void OnPlayerLevelUp(PlayerLevelUpCommand playerLevelUpCommand, PublishContext ctx)
+        {
+            m_playStateLevelUpMenu.Show(playerLevelUpCommand);
+        }
+
+
         void OnPauseStateRequested(RequestPauseStateCommand _,
             PublishContext ctx)
         {
             m_playStateMenu.Show();
         }
 
-
         void OnResumeStateRequested(RequestResumeStateCommand _,
             PublishContext ctx)
         {
+            m_playStateLevelUpMenu.Hide();
             m_playStateMenu.Hide();
         }
 
@@ -93,7 +119,7 @@ namespace Survivors.Play.Scope
 
         void OnResumeClicked(Unit _)
         {
-            m_commandPublisher.PublishAsync(new ResumeButtonClicked());
+            m_commandPublisher.PublishAsync(new MenuClosedCommand());
         }
 
         void OnMainMenuClicked(Unit _)

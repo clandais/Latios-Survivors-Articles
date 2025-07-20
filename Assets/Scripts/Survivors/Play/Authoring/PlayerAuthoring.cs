@@ -13,8 +13,6 @@ namespace Survivors.Play.Authoring
         [FormerlySerializedAs("playerData")] [SerializeField]
         public MovementSettingsData movementSettingsData;
 
-        [SerializeField] int   playerStartingHealth = 100;
-        [SerializeField] float damageDelay          = 0.5f;
 
         [SerializeField] bool invincible;
 
@@ -34,20 +32,7 @@ namespace Survivors.Play.Authoring
                 {
                     Value = float3.zero
                 });
-
-                AddComponent(entity, new PlayerHealth
-                {
-                    CurrentHealth  = authoring.playerStartingHealth,
-                    MaxHealth      = authoring.playerStartingHealth,
-                    DamageDelay    = authoring.damageDelay,
-                    LastDamageTime = 0
-                });
                 
-                AddComponent(entity, new PlayerExperience
-                {
-                    CurrentExperience = 0,
-                });
-
 
                 if (authoring.invincible) AddComponent<InvincibleTag>(entity);
             }

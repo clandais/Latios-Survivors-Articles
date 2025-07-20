@@ -38,7 +38,7 @@ namespace Survivors.Play.Scope
 
         void OnPlayerExperienceChanged(PlayerExperienceCommand cmd, PublishContext ctx)
         {
-            m_playerHud.SetExperience(cmd.CurrentExperience);
+            m_playerHud.SetExperience(cmd);
         }
     }
 }

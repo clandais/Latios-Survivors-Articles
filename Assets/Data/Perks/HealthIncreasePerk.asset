@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9c12e8a4bc54bfd858adaccea593fca, type: 3}
-  m_Name: Skeleton Minion Movement Settings
+  m_Script: {fileID: 11500000, guid: 48a83cc05b9a4bc6925822d52b3101d4, type: 3}
+  m_Name: HealthIncreasePerk
   m_EditorClassIdentifier: 
-  movementSettings:
-    moveSpeed: 5
-    maxAngleDelta: 180
-    speedChangeRate: 0.15
-    speedMultiplier: 1.2
+  description: Increase Health By 10%
+  healthIncreasePercentage: 10

@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 1901047644}
   - component: {fileID: 1901047645}
   - component: {fileID: 1901047646}
+  - component: {fileID: 1901047647}
   m_Layer: 0
   m_Name: Scene Blackboard Entity
   m_TagString: Untagged
@@ -206,6 +207,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AxePrefab: {fileID: 1048361051549915923, guid: 3e59cfbc0d749cf48bf572038528861b, type: 3}
+--- !u!114 &1901047647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901047641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07addd4771b24d549d0c4c23905a3f9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStartingHealth: 20
+  damageDelay: 0.5
 --- !u!4 &476245130154016560 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1755721546914696399, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}

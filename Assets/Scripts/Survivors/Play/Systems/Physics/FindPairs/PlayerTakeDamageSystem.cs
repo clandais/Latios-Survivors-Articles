@@ -7,11 +7,13 @@ using Survivors.Play.Authoring.Player.SFX;
 using Survivors.Play.Components;
 using Survivors.Utilities;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 
 namespace Survivors.Play.Systems.Physics.FindPairs
 {
+    [RequireMatchingQueriesForUpdate]
     [BurstCompile]
     public partial struct PlayerTakeDamageSystem : ISystem, ISystemNewScene, ISystemShouldUpdate
     {
@@ -38,6 +40,8 @@ namespace Survivors.Play.Systems.Physics.FindPairs
                 .With<PlayerTag>()
                 .With<InvincibleTag>()
                 .Build();
+            
+            state.RequireForUpdate<PlayerHealth>();
         }
 
 
@@ -49,12 +53,12 @@ namespace Survivors.Play.Systems.Physics.FindPairs
             if (!m_world.GetPhysicsSettings(out var physicsSettings))
                 return;
 
-            var playerLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_playerQuery, m_handles)
-                .WithSettings(physicsSettings.CollisionLayerSettings)
-                .ScheduleParallel(out var playerCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
-            
-            // var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
-            //     .Layer;
+            // var playerLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_playerQuery, m_handles)
+            //     .WithSettings(physicsSettings.CollisionLayerSettings)
+            //     .ScheduleParallel(out var playerCollisionLayer, state.WorldUpdateAllocator, state.Dependency);
+            //
+            var playerCollisionLayer = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerCollisionLayer>()
+                .Layer;
 
             var enemyLayerJh = Latios.Psyshock.Physics.BuildCollisionLayer(m_enemyAttackingQuery, m_handles)
                 .WithSettings(physicsSettings.CollisionLayerSettings)
@@ -62,10 +66,15 @@ namespace Survivors.Play.Systems.Physics.FindPairs
 
 
             var ecb = m_world.syncPoint.CreateEntityCommandBuffer();
-
+            var playerHealth = m_world.sceneBlackboardEntity.GetComponentData<PlayerHealth>();
+            var hpQueue = m_world.sceneBlackboardEntity.GetCollectionComponent<PlayerHpQueue>()
+                .HpQueue;
+            
             var findPairProcessor = new DamagePlayerProcessor
             {
-                PlayerHealthLookup  = SystemAPI.GetComponentLookup<PlayerHealth>(),
+                HpQueue            = hpQueue.AsParallelWriter(),
+                PlayerHealth = playerHealth,
+                // PlayerHealthLookup  = SystemAPI.GetComponentLookup<PlayerHealth>(),
                 DeathVoiceSfxLookup = SystemAPI.GetComponentLookup<DeathVoiceSfx>(),
                 PlayerHitSfxLookup  = SystemAPI.GetBufferLookup<PlayerHitSfxBufferElement>(),
                 Time                = (float)SystemAPI.Time.ElapsedTime,
@@ -75,13 +84,18 @@ namespace Survivors.Play.Systems.Physics.FindPairs
 
             state.Dependency = Latios.Psyshock.Physics
                 .FindPairs(playerCollisionLayer, attackingEnemyLayer, findPairProcessor)
-                .ScheduleParallelByA(JobHandle.CombineDependencies(playerLayerJh, enemyLayerJh));
+                .ScheduleParallelByA(enemyLayerJh);
+            
+            state.Dependency = attackingEnemyLayer.Dispose(state.Dependency);
+            // m_world.sceneBlackboardEntity.SetComponentData(playerHealth);
         }
 
 
         struct DamagePlayerProcessor : IFindPairsProcessor
         {
-            public PhysicsComponentLookup<PlayerHealth>           PlayerHealthLookup;
+            public NativeQueue<int>.ParallelWriter                        HpQueue;
+            public PlayerHealth                                   PlayerHealth;
+            // public PhysicsComponentLookup<PlayerHealth>           PlayerHealthLookup;
             public PhysicsComponentLookup<DeathVoiceSfx>          DeathVoiceSfxLookup;
             public PhysicsBufferLookup<PlayerHitSfxBufferElement> PlayerHitSfxLookup;
             public float                                          Time;
@@ -92,12 +106,14 @@ namespace Survivors.Play.Systems.Physics.FindPairs
             {
                 var random = Rng.GetSequence(result.jobIndex);
 
-                ref var playerHealth = ref PlayerHealthLookup.GetRW(result.entityA).ValueRW;
+                // ref var playerHealth = ref PlayerHealthLookup.GetRW(result.entityA).ValueRW;
 
-                if (playerHealth.LastDamageTime + playerHealth.DamageDelay < Time)
+                if (PlayerHealth.LastDamageTime + PlayerHealth.DamageDelay < Time)
                 {
-                    playerHealth.CurrentHealth  -= 1;
-                    playerHealth.LastDamageTime =  Time;
+
+                    HpQueue.Enqueue(-1);
+                    // PlayerHealth.CurrentHealth  -= 1;
+                    // PlayerHealth.LastDamageTime =  Time;
 
                     var playerHitSfx = PlayerHitSfxLookup[result.entityA];
                     var randInt = random.NextInt(0, playerHitSfx.Length);
@@ -113,7 +129,7 @@ namespace Survivors.Play.Systems.Physics.FindPairs
                 }
 
 
-                if (playerHealth.CurrentHealth <= 0)
+                if (PlayerHealth.CurrentHealth <= 0)
                 {
                     Ecb.AddComponent<DeadTag>(result.bodyIndexA, result.entityA);
                     var deathSfx = DeathVoiceSfxLookup.GetRW(result.entityA).ValueRO.DeathSfxPrefab;

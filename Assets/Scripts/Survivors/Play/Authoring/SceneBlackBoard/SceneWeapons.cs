@@ -18,7 +18,7 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
             {
                 if (!authoring.AxePrefab) return;
 
-                var entity = GetEntity(TransformUsageFlags.Dynamic);
+                var entity = GetEntity(TransformUsageFlags.None);
 
                 var buffer = AddBuffer<PrefabBufferElement>(entity);
 
