@@ -1,5 +1,6 @@
 ﻿using Latios;
 using R3;
+using Survivors.Play.Authoring.SceneBlackBoard;
 using Survivors.Play.Components;
 using Survivors.Play.Scope;
 using Survivors.Play.Scope.Perks;
@@ -26,14 +27,35 @@ namespace Survivors.Play.Systems.Player
         {
             var perk = perkSelectedCommand.Perk;
 
-            if (perk is HealthIncreasePerk healthIncreasePerk)
+            switch (perk)
             {
-                var playerHealth = sceneBlackboardEntity.GetComponentData<PlayerHealth>();
-                playerHealth = healthIncreasePerk.Apply(
-                    playerHealth
-                );
+                case HealthIncreasePerk healthIncreasePerk:
+                {
+                    var playerHealth = sceneBlackboardEntity.GetComponentData<PlayerHealth>();
+                    playerHealth = healthIncreasePerk.Apply(
+                        playerHealth
+                    );
 
-                sceneBlackboardEntity.SetComponentData(playerHealth);
+                    sceneBlackboardEntity.SetComponentData(playerHealth);
+                    break;
+                }
+                case MovementSpeedIncreasePerk movementSpeedIncreasePerk:
+                {
+                    var movementSettings = sceneBlackboardEntity.GetComponentData<MovementSettings>();
+                    movementSettings = movementSpeedIncreasePerk.Apply(
+                        movementSettings
+                    );
+
+                    sceneBlackboardEntity.SetComponentData(movementSettings);
+                    break;
+                }
+                case AxeSizeIncreasePerk weaponPerk:
+                {
+                    var weaponPerks = sceneBlackboardEntity.GetComponentData<WeaponPerks>();
+                    weaponPerks = weaponPerk.Apply(weaponPerks);
+                    sceneBlackboardEntity.SetComponentData(weaponPerks);
+                    break;
+                }
             }
 
             sceneBlackboardEntity.RemoveComponent<PlayerLevelUpScreenRequestedTag>();

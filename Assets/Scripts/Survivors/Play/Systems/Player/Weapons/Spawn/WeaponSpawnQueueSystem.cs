@@ -23,21 +23,20 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            NativeQueue<WeaponSpawnQueue.WeaponSpawnData> spawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<WeaponSpawnQueue>().WeaponQueue;
+            var spawnQueue = m_worldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<WeaponSpawnQueue>()
+                .WeaponQueue;
 
-            if (spawnQueue.IsEmpty())
-            {
-                return;
-            }
+            if (spawnQueue.IsEmpty()) return;
 
-            InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform> icb = m_worldUnmanaged.syncPoint
+            var icb = m_worldUnmanaged.syncPoint
                 .CreateInstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>();
 
             state.Dependency = new WeaponSpawnJob
             {
                 SpawnQueue            = spawnQueue,
                 WeaponComponentLookup = SystemAPI.GetComponentLookup<ThrownWeaponConfigComponent>(true),
-                SpawnQueueWriter      = icb.AsParallelWriter()
+                SpawnQueueWriter      = icb.AsParallelWriter(),
+                WeaponPerks           = m_worldUnmanaged.sceneBlackboardEntity.GetComponentData<WeaponPerks>()
             }.Schedule(state.Dependency);
         }
 
@@ -52,22 +51,27 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
         public NativeQueue<WeaponSpawnQueue.WeaponSpawnData> SpawnQueue;
         [ReadOnly] public ComponentLookup<ThrownWeaponConfigComponent> WeaponComponentLookup;
         public InstantiateCommandBuffer<ThrownWeaponComponent, WorldTransform>.ParallelWriter SpawnQueueWriter;
+        [ReadOnly] public WeaponPerks WeaponPerks;
 
         public void Execute()
         {
             var sortKey = 0;
 
             while (!SpawnQueue.IsEmpty())
-            {
                 if (SpawnQueue.TryDequeue(out var weapon))
                 {
                     var transform = new WorldTransform
                     {
-                        worldTransform = TransformQvvs.identity
+                        worldTransform = new TransformQvvs(
+                            weapon.Position,
+                            quaternion.LookRotation(weapon.Direction, math.up()),
+                            WeaponPerks.Size,
+                            float3.zero)
                     };
-
-                    transform.worldTransform.position = weapon.Position;
-                    transform.worldTransform.rotation = quaternion.LookRotation(weapon.Direction, math.up());
+                    //
+                    // transform.worldTransform.position = weapon.Position;
+                    // transform.worldTransform.rotation = quaternion.LookRotation(weapon.Direction, math.up());
+                    // transform.worldTransform.scale    = WeaponPerks.Size;
 
                     var config = WeaponComponentLookup[weapon.WeaponPrefab];
 
@@ -81,7 +85,6 @@ namespace Survivors.Play.Systems.Player.Weapons.Spawn
                         }, transform,
                         ++sortKey);
                 }
-            }
         }
     }
 }

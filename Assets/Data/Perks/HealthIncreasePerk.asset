@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: HealthIncreasePerk
   m_EditorClassIdentifier: 
   description: Increase Health By 10%
+  icon: {fileID: 21300000, guid: db6b56ab0104fc949a4febc6b9193a3e, type: 3}
   healthIncreasePercentage: 10

@@ -1,7 +1,6 @@
 ﻿using Latios;
 using Latios.Psyshock;
 using Latios.Transforms;
-using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Environment;
 using Survivors.Play.Components;
 using Survivors.Utilities;
@@ -26,7 +25,6 @@ namespace Survivors.Play.Systems.Physics.Movements
                 .WithAspect<TransformAspect>()
                 .With<Velocity>()
                 .With<Collider>()
-                .With<MovementSettings>()
                 .With<PlayerTag>()
                 .Without<DeadTag>()
                 .Build();
@@ -41,6 +39,7 @@ namespace Survivors.Play.Systems.Physics.Movements
             state.Dependency = new MoveJob
             {
                 EnvironmentLayer = environmentLayer,
+                MovementSettings = m_world.sceneBlackboardEntity.GetComponentData<MovementSettings>(),
                 DeltaTime        = SystemAPI.Time.DeltaTime
             }.ScheduleParallel(m_query, state.Dependency);
         }
@@ -48,13 +47,13 @@ namespace Survivors.Play.Systems.Physics.Movements
         [BurstCompile]
         partial struct MoveJob : IJobEntity
         {
-            [ReadOnly] public CollisionLayer EnvironmentLayer;
-            [ReadOnly] public float          DeltaTime;
+            [ReadOnly] public CollisionLayer   EnvironmentLayer;
+            [ReadOnly] public float            DeltaTime;
+            [ReadOnly] public MovementSettings MovementSettings;
 
             void Execute(TransformAspect transform,
                 ref Velocity currentVelocity,
-                in Collider collider,
-                in MovementSettings movementSettings)
+                in Collider collider)
             {
                 // var steering = boidAspect.GetSteering(DeltaTime);
                 // boidAspect.Velocity += steering;
@@ -65,7 +64,7 @@ namespace Survivors.Play.Systems.Physics.Movements
 
 
 
-                var moveVector = currentVelocity.Value * DeltaTime * movementSettings.speedMultiplier;
+                var moveVector = currentVelocity.Value * DeltaTime;
                 var distanceRemaining = math.length(moveVector);
                 var currentTransform = new TransformQvvs(startPosition, quaternion.identity);
                 var moveDirection = math.normalize(moveVector);
@@ -82,48 +81,9 @@ namespace Survivors.Play.Systems.Physics.Movements
                     collisionAvoidanceForce = math.mul(quaternion.LookRotation(hitInfos.normalOnCaster, moveDirection),
                         math.up());
 
-                // for (var i = 0; i < 16; i++)
-                // {
-                //     if (distanceRemaining < math.EPSILON) break;
-                //
-                //     var end = currentTransform.position + moveDirection * distanceRemaining;
-                //     if (Latios.Psyshock.Physics.ColliderCast(
-                //             in collider,
-                //             in currentTransform,
-                //             end,
-                //             in EnvironmentLayer,
-                //             out var hitInfos,
-                //             out _))
-                //     {
-                //         currentTransform.position += moveDirection * (hitInfos.distance - 0.01f);
-                //         distanceRemaining         -= hitInfos.distance;
-                //         if (math.dot(hitInfos.normalOnTarget, moveDirection) <
-                //             -.9f) // If the obstacle directly opposes our movement
-                //             break;
-                //
-                //         // LookRotation corrects an "up" vector to be perpendicular to the "forward" vector.
-                //         // We cheat this to get a new moveDirection perpendicular to the normal.
-                //         moveDirection = math.mul(quaternion.LookRotation(hitInfos.normalOnCaster, moveDirection),
-                //             math.up());
-                //     }
-                //     else
-                //     {
-                //         currentTransform.position += moveDirection * distanceRemaining;
-                //         distanceRemaining         =  0f; // No more distance to move
-                //     }
-                // }
-
-                // boidAspect.Velocity   = (currentTransform.position - startPosition) / DeltaTime;
-
-
                 collisionAvoidanceForce *= 10f;
                 var newForce = collisionAvoidanceForce;
-                //
-                // newForce = math.length(newForce) > boidAspect.Settings.maxForce
-                //     ? math.normalize(newForce) * boidAspect.Settings.maxForce
-                //     : newForce;
 
-                // boidAspect.Velocity   += newForce;
                 currentVelocity.Value += newForce; //boidAspect.Velocity;
 
                 var newPosition = startPosition + currentVelocity.Value * DeltaTime;
@@ -131,12 +91,9 @@ namespace Survivors.Play.Systems.Physics.Movements
                 var lookDirection = math.normalizesafe(currentVelocity.Value);
                 var lookRotation = quaternion.LookRotationSafe(lookDirection, math.up());
 
-                // if (math.length(currentTransform.position - startPosition) < math.EPSILON)
-                //     currentVelocity.Value = float3.zero;
-
                 transform.worldPosition = newPosition;
                 transform.worldRotation =
-                    transform.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
+                    transform.worldRotation.RotateTowards(lookRotation, MovementSettings.maxAngleDelta * DeltaTime);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Latios;
+﻿using System;
+using Latios;
 using Latios.Psyshock;
 using Unity.Collections;
 using Unity.Entities;
@@ -9,6 +10,16 @@ namespace Survivors.Play.Components
 {
     public struct PlayerTag : IComponentData { }
 
+
+    public struct InvincibleTag : IComponentData { }
+
+    [Serializable]
+    public struct MovementSettings : IComponentData
+    {
+        public float moveSpeed;
+        public float maxAngleDelta;
+        public float speedChangeRate;
+    }
 
     public struct PreviousVelocity : IComponentData
     {
@@ -25,8 +36,8 @@ namespace Survivors.Play.Components
 
     public struct PlayerExperience : IComponentData
     {
-        public int   CurrentExperience;
-        public int  CurrentLevel;
+        public int CurrentExperience;
+        public int CurrentLevel;
         public int ExperienceToNextLevel => (int)(CurrentLevel * 100 * 1.5f);
     }
 
@@ -38,11 +49,11 @@ namespace Survivors.Play.Components
         {
             if (!ExpQueue.IsCreated)
                 return inputDeps;
-            
+
             return ExpQueue.Dispose(inputDeps);
         }
     }
-    
+
     public partial struct PlayerHpQueue : ICollectionComponent
     {
         public NativeQueue<int> HpQueue;
@@ -51,18 +62,16 @@ namespace Survivors.Play.Components
         {
             if (!HpQueue.IsCreated)
                 return inputDeps;
-            
+
             return HpQueue.Dispose(inputDeps);
         }
     }
-    
-    
+
+
     public partial struct PlayerCollisionLayer : ICollectionComponent
     {
         public CollisionLayer Layer;
 
         public JobHandle TryDispose(JobHandle inputDeps) => inputDeps;
     }
-    
-    
 }

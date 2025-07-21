@@ -1,7 +1,6 @@
 ﻿using Latios;
 using Latios.Kinemation;
 using Latios.Transforms;
-using Survivors.Play.Authoring;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -26,7 +25,6 @@ namespace Survivors.Play.Systems.Animations
                 .With<Velocity>()
                 .With<PreviousVelocity>()
                 .With<InertialBlendState>()
-                .With<MovementSettings>()
                 .Without<DeadTag>()
                 .Build();
         }
@@ -52,7 +50,6 @@ namespace Survivors.Play.Systems.Animations
                 in WorldTransform worldTransform,
                 in Velocity currentVelocity,
                 in Clips clips,
-                in MovementSettings movementSettings,
                 in PreviousVelocity previousVelocity,
                 ref FourDirectionClipStates clipStates,
                 ref InertialBlendState inertialBlendState
@@ -87,22 +84,22 @@ namespace Survivors.Play.Systems.Animations
 
                 // Update and sample animations
                 UpdateClipState(ref clipStates.Center, ref clips.ClipSet.Value.clips[(int)EDirections.Center],
-                    DeltaTime * movementSettings.speedMultiplier, centerWeight);
+                    DeltaTime, centerWeight);
 
                 UpdateClipState(ref clipStates.Up, ref clips.ClipSet.Value.clips[(int)EDirections.Up],
-                    DeltaTime * movementSettings.speedMultiplier,
+                    DeltaTime,
                     upWeight);
 
                 UpdateClipState(ref clipStates.Down, ref clips.ClipSet.Value.clips[(int)EDirections.Down],
-                    DeltaTime * movementSettings.speedMultiplier,
+                    DeltaTime,
                     downWeight);
 
                 UpdateClipState(ref clipStates.Left, ref clips.ClipSet.Value.clips[(int)EDirections.Left],
-                    DeltaTime * movementSettings.speedMultiplier,
+                    DeltaTime,
                     leftWeight);
 
                 UpdateClipState(ref clipStates.Right, ref clips.ClipSet.Value.clips[(int)EDirections.Right],
-                    DeltaTime * movementSettings.speedMultiplier,
+                    DeltaTime,
                     rightWeight);
 
                 // Sample animations

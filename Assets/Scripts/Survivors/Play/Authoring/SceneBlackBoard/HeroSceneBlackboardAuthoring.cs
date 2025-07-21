@@ -1,4 +1,5 @@
 ﻿using Survivors.Play.Components;
+using Survivors.ScriptableObjects;
 using Unity.Entities;
 using UnityEngine;
 
@@ -6,8 +7,9 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
 {
     public class HeroSceneBlackboardAuthoring : MonoBehaviour
     {
-        [SerializeField] int   playerStartingHealth = 100;
-        [SerializeField] float damageDelay          = 0.5f;
+        [SerializeField] int                  playerStartingHealth = 100;
+        [SerializeField] float                damageDelay          = 0.5f;
+        [SerializeField] MovementSettingsData movementSettingsData;
 
         class HeroSceneBlackboardAuthoringBaker : Baker<HeroSceneBlackboardAuthoring>
         {
@@ -28,6 +30,9 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
                     CurrentExperience = 0,
                     CurrentLevel      = 1
                 });
+
+                var movementSettings = authoring.movementSettingsData.movementSettings;
+                AddComponent(entity, movementSettings);
             }
         }
     }

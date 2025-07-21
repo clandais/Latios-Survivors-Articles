@@ -11,6 +11,7 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
     public class SceneWeapons : MonoBehaviour
     {
         [SerializeField] public GameObject AxePrefab;
+        [SerializeField]        float      AxeSize = 1f;
 
         class SceneWeaponsPrefabsBaker : Baker<SceneWeapons>
         {
@@ -20,8 +21,12 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
 
                 var entity = GetEntity(TransformUsageFlags.None);
 
-                var buffer = AddBuffer<PrefabBufferElement>(entity);
+                AddComponent(entity, new WeaponPerks
+                {
+                    Size = authoring.AxeSize
+                });
 
+                var buffer = AddBuffer<PrefabBufferElement>(entity);
                 var prefab = GetEntity(authoring.AxePrefab, TransformUsageFlags.Dynamic);
                 buffer.Add(new PrefabBufferElement
                 {
@@ -35,6 +40,11 @@ namespace Survivors.Play.Authoring.SceneBlackBoard
     public struct PrefabBufferElement : IBufferElementData
     {
         public EntityWith<Prefab> Prefab;
+    }
+
+    public struct WeaponPerks : IComponentData
+    {
+        public float Size;
     }
 
     public partial struct WeaponSpawnQueue : ICollectionComponent

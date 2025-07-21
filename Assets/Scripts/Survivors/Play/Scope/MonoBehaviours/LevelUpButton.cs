@@ -10,7 +10,7 @@ namespace Survivors.Play.Scope.MonoBehaviours
     {
         [SerializeField] TMP_Text descriptionText;
         [SerializeField] Button   button;
-
+        [SerializeField] Image    iconImage;
         public Button Button => button;
         public Perk Perk { get; private set; }
 
@@ -19,6 +19,7 @@ namespace Survivors.Play.Scope.MonoBehaviours
         {
             Perk                 = perk;
             descriptionText.text = perk.description;
+            iconImage.sprite     = perk.icon;
         }
     }
 }

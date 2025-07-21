@@ -15,5 +15,5 @@ MonoBehaviour:
   movementSettings:
     moveSpeed: 5
     maxAngleDelta: 180
-    speedChangeRate: 0.15
+    speedChangeRate: 2
     speedMultiplier: 1.2

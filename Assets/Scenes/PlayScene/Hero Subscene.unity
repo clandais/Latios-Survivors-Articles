@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AxePrefab: {fileID: 1048361051549915923, guid: 3e59cfbc0d749cf48bf572038528861b, type: 3}
+  AxeSize: 2
 --- !u!114 &1901047647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStartingHealth: 20
   damageDelay: 0.5
+  movementSettingsData: {fileID: 11400000, guid: 098e84139e54f1943a8ba927d1b243e5, type: 2}
 --- !u!4 &476245130154016560 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1755721546914696399, guid: 8db4231c8d5b0fc4dabe93ef4321faaa, type: 3}

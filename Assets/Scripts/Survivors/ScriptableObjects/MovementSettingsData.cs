@@ -1,4 +1,4 @@
-﻿using Survivors.Play.Authoring;
+﻿using Survivors.Play.Components;
 using UnityEngine;
 
 namespace Survivors.ScriptableObjects

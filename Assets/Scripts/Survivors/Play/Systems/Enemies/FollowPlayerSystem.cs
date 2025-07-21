@@ -81,7 +81,7 @@ namespace Survivors.Play.Systems.Enemies
                     currentVelocityComponent.Value = boidAspect.Velocity;
 
 
-                    worldTransform.position   += boidAspect.Velocity * DeltaTime * movementSettings.speedMultiplier;
+                    worldTransform.position   += boidAspect.Velocity * DeltaTime;
                     worldTransform.position.y =  0f; // Keep boids on the ground plane
 
 
@@ -108,7 +108,7 @@ namespace Survivors.Play.Systems.Enemies
                             worldTransform.rotation.RotateTowards(lookRotation,
                                 movementSettings.maxAngleDelta * DeltaTime);
 
-                        worldTransform.position   += velocity * DeltaTime * movementSettings.speedMultiplier;
+                        worldTransform.position   += velocity * DeltaTime;
                         worldTransform.position.y =  0f;
                     }
                     else

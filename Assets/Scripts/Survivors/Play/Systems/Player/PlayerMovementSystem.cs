@@ -29,7 +29,6 @@ namespace Survivors.Play.Systems.Player
 
             m_jobQuery = state.Fluent()
                 .WithAspect<TransformAspect>()
-                .With<MovementSettings>()
                 .With<Velocity>()
                 .With<PreviousVelocity>()
                 .With<PlayerTag>()
@@ -46,7 +45,8 @@ namespace Survivors.Play.Systems.Player
             state.Dependency = new MovementJob
             {
                 DeltaTime        = SystemAPI.Time.DeltaTime,
-                PlayerInputState = playerInputState
+                PlayerInputState = playerInputState,
+                MovementSettings = m_world.sceneBlackboardEntity.GetComponentData<MovementSettings>()
             }.ScheduleParallel(m_jobQuery, state.Dependency);
         }
     }
@@ -58,30 +58,30 @@ namespace Survivors.Play.Systems.Player
     {
         [ReadOnly] public float            DeltaTime;
         [ReadOnly] public PlayerInputState PlayerInputState;
+        [ReadOnly] public MovementSettings MovementSettings;
 
         void Execute(TransformAspect transformAspect,
-            in MovementSettings movementSettings,
             ref Velocity currentVelocityComponent,
             ref PreviousVelocity previousVelocity)
         {
             var move = PlayerInputState.Direction;
 
             var currentVelocity = currentVelocityComponent.Value;
-            var desiredVelocity = new float3(move.x, 0f, move.y) * movementSettings.moveSpeed;
+            var desiredVelocity = new float3(move.x, 0f, move.y) * MovementSettings.moveSpeed;
 
             // We don't want to change the gravity force
             desiredVelocity.y = currentVelocity.y;
 
             previousVelocity.Value = currentVelocity;
             currentVelocityComponent.Value =
-                currentVelocity.MoveTowards(desiredVelocity, movementSettings.speedChangeRate);
+                currentVelocity.MoveTowards(desiredVelocity, MovementSettings.speedChangeRate);
 
-            transformAspect.worldPosition += currentVelocity * DeltaTime * movementSettings.speedMultiplier;
+            transformAspect.worldPosition += currentVelocity * DeltaTime;
 
             var lookDir = PlayerInputState.MousePosition - transformAspect.worldPosition;
             var lookRotation = quaternion.LookRotationSafe(lookDir, math.up());
             transformAspect.worldRotation =
-                transformAspect.worldRotation.RotateTowards(lookRotation, movementSettings.maxAngleDelta * DeltaTime);
+                transformAspect.worldRotation.RotateTowards(lookRotation, MovementSettings.maxAngleDelta * DeltaTime);
         }
     }
 }
