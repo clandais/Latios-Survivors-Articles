@@ -1,7 +1,7 @@
 ﻿using Latios;
 using Survivors.Play.Systems.Player;
 
-namespace Survivors.Bootstrap.RootSystems.SuperSystems
+namespace Survivors.Bootstrap.Systems.SuperSystems
 {
     public partial class PlayerMotionSuperSystem : SuperSystem
     {

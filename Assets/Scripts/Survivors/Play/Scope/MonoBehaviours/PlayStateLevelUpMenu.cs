@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Survivors.Play.Scope.Commands;
 using Survivors.Play.Scope.Perks;
 using Survivors.Utilities;
@@ -33,7 +34,8 @@ namespace Survivors.Play.Scope.MonoBehaviours
 
             Cursor.visible = true;
             m_canvasGroup.Show();
-            IsShown = true;
+            m_canvasGroup.interactable = false;
+            IsShown                    = true;
 
             foreach (var perkButton in perkButtons)
             {
@@ -47,6 +49,15 @@ namespace Survivors.Play.Scope.MonoBehaviours
                 var perk = perkList[Random.Range(0, perkList.Count)];
                 perkButton.SetPerk(perk);
             }
+
+            // Delay interaction to avoid immediate clicks
+            StartCoroutine(DelayInteraction(.25f));
+        }
+
+        IEnumerator DelayInteraction(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            m_canvasGroup.interactable = true;
         }
 
 

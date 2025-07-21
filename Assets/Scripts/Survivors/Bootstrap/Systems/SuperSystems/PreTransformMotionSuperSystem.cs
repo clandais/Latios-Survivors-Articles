@@ -1,10 +1,14 @@
 ﻿using Latios;
-using Survivors.Bootstrap.RootSystems.SuperSystems;
+using Survivors.Bootstrap.Systems.SuperSystems.PostTransformSubSystems;
 using Survivors.Play.Components;
 using Survivors.Play.Systems.Debug;
+using Survivors.Play.Systems.Enemies;
+using Survivors.Play.Systems.Physics;
+using Survivors.Play.Systems.Physics.Movements;
+using Survivors.Play.Systems.Player.Weapons.Physics;
 using Unity.Entities;
 
-namespace Survivors.Bootstrap.RootSystems
+namespace Survivors.Bootstrap.Systems.SuperSystems
 {
     public partial class PreTransformMotionSuperSystem : SuperSystem
     {
@@ -21,9 +25,22 @@ namespace Survivors.Bootstrap.RootSystems
                 .Build();
 
 
-            GetOrCreateAndAddManagedSystem<PlayerMotionSuperSystem>();
-            GetOrCreateAndAddManagedSystem<EnemiesMotionSuperSystem>();
-            GetOrCreateAndAddManagedSystem<ItemsMotionSuperSystem>();
+            GetOrCreateAndAddUnmanagedSystem<BuildEnvironmentCollisionLayerSystem>();
+
+            GetOrCreateAndAddUnmanagedSystem<BuildPlayerCollisionLayerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
+            GetOrCreateAndAddUnmanagedSystem<BuildWeaponCollisionLayerSystem>();
+
+
+            GetOrCreateAndAddUnmanagedSystem<CollideAndSlideSystem>();
+
+            GetOrCreateAndAddUnmanagedSystem<SkeletonHitInfosUpdateSystem>();
+
+
+
+            GetOrCreateAndAddManagedSystem<FindPairsSubSystem>();
+
+
 
             GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
         }

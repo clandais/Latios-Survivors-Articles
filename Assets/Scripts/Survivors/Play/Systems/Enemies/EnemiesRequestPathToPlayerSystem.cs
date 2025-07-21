@@ -22,6 +22,7 @@ namespace Survivors.Play.Systems.Enemies
                 .With<EnemyTag>()
                 .With<NavmeshAgentTag>()
                 .With<AgentDestination>()
+                .Without<DeadTag>()
                 .Build();
         }
 

@@ -149,6 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315ef3232f3a35e429def206169ab869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volume: 1
+  gain: 1
+  limiterDBRelaxPerSecond: 7.8125
+  limiterLookaheadTime: 0.00533125
   safetyAudioFrames: 2
   audioFramesPerUpdate: 1
   lookaheadAudioFrames: 0
@@ -243,8 +247,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBounds:
-    m_Center: {x: 0, y: 4, z: -25}
-    m_Extent: {x: 125, y: 10, z: 80}
+    min:
+      x: -125.5
+      y: -5
+      z: -112.8
+    max:
+      x: 139.73
+      y: 25
+      z: 89.2
   subdivisionsPerAxis:
     x: 1
     y: 1
@@ -317,8 +327,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: 1
+  gain: 1
+  limiterDBRelaxPerSecond: 7.8125
+  limiterLookaheadTime: 0.00533125
+  rangeMultiplier: 1
   interauralTimeDifferenceResolution: 2
   listenerResponseProfile: {fileID: 0}
+  includeSourcesWithoutAChannel: 1
+  channels: []
 --- !u!4 &1506327044
 Transform:
   m_ObjectHideFlags: 0

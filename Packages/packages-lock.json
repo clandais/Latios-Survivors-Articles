@@ -45,7 +45,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "7e7db72b4d9abc1f598f90e00968582e9185cef3"
+      "hash": "8347350e157afbc979bbb11c51e1d908703e392a"
     },
     "com.latios.latiosframework": {
       "version": "https://github.com/Dreaming381/Latios-Framework.git",

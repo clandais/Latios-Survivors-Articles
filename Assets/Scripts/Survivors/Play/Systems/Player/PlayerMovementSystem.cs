@@ -76,8 +76,8 @@ namespace Survivors.Play.Systems.Player
             currentVelocityComponent.Value =
                 currentVelocity.MoveTowards(desiredVelocity, MovementSettings.speedChangeRate);
 
-            transformAspect.worldPosition += currentVelocity * DeltaTime;
-
+            // transformAspect.worldPosition += currentVelocity * DeltaTime;
+            //
             var lookDir = PlayerInputState.MousePosition - transformAspect.worldPosition;
             var lookRotation = quaternion.LookRotationSafe(lookDir, math.up());
             transformAspect.worldRotation =
