@@ -220,8 +220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07addd4771b24d549d0c4c23905a3f9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStartingHealth: 20
-  damageDelay: 0.5
+  playerStartingHealth: 10
+  damageDelay: 1
   movementSettingsData: {fileID: 11400000, guid: 098e84139e54f1943a8ba927d1b243e5, type: 2}
 --- !u!4 &476245130154016560 stripped
 Transform:

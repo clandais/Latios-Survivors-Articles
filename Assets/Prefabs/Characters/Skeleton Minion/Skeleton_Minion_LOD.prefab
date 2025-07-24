@@ -1094,7 +1094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boidSettings:
     maxSpeed: 4
-    maxForce: 4
+    maxForce: 8
     cohesionRadius: 15
     cohesionWeight: 0.125
     separationRadius: 3

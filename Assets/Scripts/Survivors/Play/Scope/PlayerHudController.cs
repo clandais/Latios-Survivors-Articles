@@ -26,9 +26,17 @@ namespace Survivors.Play.Scope
 
             m_commandSubscribable.Subscribe<PlayerHealthCommand>(OnPlayerHealthChanged)
                 .AddTo(ref m_disposable);
-            
+
             m_commandSubscribable.Subscribe<PlayerExperienceCommand>(OnPlayerExperienceChanged)
                 .AddTo(ref m_disposable);
+
+            m_commandSubscribable.Subscribe<UpdateTimeCommand>(OnUpdateTime)
+                .AddTo(ref m_disposable);
+        }
+
+        void OnUpdateTime(UpdateTimeCommand updateTimeCommand, PublishContext ctx)
+        {
+            m_playerHud.SetTimeRemaining(updateTimeCommand.TimeRemaining);
         }
 
         void OnPlayerHealthChanged(PlayerHealthCommand cmd, PublishContext ctx)

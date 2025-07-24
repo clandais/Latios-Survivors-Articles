@@ -1,7 +1,7 @@
 ﻿using Survivors.Play.Scope.MonoBehaviours;
 using Survivors.Play.Systems.Camera;
-using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Input;
+using Survivors.Play.Systems.Lifecycle;
 using Survivors.Play.Systems.Player;
 using Survivors.Play.Systems.SFX;
 using Survivors.Play.Systems.UI;
@@ -50,8 +50,9 @@ namespace Survivors.Play.Scope
             builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
             builder.RegisterSystemFromDefaultWorld<PlayerInputSystem>();
             builder.RegisterSystemFromDefaultWorld<PlayerHudSystem>();
+            builder.RegisterSystemFromDefaultWorld<TimerSystem>();
             builder.RegisterSystemFromDefaultWorld<MainAudioListenerUpdateSystem>();
-            builder.RegisterSystemFromDefaultWorld<EnemyCounterSystem>();
+            // builder.RegisterSystemFromDefaultWorld<EnemyCounterSystem>();
 
             builder.RegisterBuildCallback(container =>
             {

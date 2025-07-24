@@ -59,7 +59,11 @@ namespace Survivors.Play.Scope
             m_commandSubscribable.Subscribe<PlayerLevelUpCommand>(OnPlayerLevelUp)
                 .AddTo(ref m_disposable);
 
+
             m_commandSubscribable.SubscribeAwait<PlayerDeadCommand>(OnPlayerDead)
+                .AddTo(ref m_disposable);
+
+            m_commandSubscribable.Subscribe<TimerEndedCommand>(OnTimerEnded)
                 .AddTo(ref m_disposable);
 
             m_playStateLevelUpMenu.OnPerkSelected.AsObservable().Subscribe(OnPerkSelected)
@@ -91,6 +95,10 @@ namespace Survivors.Play.Scope
             m_playStateLevelUpMenu.Show(playerLevelUpCommand);
         }
 
+        void OnTimerEnded(TimerEndedCommand cmd, PublishContext ctx)
+        {
+            m_playStateMenu.ShowGameOver(cmd);
+        }
 
         void OnPauseStateRequested(RequestPauseStateCommand _,
             PublishContext ctx)

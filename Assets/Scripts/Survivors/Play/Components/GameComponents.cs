@@ -19,6 +19,21 @@ namespace Survivors.Play.Components
         public float3 Normal;
     }
 
+    public struct GameTimerComponent : IComponentData
+    {
+        public float TimeRemaining;
+        public float GameDurationInSeconds;
+    }
+
+    public struct GameStatsComponent : IComponentData
+    {
+        public int EnemiesKilled;
+    }
+
+    public struct GameOverScreenRequestedTag : IComponentData { }
+
+    #region Spawn Queues
+
     public partial struct SfxSpawnQueue : ICollectionComponent
     {
         public struct SfxSpawnData
@@ -73,6 +88,8 @@ namespace Survivors.Play.Components
             return XpQueue.Dispose(inputDeps);
         }
     }
+
+    #endregion
 
     public struct ShouldDestroyTag : IComponentData { }
 

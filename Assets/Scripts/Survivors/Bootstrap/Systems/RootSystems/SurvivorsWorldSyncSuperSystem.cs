@@ -24,7 +24,7 @@ namespace Survivors.Bootstrap.Systems.RootSystems
             GetOrCreateAndAddUnmanagedSystem<SfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<VfxSpawnQueueSystem>();
             GetOrCreateAndAddUnmanagedSystem<EnemyCollectibleSpawnQueueSystem>();
-            GetOrCreateAndAddUnmanagedSystem<EnemyKilledSystem>();
+            GetOrCreateAndAddUnmanagedSystem<ProcessKilledEnemiesSystem>();
         }
 
         public override bool ShouldUpdateSystem() =>

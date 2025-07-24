@@ -11,7 +11,7 @@ namespace Survivors.Play.Systems.Enemies
 {
     [RequireMatchingQueriesForUpdate]
     [BurstCompile]
-    public partial struct EnemyKilledSystem : ISystem, ISystemNewScene
+    public partial struct ProcessKilledEnemiesSystem : ISystem, ISystemNewScene
     {
         EntityQuery          _query;
         LatiosWorldUnmanaged _world;
@@ -46,20 +46,25 @@ namespace Survivors.Play.Systems.Enemies
             var xpSpawnQueue = _world.sceneBlackboardEntity.GetCollectionComponent<CollectibleSpawnQueue>()
                 .XpQueue;
 
-            state.Dependency = new RemoveCollidersJob
+            var gameStats = _world.sceneBlackboardEntity.GetComponentData<GameStatsComponent>();
+            gameStats.EnemiesKilled += _query.CalculateEntityCount();
+            _world.sceneBlackboardEntity.SetComponentData(gameStats);
+
+
+            state.Dependency = new ProcessKilledEnemiesJob
             {
                 CommandBuffer = rcb.AsParallelWriter(),
                 XpSpawnQueue  = xpSpawnQueue.AsParallelWriter(),
-                Rng           = state.GetJobRng(),
+                Rng           = state.GetJobRng()
             }.ScheduleParallel(_query, state.Dependency);
         }
 
         [BurstCompile]
-        partial struct RemoveCollidersJob : IJobEntity, IJobEntityChunkBeginEnd
+        partial struct ProcessKilledEnemiesJob : IJobEntity, IJobEntityChunkBeginEnd
         {
             public NativeQueue<CollectibleSpawnQueue.CollectibleSpawnData>.ParallelWriter XpSpawnQueue;
-            public EntityCommandBuffer.ParallelWriter                   CommandBuffer;
-            public SystemRng                                        Rng;
+            public EntityCommandBuffer.ParallelWriter                                     CommandBuffer;
+            public SystemRng                                                              Rng;
 
             void Execute(Entity entity,
                 [EntityIndexInQuery] int index,
@@ -70,23 +75,22 @@ namespace Survivors.Play.Systems.Enemies
             {
                 CommandBuffer.RemoveComponent<Collider>(index, entity);
 
-
-                var chance = Rng.NextInt(0, (itemDropChance.HpDropChance + itemDropChance.XpDropChance));
+                var chance = Rng.NextInt(0, itemDropChance.HpDropChance + itemDropChance.XpDropChance);
                 var xpChance = itemDropChance.XpDropChance;
                 var hpChance = itemDropChance.HpDropChance;
-                
-                
+
+
                 var prefab = chance < hpChance
                     ? hpDropPrefab.Prefab
-                    : chance < (xpChance + hpChance)
+                    : chance < xpChance + hpChance
                         ? xpDropPrefab.Prefab
                         : Entity.Null;
-                
-                
+
+
                 XpSpawnQueue.Enqueue(new CollectibleSpawnQueue.CollectibleSpawnData
                 {
                     Position = transform.worldPosition,
-                    Prefab = prefab,
+                    Prefab   = prefab
                 });
             }
 
@@ -97,10 +101,9 @@ namespace Survivors.Play.Systems.Enemies
                 return true;
             }
 
-            public void OnChunkEnd(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask,
-                bool chunkWasExecuted)
-            {
-            }
+            public void OnChunkEnd(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask,
+                in v128 chunkEnabledMask,
+                bool chunkWasExecuted) { }
         }
     }
 }
